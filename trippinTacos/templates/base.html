@@ -3,22 +3,26 @@
 <head>
     {% block head %}
 
-    <meta charset="UTF-8">
-    <title>Title</title>
-
     {% endblock %}
+    <meta charset="UTF-8">
+    <title>{% block title %} {% endblock %}</title>
+
+
 
 </head>
 
 <body>
-{% block body %}
+    {% block body %}
+
+    {% endblock %}
+
 
     <div class="page-booking">
 
         <a href="{% url 'booking' %}" class="top-menu"></a>
 
     </div>
-{% endblock %}
+
 
 </body>
 
