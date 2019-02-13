@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'guest',
     'manager',
     'employee',
+    'reservations'
     'bootstrap4',
 ]
 
