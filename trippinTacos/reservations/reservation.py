@@ -1,5 +1,6 @@
 from datetime import timedelta
-from .models import Reservation, Table, Guest
+from .models import Reservation, Table
+from guest.models import Guest
 from datetime import datetime
 
 
@@ -13,7 +14,7 @@ def make_reservation(restaurant, guest, reservation_date_time,number_of_people, 
 
     if table:
         delta = timedelta(seconds=60*minutes_slot)
-        reservation = reservation(guest = guest, number_of_people = number_of_people, start_date_time = reservation_date_time, end_date_time = reservation_date_time + delta, createdDate = datetime.now(), table = table)
+        reservation = Reservation(guest = guest, number_of_people = number_of_people, start_date_time = reservation_date_time, end_date_time = reservation_date_time + delta, createdDate = datetime.now(), table = table)
         reservation.save()
         return {'reservation': reservation.id, 'table': table.id}
     else:
