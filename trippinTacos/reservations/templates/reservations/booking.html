@@ -1,27 +1,24 @@
 {% extends 'base.html' %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
+
+
 {% block head %}
 
-    <meta charset="UTF-8">
-    <title></title>
-
 {% endblock %}
 
-</head>
+{% block title %}
+Booking
+{% endblock %}
 
-<body>
+
+
+
 {% block body %}
-
+    <h2>New Booking</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type=submit>Submit</button>
+    </form>
 {% endblock %}
 
-<h2>New Booking</h2>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type=submit>Submit</button>
-</form>
 
-</body>
-</html>
