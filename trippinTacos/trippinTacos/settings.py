@@ -40,8 +40,8 @@ INSTALLED_APPS = [
     'guest',
     'manager',
     'employee',
+    'reservations'
     'bootstrap4',
-    'reservations',
 ]
 
 MIDDLEWARE = [

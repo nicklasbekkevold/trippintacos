@@ -1,4 +1,4 @@
-"""trippinTacos URL Configuration
+"""guest URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/2.1/topics/http/urls/
@@ -16,12 +16,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls import url
+import employee.views as views
 from django.conf.urls.static import static
 from django.conf import settings
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('guest/', include('guest.urls')),
-    path('employee/', include('employee.urls')),
-    path('reservations/', include('reservations.urls')),
+    url(r'^$', views.test, name="employeePage")
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
