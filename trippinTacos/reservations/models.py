@@ -1,13 +1,16 @@
 from django.db import models
 from guest.models import Guest
 from django.utils import timezone
+from datetime import date
+from django.utils.timezone import now
+
 # Create your models here.
 
 
 class Reservation(models.Model):
     guest = models.ForeignKey(Guest, on_delete=models.CASCADE)
-    date = models.DateField()
-    time = models.TimeField()
+    date = models.DateField(default=date.today, blank=False)
+    time = models.TimeField(default=now(), blank=False)
     created_date = models.DateTimeField(default=timezone.now) #added this field for later use when adding statistics
 
 
