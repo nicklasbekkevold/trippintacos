@@ -12,15 +12,15 @@ class Restaurant(models.Model):
 
 
 class Table(models.Model):
-    restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE)
+    restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE, null=True, blank=True)
     number_of_seats = models.IntegerField()
     is_occupied = models.BooleanField()
 
 
 class Reservation(models.Model):
     guest = models.ForeignKey(Guest, on_delete=models.CASCADE)
-    number_of_people = models.IntegerField()
-    start_date_time = models.DateTimeField()
-    end_date_time = models.DateTimeField()
+    number_of_people = models.IntegerField(default=0)
+    start_date_time = models.DateTimeField(default="1970-01-01")
+    end_date_time = models.DateTimeField(default="1970-01-01")
     created_date = models.DateTimeField(default=timezone.now) # added this field for later use when adding statistics
-    table = models.ForeignKey(Table, on_delete=models.CASCADE)
+    table = models.ForeignKey(Table, on_delete=models.CASCADE, null=True, blank=True)
