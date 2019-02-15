@@ -1,9 +1,17 @@
 from trippinTacos.reservations import models
+from guest.models import Guest
 from datetime import timedelta
 sentinel = object()
 
-def delete(reservation_num):
-    models.Reservation.objects.filter(id == reservation_num).delete()
+
+#####################################
+# Function for deleting reservation #
+#####################################
+def delete(reservation_num, email):
+    # Getting correct guest
+    guest = Guest.objects.filter(email=email)
+    # Deleting guest's reservation by id and email
+    models.Reservation.objects.filter(id=reservation_num, guest=guest).delete()
 
 
 def edit(reservation_num, newDate, new_start, new_end=sentinel):
@@ -66,6 +74,21 @@ def checkForCollision(start_of_new_res, end_of_new_res, preexisting_res):
     return True
 
 
+####################################################################################################
+# This function returns a list containing tuples on the form                                       #
+# (reservation start(datetime object), reservation end(datetime object), duration(hours), tableID) #
+####################################################################################################
+def get_all_booked_dates_and_time():
+    # Get all reservations
+    reservations = models.Reservation.objects.all()
+    dates = []
 
+    # Loop through all reservations to get start time, end time and table.
+    for res in reservations:
+        dates.append((res.start_date_time,
+                      res.end_date_time,
+                      res.start_date_time - res.end_date_time,
+                      res.table))
 
+    return dates
 
