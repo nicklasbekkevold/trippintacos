@@ -1,1 +1,1 @@
-web: cd trippinTacos && gunicorn trippinTacos.wsgi --log-file -
+web: gunicorn trippinTacos.wsgi --log-file -
