@@ -80,12 +80,12 @@ WSGI_APPLICATION = 'trippinTacos.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'stud_pu-29_trippinTacos',                      # Or path to database file if using sqlite3.
-        'USER': 'stud_pu-29',                      # Not used with sqlite3.
-        'PASSWORD': 'GruppE29',                  # Not used with sqlite3.
-        'HOST': 'mysql.stud.ntnu.no',                      # Set to empty string for localhost. Not used with sqlite3.
-        'PORT': '3306',                      # Set to empty string for default. Not used with sqlite3.
+        'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
+        'NAME': 'db.sqlite3',                      # Or path to database file if using sqlite3.
+#        'USER': 'stud_pu-29',                      # Not used with sqlite3.
+#        'PASSWORD': 'GruppE29',                  # Not used with sqlite3.
+#        'HOST': 'mysql.stud.ntnu.no',                      # Set to empty string for localhost. Not used with sqlite3.
+#        'PORT': '3306',                      # Set to empty string for default. Not used with sqlite3.
     },
     'offline': {
         'ENGINE': 'django.db.backends.sqlite3',
