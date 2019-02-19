@@ -6,14 +6,13 @@
     <meta charset="UTF-8">
     <title>Trippin' Tacos</title>
 </head>
-
 <body>
     <nav class="navbar navbar-expand-xl navbar-dark bg-dark">
-    <a class="navbar-brand" href="#">Trippin' Tacos</a>
+    <a class="navbar-brand" href="{% url 'guest' %}">Trippin' Tacos</a>
     <div class="collapse navbar-collapse" id="navbarNavDropdown">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
-                <a class="nav-link" href="#">Hjem<span class="sr-only">(current)</span></a>
+                <a class="nav-link" href="{% url 'guest' %}">Hjem<span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="#">Reservere bord</a>
@@ -22,12 +21,25 @@
                 <a class="nav-link" href="#">Meny</a>
             </li>
         </ul>
-        <a name="" id="" class="btn btn-primary" href="#" role="button">Sign In</a>
+        <a name="" id="" class="btn btn-primary" href="{% url 'login' %}" role="button">Login</a>
 
     </div>
     </nav>
-    {% block content %}
-    {% endblock %}
+    <main role="main" class="container">
+        <div class="row">
+            <div class="col">
+                {% if messages %}
+                    {% for message in messages %}
+                      <div class="alert alert-{{ message.tags }}">
+                        {{ message }}
+                      </div>
+                    {% endfor %}
+                {% endif %}
+                {% block content %}
+                {% endblock %}
+            </div>
+        </div>
+    </main>
 </body>
 
 </html>
