@@ -1,10 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
+{% load static %}
 <head>
+    <link rel="stylesheet" href="{%   static 'css/bootstrap.css' %}">
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Trippin' Tacos</title>
 </head>
-<body>
 
+<body>
+    <nav class="navbar navbar-expand-xl navbar-dark bg-dark">
+    <a class="navbar-brand" href="#">Trippin' Tacos</a>
+    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="#">Hjem<span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Reservere bord</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Meny</a>
+            </li>
+        </ul>
+        <a name="" id="" class="btn btn-primary" href="#" role="button">Sign In</a>
+
+    </div>
+    </nav>
+    {% block content %}
+    {% endblock %}
 </body>
+
 </html>
