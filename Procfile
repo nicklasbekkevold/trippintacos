@@ -1,3 +1,1 @@
-cd trippinTacos/
-python manage.py migrate
-python manage.py runserver
+web: cd trippinTacos && gunicorn trippinTacos.wsgi --log-file -
