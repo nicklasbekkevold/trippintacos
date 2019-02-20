@@ -14,6 +14,9 @@ class Restaurant(models.Model):
     def __str__(self):
         return self.name
 
+    class Meta:
+        app_label = "restaurant"
+
 
 class Table(models.Model):
     restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE, null=True, blank=True)
@@ -22,6 +25,9 @@ class Table(models.Model):
 
     def __str__(self):
         return str(self.id)
+
+    class Meta:
+        app_label = "table"
 
 
 class Reservation(models.Model):
@@ -35,4 +41,5 @@ class Reservation(models.Model):
     def __str__(self):
         return self.start_date_time
 
-
+    class Meta:
+        app_label = "reservation"
