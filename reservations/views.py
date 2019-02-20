@@ -29,11 +29,12 @@ def booking(request):
                 guest = Guest.objects.all().get(email=email)
                 print("GUEST: ", guest)
             # form.guest = guest
-            print(make_reservation(Restaurant.objects.first(), guest, form.cleaned_data['start_date_time'], form.cleaned_data['number_of_people']))
+            success = make_reservation(Restaurant.objects.first(), guest, form.cleaned_data['start_date_time'], form.cleaned_data['number_of_people'])
 
-            # post = form.save()
-            # post.save()
-            return render(request, 'success.html')
+            if success:
+                return render(request, 'success.html')
+            else:
+                
 
     else:
         form = ReservationForm()
