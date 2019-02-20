@@ -1,17 +1,8 @@
 from django.db import models
 from guest.models import Guest
 from django.utils import timezone
-from datetime import date
-from django.utils.timezone import now
 
 # Create your models here.
-
-
-class Reservation(models.Model):
-    guest = models.ForeignKey(Guest, on_delete=models.CASCADE)
-    date = models.DateField(default=date.today, blank=False)
-    time = models.TimeField(default=now(), blank=False)
-    created_date = models.DateTimeField(default=timezone.now) #added this field for later use when adding statistics
 
 
 class Restaurant(models.Model):
@@ -20,10 +11,28 @@ class Restaurant(models.Model):
     opening_time = models.TimeField()
     closing_time = models.TimeField()
 
+    def __str__(self):
+        return self.name
+
 
 class Table(models.Model):
     restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE, null=True, blank=True)
     number_of_seats = models.IntegerField()
     is_occupied = models.BooleanField()
+
+    def __str__(self):
+        return str(self.id)
+
+
+class Reservation(models.Model):
+    guest = models.ForeignKey(Guest, on_delete=models.CASCADE)
+    number_of_people = models.IntegerField(default=0)
+    start_date_time = models.DateTimeField(default=timezone.now)
+    end_date_time = models.DateTimeField(default=timezone.now)
+    created_date = models.DateTimeField(default=timezone.now) # added this field for later use when adding statistics
+    table = models.ForeignKey(Table, on_delete=models.CASCADE, null=True, blank=True)
+
+    def __str__(self):
+        return self.start_date_time
 
 
