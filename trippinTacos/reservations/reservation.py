@@ -1,6 +1,5 @@
 from datetime import timedelta
 from .models import Reservation, Table
-from guest.models import Guest
 from datetime import datetime
 
 
@@ -47,7 +46,7 @@ def get_next_available_table(restaurant, reservation_date_time, number_of_people
         return None
     else:
         return tables[0]
-    
+
 
 def make_reservation(restaurant, guest, reservation_date_time,number_of_people, minutes_slot = 120,):
 
