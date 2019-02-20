@@ -4,8 +4,9 @@
 <head>
     <link rel="stylesheet" href="{%   static 'css/bootstrap.css' %}">
     <meta charset="UTF-8">
-    <title>Trippin' Tacos</title>
+    <title>{% block title %}Trippin' Tacos{% endblock %}</title>
 </head>
+
 <body>
     <nav class="navbar navbar-expand-xl navbar-dark bg-dark">
     <a class="navbar-brand" href="{% url 'guest' %}">Trippin' Tacos</a>
@@ -35,11 +36,12 @@
                       </div>
                     {% endfor %}
                 {% endif %}
-                {% block content %}
-                {% endblock %}
+
             </div>
         </div>
     </main>
+    {% block content %}
+    {% endblock %}
 </body>
 
 </html>

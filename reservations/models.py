@@ -2,6 +2,7 @@ from django.db import models
 from guest.models import Guest
 from django.utils import timezone
 
+
 # Create your models here.
 
 
