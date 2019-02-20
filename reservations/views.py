@@ -34,7 +34,7 @@ def booking(request):
             if success:
                 return render(request, 'success.html')
             else:
-                
+                return render(request, 'not_success.html')
 
     else:
         form = ReservationForm()
