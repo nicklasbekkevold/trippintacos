@@ -1,15 +1,14 @@
 from django.test import TestCase
 from django.utils import timezone
-from unittest import TestCase
-from django.test import TestCase
-from reservations.models import *
-from guest.models import *
+from reservations.models import Reservation, Restaurant, Table
+from guest.models import Guest
 from datetime import *
 from employee.helpers import *
 # Create your tests here.
 
 
 class GetTablesWithCapacityTestCase(TestCase):
+
     def setUp(self):
         Table.objects.create(
             restaurant=Restaurant.objects.first(),
@@ -64,6 +63,7 @@ class ChangeNumberOfPeopleTestCase(TestCase):
 
 
 class DeleteReservationTestCase(TestCase):
+
     def setUp(self):
         Reservation.objects.create(
             id=1,
@@ -85,6 +85,7 @@ class DeleteReservationTestCase(TestCase):
 
 
 class EditReservationTestCase(TestCase):
+
     def setUp(self):
         self.now = datetime.now()
         Reservation.objects.create(
