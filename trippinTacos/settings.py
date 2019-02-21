@@ -61,7 +61,8 @@ ROOT_URLCONF = 'trippinTacos.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates'), os.path.join(BASE_DIR, 'reservations/templates/reservations'), ],
+        'DIRS': [os.path.join(BASE_DIR, 'templates'), os.path.join(BASE_DIR, 'reservations/templates/reservations'),
+                 os.path.join(BASE_DIR, '/guest/templates/guest'), os.path.join(BASE_DIR,'guest/templates/guest'), os.path.join(BASE_DIR,'employee/templates/employee')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
