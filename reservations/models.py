@@ -2,6 +2,7 @@ from django.db import models
 from guest.models import Guest
 from django.utils import timezone
 
+
 # Create your models here.
 
 
@@ -39,7 +40,7 @@ class Reservation(models.Model):
     table = models.ForeignKey(Table, on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
-        return self.start_date_time
+        return str(self.start_date_time)
 
     class Meta:
         app_label = "reservation"

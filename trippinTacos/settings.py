@@ -61,7 +61,8 @@ ROOT_URLCONF = 'trippinTacos.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates'), os.path.join(BASE_DIR, 'reservations/templates/reservations'), ],
+        'DIRS': [os.path.join(BASE_DIR, 'templates'), os.path.join(BASE_DIR, 'reservations/templates/reservations'),
+                 os.path.join(BASE_DIR, '/guest/templates/guest'), os.path.join(BASE_DIR,'guest/templates/guest'), os.path.join(BASE_DIR,'employee/templates/employee')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -139,10 +140,15 @@ STATICFILES_DIRS = [
         os.path.join(BASE_DIR, 'bootstrap'),
    ]
 
+db_from_env = dj_database_url.config(conn_max_age=500)
+DATABASES['default'].update(db_from_env)
+
 
 db_from_env = dj_database_url.config(conn_max_age=500)
 DATABASES['default'].update(db_from_env)
 
+LOGIN_REDIRECT_URL = 'employee'
+LOGIN_URL = 'login'
 
 try:
     from .local_settings import *
