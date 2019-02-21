@@ -19,11 +19,9 @@ class TestViews(TestCase):
         self.assertRedirects(response, '/login/?next=/employee/')
 
     def test_logged_in_uses_correct_template(self):
+        self.client.login(username='testuser1', password='1X<ISRUkw+tuK')  # Log in user
         response = self.client.get(self.employee_url)
-
-        self.client.login(username='testuser1', password='1X<ISRUkw+tuK') # Log in
-        self.assertEqual(str(response.context['user']), 'testuser1') # Check that user is logged in
-        
+        self.assertEqual(str(response.context['user']), 'testuser1') # Check if user is logged in
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'base.html')
         self.assertTemplateUsed(response, 'employeepage.html')
