@@ -82,24 +82,19 @@ WSGI_APPLICATION = 'trippinTacos.wsgi.application'
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
 DATABASES = {
-        'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'trippintacos',
-        'USER': 'trippintacos',
-        'PASSWORD': '',
-        'HOST': 'localhost',
-        'PORT': '',
+    'default': {
+    'ENGINE': 'django.db.backends.postgresql_psycopg2',
+    'NAME': 'trippintacos',
+    'USER': 'trippintacos',
+    'PASSWORD': '',
+    'HOST': 'localhost',
+    'PORT': '',
     },
     'offline': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
-
-try: 
-    from .local_settings import *
-except:
-    pass
 
 
 # Password validation
@@ -148,5 +143,14 @@ STATICFILES_DIRS = [
 db_from_env = dj_database_url.config(conn_max_age=500)
 DATABASES['default'].update(db_from_env)
 
+
+db_from_env = dj_database_url.config(conn_max_age=500)
+DATABASES['default'].update(db_from_env)
+
 LOGIN_REDIRECT_URL = 'employee'
 LOGIN_URL = 'login'
+
+try:
+    from .local_settings import *
+except ImportError:
+    print('Unable to import local_settings settings file:')

@@ -1,5 +1,5 @@
-from trippinTacos.reservations import models
-from trippinTacos.guest import models as guestModels
+from reservations import models
+from guest import models as guestModels
 from datetime import timedelta
 from datetime import datetime
 
