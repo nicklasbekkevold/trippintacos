@@ -6,3 +6,6 @@ from django.db import models
 class Guest(models.Model):
     email = models.EmailField()
     reminder = models.BooleanField()
+
+    def __str__(self):
+        return str(self.email)

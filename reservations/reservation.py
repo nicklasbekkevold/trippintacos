@@ -53,7 +53,7 @@ def get_next_available_table(restaurant, reservation_date_time, number_of_people
         restaurant__opening_time__lte=str(reservation_date_time.hour) + ":" + str(reservation_date_time.minute),
         restaurant__closing_time__gte=str((reservation_date_time + timedelta(hours=temp_time_hardcode)).hour) + ":" +
         str((reservation_date_time + timedelta(hours=temp_time_hardcode)).minute),
-        number_of_seats__gte=number_of_people)# .exclude(id__in=tables_booked_ids).order_by('number_of_seats')
+        number_of_seats__gte=number_of_people).exclude(id__in=tables_booked_ids).order_by('number_of_seats')
 
     print("opening time", str(reservation_date_time.hour) + ":00")
     print("closing time", str((reservation_date_time + timedelta(hours=temp_time_hardcode)).hour) + ":00")

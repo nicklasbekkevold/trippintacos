@@ -12,7 +12,6 @@ class ReservationForm(forms.ModelForm):
                   )
 
 
-
 class RestaurantForm(forms.ModelForm):
     class Meta:
         model = Restaurant

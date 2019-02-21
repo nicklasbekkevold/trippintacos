@@ -34,6 +34,6 @@ class Reservation(models.Model):
     table = models.ForeignKey(Table, on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
-        return self.start_date_time
+        return str(self.start_date_time)
 
 
