@@ -1,0 +1,22 @@
+Husk å installere alle requirements
+
+Setup:
+Installer heroku CLI (fra herokuapp.com)
+cd inn i gruppe-29
+heroku login
+git remote add heroku git@heroku.com:trippintacos.git
+
+
+For å deploye:
+Bytt til den branch du vil deploye, f.eks XXX
+
+git push heroku XXX:master
+heroku ps:scale web=1
+heroku open
+
+Vi har laget en local_settings.py!!
+Denne må deles med alle sammen for lokal utvikling. Legges i samme mappe som settings.py
+Denne skal IKKE!!!! legges inn i Git. Da funker ikke Heroku.
+
+Nyttige lenker
+https://devcenter.heroku.com/articles/heroku-cli
