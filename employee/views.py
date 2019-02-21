@@ -5,4 +5,4 @@ from django.shortcuts import render
 
 
 def test(request):
-    return render(request, 'employee/employeePage.html')
+    return render(request, 'employee/employeepage.html')

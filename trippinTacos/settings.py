@@ -43,7 +43,10 @@ INSTALLED_APPS = [
     'employee',
     'reservations',
     'bootstrap4',
+    'bootstrap_datepicker_plus',
 ]
+
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
