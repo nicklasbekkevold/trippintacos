@@ -2,10 +2,10 @@ from django.test import TestCase
 from django.utils import timezone
 from unittest import TestCase
 from django.test import TestCase
-from trippinTacos.reservations.models import *
-from trippinTacos.guest.models import *
+from reservations.models import *
+from guest.models import *
 from datetime import *
-from trippinTacos.employee.helpers import *
+from employee.helpers import *
 # Create your tests here.
 
 
