@@ -145,7 +145,8 @@ STATICFILES_DIRS = [
         os.path.join(BASE_DIR, 'bootstrap'),
    ]
 
-
-
 db_from_env = dj_database_url.config(conn_max_age=500)
 DATABASES['default'].update(db_from_env)
+
+LOGIN_REDIRECT_URL = 'employee'
+LOGIN_URL = 'login'
