@@ -9,3 +9,6 @@ class Guest(models.Model):
 
     def __str__(self):
         return str(self.email)
+
+    class Meta:
+        app_label = 'guest'

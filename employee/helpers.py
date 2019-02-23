@@ -1,7 +1,8 @@
-from trippinTacos.reservations import models
-from trippinTacos.guest import models as guestModels
+from reservations import models
+from guest import models as guestModels
 from datetime import timedelta
 from datetime import datetime
+from django.db.models import Q
 
 sentinel = object()
 
@@ -13,12 +14,18 @@ def delete(reservation_num, _email):
     :param _email: The email with which the reservation has been made.
     :return: whether a reservation has been deleted.
     """
+    '''
     # Getting correct guest
-    _guest = guestModels.Guest.objects.get(guestModels.Guest.objects.email == _email)
+    _guest = guestModels.Guest.objects.all().get(email=_email)
     # Deleting guest's reservation by id and email
-    num = models.Reservation.objects.filter(models.Reservation.objects.id == reservation_num and
-                                            models.Reservation.objects.guest == _guest).delete()
-    return num > 0
+    num = models.Reservation.objects.filter(id=reservation_num,
+                                            guest=_guest).delete()
+
+    print("Guest: ", _guest)
+    print("Num: ", num)
+    '''
+
+    return models.Reservation.objects.filter(guest__email=_email, id=reservation_num).delete()[0]
 
 
 def edit(reservation_num, new_start: datetime, new_end=sentinel):
@@ -36,8 +43,9 @@ def edit(reservation_num, new_start: datetime, new_end=sentinel):
     newDate = new_start.date()
 
     validity_tuple = isValidNewReservation(new_start, new_end, newDate, reservation_num)
+    print(validity_tuple[0])
     if validity_tuple[0]:
-        rezzy = models.Reservation.objects.get(id == reservation_num)
+        rezzy = models.Reservation.objects.get(id=reservation_num)
         rezzy.start_date_time = new_start  # Todo In Reservations: change date and time. In Table: Remove res for old table, add res for new table.
         rezzy.end_date_time = new_end
         rezzy.created_date = datetime.now()
@@ -45,7 +53,7 @@ def edit(reservation_num, new_start: datetime, new_end=sentinel):
         return True
     else:
         # Todo give a error to user which says the changes could not be made.
-        pass
+        return False
 
 
 def isValidNewReservation(start, stop, newDate, reservation_num):
@@ -58,13 +66,13 @@ def isValidNewReservation(start, stop, newDate, reservation_num):
     :return: A tuple containing a bool value indicating the avaliability of the new times, and a int indicating the
     table number.
     """
-    _reservation = models.Reservation.objects.get(id == reservation_num)
+    _reservation = models.Reservation.objects.get(id=reservation_num)
     _table = _reservation.table
-    if newDate == _reservation.date:
+    if newDate == _reservation.start_date_time.date:
         # Check if the table currently booked is available at new time at same date, with current time set temporarily as open.
         coll = 0
         reservations_at_table = models.Reservation.objects.filter(
-            models.Reservation.table == _table and models.Reservation != _reservation)
+            table=_table).exlude(id=_reservation.id)
         for reservation1 in reservations_at_table:
             if checkForCollision(start, stop,
                                  reservation1):  # TOdo Men i faen nå kjem den te å si Ja uten å sjekke alle, Gjeld alle nedover. Her mp æ heller legg inn ved bruk av filter. Kutte ned på kodelengde og komplexitet.
@@ -74,10 +82,9 @@ def isValidNewReservation(start, stop, newDate, reservation_num):
             return True, _table  # If no collisions at the table, return table and
 
         # checks if any other table is available at new time
-        for checktable in models.Table.objects.filter(id != _table.id):
+        for checktable in models.Table.objects.filter(~Q(id=_table.id)):
             coll = 0
-            reservations_at_table = models.Reservation.objects.filter(
-                models.Reservation.table == checktable and models.Reservation != _reservation)
+            reservations_at_table = models.Reservation.objects.filter(~Q(id=_reservation.id), table=checktable)
             for reservation2 in reservations_at_table:
                 if checkForCollision(start, stop,
                                      reservation2):  # TOdo Men i faen nå kjem den te å si Ja uten å sjekke alle, Gjeld alle nedover. Her mp æ heller legg inn ved bruk av filter. Kutte ned på kodelengde og komplexitet.
@@ -90,7 +97,7 @@ def isValidNewReservation(start, stop, newDate, reservation_num):
     else:  # Checks if any table is available at new date & time
         for checktable2 in models.Table.objects.all():
             coll = 0
-            reservations_at_table2 = models.Reservation.objects.filter(models.Reservation.table == checktable2)
+            reservations_at_table2 = models.Reservation.objects.filter(table=checktable2)
             for reservation3 in reservations_at_table2:
                 if checkForCollision(start, stop, reservation3):
                     coll += 1

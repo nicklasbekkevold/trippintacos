@@ -1,15 +1,18 @@
 from django import forms
 from .models import *
+from bootstrap_datepicker_plus import *
 
 
-class ReservationForm(forms.ModelForm):
+class ReservationForm(forms.Form):
     email = forms.EmailField(required=True)
     reminder = forms.BooleanField()
-
-    class Meta:
-        model = Reservation
-        fields = ('number_of_people', 'start_date_time', 'end_date_time', 'created_date',
-                  )
+    number_of_people = forms.IntegerField()
+    start_date_time = forms.DateTimeField(
+        widget=DateTimePickerInput()
+    )
+    end_date_time = forms.DateTimeField(
+        widget=DateTimePickerInput()
+    )
 
 
 class RestaurantForm(forms.ModelForm):

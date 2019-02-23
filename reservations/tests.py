@@ -2,10 +2,11 @@ from django.test import TestCase
 from django.utils import timezone
 from unittest import TestCase
 from django.test import TestCase
-from trippinTacos.reservations.models import *
-from trippinTacos.guest.models import *
+from reservations.models import *
+from guest.models import *
 from datetime import *
-from trippinTacos.employee.helpers import *
+from employee.helpers import *
+from django.utils import timezone
 # Create your tests here.
 
 
@@ -72,21 +73,37 @@ class DeleteReservationTestCase(TestCase):
                 reminder=False
             ),
             number_of_people=4,
+            start_date_time=timezone.now(),
             end_date_time=(timezone.now() + timedelta(hours=2)),
             table=Table.objects.create(
                 restaurant=Restaurant.objects.first(),
-                number_of_seats=5,
-                is_occupied=0
-            )
+                number_of_seats=5
+            ),
+        )
+        Reservation.objects.create(
+            id=2,
+            guest=Guest.objects.create(
+                email="test@testcase.no",
+                reminder=False
+            ),
+            number_of_people=4,
+            start_date_time=timezone.now(),
+            end_date_time=(timezone.now() + timedelta(hours=2)),
+            table=Table.objects.create(
+                restaurant=Restaurant.objects.first(),
+                number_of_seats=5
+            ),
         )
 
     def test_delete(self):
         self.assertEqual(1, delete(1, "test@testcase.no"))
+        self.assertEqual(0, delete(2, "Sander.b.lindberg@dmail.com"))
+        self.assertEqual(1, delete(2, "test@testcase.no"))
 
 
 class EditReservationTestCase(TestCase):
     def setUp(self):
-        self.now = datetime.now()
+        self.now = timezone.now()
         Reservation.objects.create(
             id=1,
             guest=Guest.objects.create(
@@ -94,13 +111,15 @@ class EditReservationTestCase(TestCase):
                 reminder=False
             ),
             number_of_people=4,
+            start_date_time=self.now,
             end_date_time=(self.now + timedelta(hours=2)),
             table=Table.objects.create(
                 id=1,
                 restaurant=Restaurant.objects.first(),
                 number_of_seats=5,
                 is_occupied=0
-            )
+            ),
+            walkin=1,
         )
         Reservation.objects.create(
             id=2,
@@ -111,14 +130,15 @@ class EditReservationTestCase(TestCase):
             number_of_people=4,
             start_date_time=(self.now + timedelta(days=1)),
             end_date_time=(self.now + timedelta(days=2)),
-            table=Table.objects.get(Table.objects.id == 1)
+            table=Table.objects.get(id=1),
+            walkin=0,
         )
 
     def testEditReservation(self):
         # Test edit to new open slot works
-        res = Reservation.objects.get(Reservation.objects.id == 1)
-        self.assertTrue(edit(res, self.now + timedelta(days=3)))
+        res = Reservation.objects.get(id=1)
+        self.assertTrue(edit(res.id, self.now + timedelta(days=3)))
         # Test edit to new slot open overlapping with the same reservation
-        self.assertTrue(edit(res, res.start_date_time + timedelta(hours=1)))
+        self.assertTrue(edit(res.id, res.start_date_time + timedelta(hours=1)))
         # Test edit slot taken by other reservation
-        self.assertFalse(edit(res, self.now + timedelta(days=1)))
+        self.assertFalse(edit(res.id, self.now + timedelta(days=1)))
