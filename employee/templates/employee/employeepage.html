@@ -1,0 +1,60 @@
+
+{% extends 'base.html' %}
+{% block content %}
+
+     <!--<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    </head> -->
+
+
+
+    <div class="jumbotron">
+    <div class="row">
+
+
+
+        <div class="container col-4 bg-dark">
+        <a href="#" class="btn btn-primary active rounded-right" role="button" aria-pressed="true"> hei</a>
+        <a href="#" class="btn btn-secondary active" role="button" aria-pressed="true">på deg</a>
+        <p>Skjer noe nå?</p>
+        </div>
+
+
+        <div class="container col-4">
+        <h3> {% now "jS F Y H:i" %} </h3>
+        </div>
+
+
+
+        <div class="container col-4 bg-dark ">
+        <a href="#" class="btn btn-primary active rounded-right" role="button" aria-pressed="true">Lag reservasjon</a>
+        <a href="#" class="btn btn-secondary active" role="button" aria-pressed="true">Walk-in</a>
+        </div>
+
+    </div>
+
+  <form>
+  <div class="input-group col-4">
+    <input type="text" class="form-control" placeholder="Søk etter reservasjon">
+    <div class="input-group-btn">
+      <button class="btn btn-default btn-primary" type="submit"> Søk
+        <i class="glyphicon glyphicon-search"></i>
+      </button>
+    </div>
+  </div>
+  </form>
+
+    <div class="container col-4 bg-info">
+    <a href="#" class="btn btn-primary active rounded-right" role="button" aria-pressed="true">Lag reservasjon</a>
+    <a href="#" class="btn btn-secondary active" role="button" aria-pressed="true">Walk-in</a>
+    <p>Skjer noe nå?</p>
+    </div>
+
+    </div>
+
+
+    </span>
+{% endblock content %}
