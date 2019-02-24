@@ -5,7 +5,7 @@ test:
   - apt-get update -qy
   - apt-get install -y python-dev python-pip
   - pip install -r requirements.txt
-  - python manage.py test
+  - python3 manage.py test
 
 staging:
   type: deploy
