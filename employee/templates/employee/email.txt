@@ -1,0 +1,1 @@
+Your reservation with reservation number {{ res_num }} is confirmed!
