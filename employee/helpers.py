@@ -72,14 +72,15 @@ def isValidNewReservation(start, stop, newDate, reservation_num):
     """
     _reservation = models.Reservation.objects.get(id=reservation_num)
     _table = _reservation.table
-    if newDate == _reservation.start_date_time.date:
+    old_date=_reservation.start_date_time.date()
+    if newDate == _reservation.start_date_time.date():
         # Check if the table currently booked is available at new time at same date, with current time set temporarily as open.
         coll = 0
         reservations_at_table = models.Reservation.objects.filter(
-            table=_table).exlude(id=_reservation.id)
+            table=_table).exclude(id=_reservation.id)
         for reservation1 in reservations_at_table:
             if checkForCollision(start, stop,
-                                 reservation1):  # TOdo Men i faen nå kjem den te å si Ja uten å sjekke alle, Gjeld alle nedover. Her mp æ heller legg inn ved bruk av filter. Kutte ned på kodelengde og komplexitet.
+                                 reservation1):
                 coll += 1
                 break  # Breaks if collision as checking any more at same table is redundant
         if coll == 0:
@@ -91,7 +92,7 @@ def isValidNewReservation(start, stop, newDate, reservation_num):
             reservations_at_table = models.Reservation.objects.filter(~Q(id=_reservation.id), table=checktable)
             for reservation2 in reservations_at_table:
                 if checkForCollision(start, stop,
-                                     reservation2):  # TOdo Men i faen nå kjem den te å si Ja uten å sjekke alle, Gjeld alle nedover. Her mp æ heller legg inn ved bruk av filter. Kutte ned på kodelengde og komplexitet.
+                                     reservation2):
                     coll += 1
                     break  # Breaks if collision as checking any more at same table is redundant
             if coll == 0:
