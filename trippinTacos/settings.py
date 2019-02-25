@@ -13,6 +13,9 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 import os
 import dj_database_url
 
+
+
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -46,7 +49,9 @@ INSTALLED_APPS = [
     'bootstrap_datepicker_plus',
 ]
 
-
+BOOTSTRAP4 = {
+    'include_jquery': True,
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -152,13 +157,15 @@ DATABASES['default'].update(db_from_env)
 
 LOGIN_REDIRECT_URL = 'employee'
 LOGIN_URL = 'login'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'TrippinTacosRestaurant@gmail.com'
+EMAIL_HOST_PASSWORD = 'GruppE29'
+EMAIL_PORT = 587
+
 
 try:
-    from .local_settings import *
-except ImportError:
-    print('Unable to import local_settings settings file:')
-
-BOOTSTRAP4 = {
-    'include_jquery': True,
-}
-
+    from trippinTacos.local_settings import *
+except Exception as e:
+   pass
