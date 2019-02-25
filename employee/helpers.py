@@ -7,6 +7,7 @@ from django.core.mail import send_mail
 from django.template import Context
 from django.template.loader import render_to_string
 from trippinTacos.settings import EMAIL_HOST_USER
+import smtplib
 
 sentinel = object()
 
@@ -214,3 +215,26 @@ def send_confirmation(email, res):
     )
 
     return True
+
+
+def send_cancellation(email, res):
+    """
+    Sends confirmation mail.
+    :param email: The email of the client
+    :param res: The reservation of which is cancelling
+    :return: Bool value indicating whether mail was sent.
+    """
+
+    msg_plain = "Your reservation with reservation ID" + str(res.id) + " has now been successfully cancelled."
+    try:
+        send_mail(
+            'Cancellation confirmation ' + str(res.id),
+            msg_plain,
+            EMAIL_HOST_USER,
+            [str(email)],
+        )
+
+        return True
+
+    except smtplib.SMTPException:
+        return False
