@@ -43,9 +43,6 @@ def get_next_available_table(restaurant, reservation_date_time, number_of_people
     # lager liste med alle bord av nødvendig størrelse, tilgjengelige i restauranten
     # ekskluderer den forrige listen av utilgjengelige bord. Listen er rangert fra minst til størst tilgjengelig kapasitet,
     # og det ledige bordet med minst kapasitet returneres.
-    print("NUMBER OF PEOPLE:", number_of_people)
-    differance = reservation_date_time
-    (minutes_slot / float(60))
     temp_time_hardcode = (minutes_slot / float(60))
 
     tables = Table.objects.filter(
@@ -54,10 +51,6 @@ def get_next_available_table(restaurant, reservation_date_time, number_of_people
         restaurant__closing_time__gte=str((reservation_date_time + timedelta(hours=temp_time_hardcode)).hour) + ":" +
         str((reservation_date_time + timedelta(hours=temp_time_hardcode)).minute),
         number_of_seats__gte=number_of_people).exclude(id__in=tables_booked_ids).order_by('number_of_seats')
-
-    print("opening time", str(reservation_date_time.hour) + ":00")
-    print("closing time", str((reservation_date_time + timedelta(hours=temp_time_hardcode)).hour) + ":00")
-    print("TABLES: ", tables)
     if tables.count() == 0:
         return None
     else:
