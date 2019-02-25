@@ -4,6 +4,7 @@ from django.shortcuts import redirect
 from guest.models import *
 from reservations.models import *
 from reservations.reservation import make_reservation
+from employee.helpers import send_confirmation
 
 
 # Create your views here.
@@ -19,19 +20,16 @@ def booking(request):
             for each in Guest.objects.all():
                 email_liste.append(each.email.lower())
 
-            print("EMAIL LISTE:", email_liste, "EMAIL:", email)
             if email not in email_liste:
                 guest = Guest(email=email, reminder=form.cleaned_data['reminder'])
                 # guest = Guest.objects.create(email=email, reminder=form.cleaned_data['reminder'])
                 guest.save()
-                print("GUEST: ", guest)
             else:
                 guest = Guest.objects.all().get(email=email)
-                print("GUEST: ", guest)
-            # form.guest = guest
-            success = make_reservation(Restaurant.objects.first(), guest, form.cleaned_data['start_date_time'], form.cleaned_data['number_of_people'])
-
+            success = make_reservation(Restaurant.objects.first(), guest, form.cleaned_data['start_date_time'], form.cleaned_data['number_of_people'], 0)
+            print("SUCCESS: ", success)
             if success:
+                send_confirmation(guest.email, Reservation.objects.all().get(id=success['reservation']))
                 return render(request, 'success.html')
             else:
                 return render(request, 'not_success.html')

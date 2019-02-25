@@ -3,7 +3,7 @@ from .models import Reservation, Table
 from datetime import datetime
 
 
-def get_next_available_table(restaurant, reservation_date_time, number_of_people, minutes_slot=120):
+def get_next_available_table(restaurant, reservation_date_time, number_of_people, walkin, minutes_slot=120):
     # skal returnere det første tilgjengelige bordet på en restaurant, for et gitt antall folk på et gitt tidspunkt.
     delta = timedelta(seconds=60 * minutes_slot)
     lower_bound_time = reservation_date_time
@@ -57,15 +57,16 @@ def get_next_available_table(restaurant, reservation_date_time, number_of_people
         return tables[0]
 
 
-def make_reservation(restaurant, guest, reservation_date_time, number_of_people, minutes_slot=120):
+def make_reservation(restaurant, guest, reservation_date_time, number_of_people, walkin, minutes_slot=120):
     # funksjon som bruker get_next_available_table for å reservere et ledig bord på et ledig tidspunkt
     # print("NUMBER OF PEOPLE:", number_of_people)
-    table = get_next_available_table(restaurant, reservation_date_time, number_of_people, minutes_slot)
-
+    table = get_next_available_table(restaurant, reservation_date_time, number_of_people, walkin, minutes_slot)
+    print("TABLE:", table)
     if table:
         delta = timedelta(seconds=60 * minutes_slot)
         reservation = Reservation(guest=guest, number_of_people=number_of_people, start_date_time=reservation_date_time,
-                                  end_date_time=reservation_date_time + delta, created_date=datetime.now(), table=table)
+                                  end_date_time=reservation_date_time + delta, created_date=datetime.now(), table=table,
+                                  walkin=walkin)
         reservation.save()
         return {'reservation': reservation.id, 'table': table.id}
     else:
