@@ -157,3 +157,8 @@ try:
     from .local_settings import *
 except ImportError:
     print('Unable to import local_settings settings file:')
+
+BOOTSTRAP4 = {
+    'include_jquery': True,
+}
+
