@@ -1,9 +1,10 @@
 from datetime import timedelta
 from .models import Reservation, Table
 from datetime import datetime
+from guest.models import *
 
 
-def get_next_available_table(restaurant, reservation_date_time, number_of_people, walkin, minutes_slot=120):
+def get_next_available_table(restaurant, reservation_date_time, number_of_people, minutes_slot=120):
     # skal returnere det første tilgjengelige bordet på en restaurant, for et gitt antall folk på et gitt tidspunkt.
     delta = timedelta(seconds=60 * minutes_slot)
     lower_bound_time = reservation_date_time
@@ -72,3 +73,12 @@ def make_reservation(restaurant, guest, reservation_date_time, number_of_people,
     else:
         return None
     # kjernefunksjonaliteten skal nå være fullstendig for make_reservation.
+
+
+def count_reservations():
+    return Reservation.objects.count()
+
+def count_unique_guests():
+    return Guest.objects.count()
+
+def count
