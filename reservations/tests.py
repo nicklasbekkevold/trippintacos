@@ -35,7 +35,6 @@ class GetTablesWithCapacityTestCase(TestCase):
         self.assertEqual(2, len(tables))
 
 
-'''
 class ChangeNumberOfPeopleTestCase(TestCase):
     def setUp(self):
         Table.objects.create(
@@ -53,15 +52,14 @@ class ChangeNumberOfPeopleTestCase(TestCase):
         Reservation.objects.create(
             guest=Guest.objects.first(),
             number_of_people=2,
-            start_date_time=datetime(2019, 2, 19, 20, 0, 0),
-            end_date_time=datetime(2019, 2, 19, 22, 0, 0),
-            created_date=timezone.now,
+            start_date_time=str(datetime(2019, 2, 19, 20, 0, 0)),
+            end_date_time=str(datetime(2019, 2, 19, 22, 0, 0)),
+            created_date=timezone.now(),
             table=Table.objects.first()
         )
 
     def test_change_number(self):
         self.assertTrue(change_number_of_people(Reservation.objects.first(), 5))
-'''
 
 
 class DeleteReservationTestCase(TestCase):
@@ -142,3 +140,41 @@ class EditReservationTestCase(TestCase):
         self.assertTrue(edit(res.id, res.start_date_time + timedelta(hours=1)))
         # Test edit slot taken by other reservation
         self.assertFalse(edit(res.id, self.now + timedelta(days=1)))
+
+'''
+class MakeReservation(TestCase):
+    def setUp(self):
+        Restaurant.objects.create(
+            name='testRestaurant',
+            description='testRestaurant',
+            opening_time=datetime.time(12, '%h')
+            
+        )
+'''
+
+
+class TestSendConfirmation(TestCase):
+    def setUp(self):
+        self.now = timezone.now()
+        Reservation.objects.create(
+            id=1,
+            guest=Guest.objects.create(
+                email="sander.b.lindberg@gmail.com",
+                reminder=False,
+            ),
+            number_of_people=4,
+            start_date_time=(self.now + timedelta(days=1)),
+            end_date_time=(self.now + timedelta(days=2)),
+            table=Table.objects.create(
+                id=1,
+                restaurant=Restaurant.objects.first(),
+                number_of_seats=5,
+                is_occupied=0,
+            ),
+            walkin=0
+        )
+
+    def testSendEmail(self):
+        res = Reservation.objects.all().get(id=1)
+        guest = res.guest
+        self.assertTrue(send_confirmation(guest.email, res))

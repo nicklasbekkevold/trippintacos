@@ -3,6 +3,10 @@ from guest import models as guestModels
 from datetime import timedelta
 from datetime import datetime
 from django.db.models import Q
+from django.core.mail import send_mail
+from django.template import Context
+from django.template.loader import render_to_string
+from trippinTacos.settings import EMAIL_HOST_USER
 
 sentinel = object()
 
@@ -190,3 +194,22 @@ def change_number_of_people(res, num):
             return True
 
     return False
+
+
+def send_confirmation(email, res):
+    '''
+    Sends confirmation mail.
+    :param email:
+    :param res:
+    :return: True
+    '''
+    msg_plain = render_to_string('employee/email.txt', {'res_num': res.id})
+
+    send_mail(
+        'TrippinTacos reservation ' + str(res.id),
+        msg_plain,
+        EMAIL_HOST_USER,
+        [str(email)],
+    )
+
+    return True

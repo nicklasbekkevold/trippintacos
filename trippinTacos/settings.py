@@ -154,6 +154,13 @@ DATABASES['default'].update(db_from_env)
 
 LOGIN_REDIRECT_URL = 'employee'
 LOGIN_URL = 'login'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'TrippinTacosRestaurant@gmail.com'
+EMAIL_HOST_PASSWORD = 'GruppE29'
+EMAIL_PORT = 587
+
 
 try:
     from trippinTacos.local_settings import *
