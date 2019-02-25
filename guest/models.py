@@ -8,7 +8,7 @@ class Guest(models.Model):
     reminder = models.BooleanField()
 
     def __str__(self):
-        return self.email
+        return str(self.email)
 
     class Meta:
-        app_label = "guest"
+        app_label = 'guest'

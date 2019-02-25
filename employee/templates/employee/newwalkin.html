@@ -1,6 +1,5 @@
 {% extends 'base.html' %}
 
-
 {% block head %}
 {% load bootstrap4 %}       {# import bootstrap4/bootstrap3 #}
 {% bootstrap_css %}         {# Embed Bootstrap CSS #}
@@ -9,19 +8,17 @@
 {% endblock %}
 
 {% block title %}
-Booking
+Ny walkin
 {% endblock %}
 
 
 
 
 {% block content%}
-    <h2>New Booking</h2>
+    <h2>Ny Walkin</h2>
     <form method="POST">
         {% csrf_token %}
         {{ form.as_p }}
         <button type=submit>Submit</button>
     </form>
 {% endblock %}
-
-
