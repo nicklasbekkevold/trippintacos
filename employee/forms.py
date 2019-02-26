@@ -1,7 +1,13 @@
 from django import forms
-from bootstrap_datepicker_plus import *
+from bootstrap_datepicker_plus import DatePickerInput
 
 class DateForm(forms.Form):
-    current_date = forms.DateField(
-        widget=DatePickerInput(format='%d-%m-%Y') #TODO fix formatting here by: format=' ... '
+    _ = forms.DateField(
+        widget=DatePickerInput(options={
+                    "format": "dddd DD. MMMM YYYY", # moment date-time format
+                    "calendarWeeks": True,
+                    "showClose": False,
+                    "showClear": False,
+                    "showTodayButton": False,
+                })
     )

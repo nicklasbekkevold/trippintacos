@@ -29,9 +29,9 @@
                     <!-- Navbar Right Side -->
                     <div class="navbar-nav">
                         {% if user.is_authenticated %}
-                            <a class="nav-item nav-link" href="{% url 'logout' %}">Log ut</a>
+                            <i><a class="nav-item nav-link" href="{% url 'logout' %}">Log ut</a></i>
                         {% else %}
-                            <a class="nav-item nav-link" href="{% url 'login' %}">Ansatt</a>
+                            <i><a class="nav-item nav-link" href="{% url 'login' %}">Ansatt</a></i>
                         {% endif %}
                     </div>
                 </div>

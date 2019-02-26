@@ -8,72 +8,96 @@
 {% endblock %}
 
 {% block content %}
-    <div class="jumbotron">
+    <div class="container" style="margin-top: 120px">
       <div class="row">
-        <form>
-          <div class="input-group right-align col-12">
-            <input type="text" class="form-control" placeholder="Søk etter reservasjon">
-            <div class="input-group-btn">
-              <button class="btn btn-default btn-primary" type="submit">Søk</button>
+        <div class="container col-12">
+          <form>
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="Søk etter reservasjon">
+              <div class="input-group-btn">
+                <button class="btn btn-default btn-primary" type="submit">Søk</button>
+              </div>
             </div>
-          </div>
-        </form>
-      </div>
-      <div class="row">
-        <div class="container col-4">
-          <form method="post">
-              {% csrf_token %}
-              {% bootstrap_form form %}
           </form>
         </div>
-        <div class="container col-4">
-            <a href="#" class="btn btn-primary active rounded-right" role="button" aria-pressed="true">Lag reservasjon</a>
-            <a href="#" class="btn btn-secondary active" role="button" aria-pressed="true">Walk-in</a>
+        <div class="container" style="margin-top: 100px">
+          <div class="row align-items-center">
+            <div class="col-4">
+              <form method="post">
+                  {% csrf_token %}
+                  {% bootstrap_form form %}
+              </form>
+            </div>
+            <div class="col-3">
+                <a href="#" class="btn btn-primary active rounded-right" role="button" aria-pressed="true">Lag reservasjon</a>
+                <a href="#" class="btn btn-secondary active" role="button" aria-pressed="true">Walk-in</a>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="row">
-        <table class="table table-hover table-responsive">
-          <caption>Aktive reservasjoner, sist oppdatert: 13:39, 26/02/2019</caption>
-          <thead>
-            <tr>
-              <th style="width: 7.14%"></th>
-              <th style="width: 7.14%">12:00</th>
-              <th style="width: 7.14%">13:00</th>
-              <th style="width: 7.14%">14:00</th>
-              <th style="width: 7.14%">15:00</th>
-              <th style="width: 7.14%">16:00</th>
-              <th style="width: 7.14%">17:00</th>
-              <th style="width: 7.14%">18:00</th>
-              <th style="width: 7.14%">19:00</th>
-              <th style="width: 7.14%">20:00</th>
-              <th style="width: 7.14%">21:00</th>
-              <th style="width: 7.14%">22:00</th>
-              <th style="width: 7.14%">23:00</th>
-              <th style="width: 7.14%">00:00</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-            	<th>Bord 1 </th>
-            	<td colspan="2" class="rounded-pill" style="background-color: #00ff00">Ola Hansen (4 pers)</td>
-              <td></td>
-            	<td colspan="2" class="rounded-pill">Kari Normann (2 pers)</td>
-            	<td colspan="2" class="rounded-pill">Jens Dovland (3 pers)</td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-            </tr>
-            <tr>
-            	<th>Bord 2  </th>
-            	<td colspan="2">Ola Hansen (4 pers)</td>
-            	<td colspan="2">Kari Normann (2 pers)</td>
-            	<td colspan="2">Jens Dovland (3 pers)</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+    </div>
+    <div style="margin-top: 20px">
+      <table class="table table-hover table-responsive">
+        <thead>
+          <tr>
+            <th style="width: 5%; color: white">xxxxxxxxx</th>
+            <th style="width: 3.65%">12:00</th>
+            <th style="width: 3.65%; color: white">xx:xx</th>
+            <th style="width: 3.65%">13:00</th>
+            <th style="width: 3.65%; color: white">xx:xx</th>
+            <th style="width: 3.65%">14:00</th>
+            <th style="width: 3.65%; color: white">xx:xx</th>
+            <th style="width: 3.65%">15:00</th>
+            <th style="width: 3.65%; color: white">xx:xx</th>
+            <th style="width: 3.65%">16:00</th>
+            <th style="width: 3.65%; color: white">xx:xx</th>
+            <th style="width: 3.65%">17:00</th>
+            <th style="width: 3.65%; color: white">xx:xx</th>
+            <th style="width: 3.65%">18:00</th>
+            <th style="width: 3.65%; color: white">xx:xx</th>
+            <th style="width: 3.65%">19:00</th>
+            <th style="width: 3.65%; color: white">xx:xx</th>
+            <th style="width: 3.65%">20:00</th>
+            <th style="width: 3.65%; color: white">xx:xx</th>
+            <th style="width: 3.65%">21:00</th>
+            <th style="width: 3.65%; color: white">xx:xx</th>
+            <th style="width: 3.65%">22:00</th>
+            <th style="width: 3.65%; color: white">xx:xx</th>
+            <th style="width: 3.65%">23:00</th>
+            <th style="width: 3.65%; color: white">xx:xx</th>
+            <th style="width: 3.65%">00:00</th>
+            <th style="width: 3.65%; color: white">xx:xx</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+          	<th>Bord 1 </th> 
+          	<td colspan="2" class="containter rounded-pill align-middle" style="background-color: #00ff00">Per </td>
+            <td></td>
+          	<td colspan="8" class="containter rounded-pill align-middle" style="background-color: #00ff00">Kari Normann (2 pers)</td>
+          	<td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+          	<th>Bord 2 </th>
+            <th></th>
+          	<td colspan="4">Ola Hansen (4 pers)</td>
+          	<td colspan="4">Kari Normann (2 pers)</td>
+          	<td colspan="4" class="containter rounded-pill" style="background-color: #ffff00">Walk In (3 pers)</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
 {% endblock content %}
