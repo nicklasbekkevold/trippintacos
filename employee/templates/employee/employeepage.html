@@ -9,39 +9,71 @@
 
 {% block content %}
     <div class="jumbotron">
-        <div class="row">
-            <div class="container col-4 bg-dark">
-                <a href="#" class="btn btn-primary active rounded-right" role="button" aria-pressed="true"> hei</a>
-                <a href="#" class="btn btn-secondary active" role="button" aria-pressed="true">på deg</a>
-                <p>Skjer noe nå?</p>
-            </div>
-            <div class="container col-4">
-                <h3> 
-                  <form>
-                    {% csrf_token %}
-                    {{ form.as_p }}
-                  </form>
-                </h3>
-            </div>
-            <div class="container col-4 bg-dark ">
-                <a href="#" class="btn btn-primary active rounded-right" role="button" aria-pressed="true">Lag reservasjon</a>
-                <a href="#" class="btn btn-secondary active" role="button" aria-pressed="true">Walk-in</a>
-            </div>
-        </div>
+      <div class="row">
         <form>
-        <div class="input-group col-4">
-          <input type="text" class="form-control" placeholder="Søk etter reservasjon">
-          <div class="input-group-btn">
-            <button class="btn btn-default btn-primary" type="submit"> Søk
-              <i class="glyphicon glyphicon-search"></i>
-            </button>
+          <div class="input-group right-align col-12">
+            <input type="text" class="form-control" placeholder="Søk etter reservasjon">
+            <div class="input-group-btn">
+              <button class="btn btn-default btn-primary" type="submit">Søk</button>
+            </div>
           </div>
-        </div>
         </form>
-        <div class="container col-4 bg-info">
+      </div>
+      <div class="row">
+        <div class="container col-4">
+          <form method="post">
+              {% csrf_token %}
+              {% bootstrap_form form %}
+          </form>
+        </div>
+        <div class="container col-4">
             <a href="#" class="btn btn-primary active rounded-right" role="button" aria-pressed="true">Lag reservasjon</a>
             <a href="#" class="btn btn-secondary active" role="button" aria-pressed="true">Walk-in</a>
-            <p>Skjer noe nå?</p>
         </div>
+      </div>
+      <div class="row">
+        <table class="table table-hover table-responsive">
+          <caption>Aktive reservasjoner, sist oppdatert: 13:39, 26/02/2019</caption>
+          <thead>
+            <tr>
+              <th style="width: 7.14%"></th>
+              <th style="width: 7.14%">12:00</th>
+              <th style="width: 7.14%">13:00</th>
+              <th style="width: 7.14%">14:00</th>
+              <th style="width: 7.14%">15:00</th>
+              <th style="width: 7.14%">16:00</th>
+              <th style="width: 7.14%">17:00</th>
+              <th style="width: 7.14%">18:00</th>
+              <th style="width: 7.14%">19:00</th>
+              <th style="width: 7.14%">20:00</th>
+              <th style="width: 7.14%">21:00</th>
+              <th style="width: 7.14%">22:00</th>
+              <th style="width: 7.14%">23:00</th>
+              <th style="width: 7.14%">00:00</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+            	<th>Bord 1 </th>
+            	<td colspan="2" class="rounded-pill" style="background-color: #00ff00">Ola Hansen (4 pers)</td>
+              <td></td>
+            	<td colspan="2" class="rounded-pill">Kari Normann (2 pers)</td>
+            	<td colspan="2" class="rounded-pill">Jens Dovland (3 pers)</td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr>
+            	<th>Bord 2  </th>
+            	<td colspan="2">Ola Hansen (4 pers)</td>
+            	<td colspan="2">Kari Normann (2 pers)</td>
+            	<td colspan="2">Jens Dovland (3 pers)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
 {% endblock content %}
