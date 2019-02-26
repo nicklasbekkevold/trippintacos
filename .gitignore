@@ -118,3 +118,4 @@ venv.bak/
 .idea/
 **/__pycache__/
 **/__init__.py
+**/.DS_Store
