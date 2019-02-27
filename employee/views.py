@@ -6,13 +6,92 @@ from employee.forms import DateForm
 from reservations.forms import ReservationForm
 from reservations.reservation import make_reservation
 from django.contrib.auth.decorators import login_required
-# Create your views here.
+
+reservations = [
+    {
+        'table': 'Bord 1',
+        'number_of_seats': 4,
+        'reservations': [
+            {
+                'name': 'Kari',
+                'number_of_guests': 3,
+                'duration': 4,
+                'is_walk_in': False,
+            },
+            {
+                'name': 'Lars',
+                'number_of_guests': 4,
+                'duration': 6,
+                'is_walk_in': False,
+            },
+            {
+                'name': 'Walk in',
+                'number_of_guests': 4,
+                'duration': 6,
+                'is_walk_in': True,
+            }
+        ]
+    },
+    {
+        'table': 'Bord 2',
+        'number_of_seats': 4,
+        'reservations': [
+            {
+                'name': 'Kari',
+                'number_of_guests': 3,
+                'duration': 4,
+                'is_walk_in': False,
+            },
+            {
+                'name': 'Lars',
+                'number_of_guests': 4,
+                'duration': 6,
+                'is_walk_in': False,
+            },
+            {
+                'name': 'Walk in',
+                'number_of_guests': 4,
+                'duration': 6,
+                'is_walk_in': True,
+            }
+        ]
+    },
+    {
+        'table': 'Bord 3',
+        'number_of_seats': 4,
+        'reservations': [
+            {
+                'name': 'Kari',
+                'number_of_guests': 3,
+                'duration': 4,
+                'is_walk_in': False,
+            },
+            {
+                'name': 'Lars',
+                'number_of_guests': 4,
+                'duration': 6,
+                'is_walk_in': False,
+            },
+            {
+                'name': 'Walk in',
+                'number_of_guests': 4,
+                'duration': 6,
+                'is_walk_in': True,
+            }
+        ]
+    },
+    
+    
+
+]
 
 @login_required
 def employee(request):
     context = {
         'title': 'Ansatt',
         'form': DateForm(),
+        'reservations': reservations,
+        'time_range': range(12, 25)
     }
     return render(request, 'employeepage.html', context)
 

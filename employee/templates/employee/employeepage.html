@@ -1,10 +1,10 @@
 {% extends 'base.html' %}
 
 {% block head %}
-{% load bootstrap4 %}       {# import bootstrap4/bootstrap3 #}
-{% bootstrap_css %}         {# Embed Bootstrap CSS #}
-{% bootstrap_javascript jquery='full' %}  {# Embed Bootstrap JS+jQuery #}
-{{ form.media }}            {# Adds date-picker required JS and CSS #}
+  {% load bootstrap4 %}       {# import bootstrap4/bootstrap3 #}
+  {% bootstrap_css %}         {# Embed Bootstrap CSS #}
+  {% bootstrap_javascript jquery='full' %}  {# Embed Bootstrap JS+jQuery #}
+  {{ form.media }}            {# Adds date-picker required JS and CSS #}
 {% endblock %}
 
 {% block content %}
@@ -41,122 +41,33 @@
         <thead>
           <tr>
             <th style="width: 5%; color: white">xxxxxxxxx</th>
-            <th style="width: 3.65%">12:00</th>
-            <th style="width: 3.65%; color: white">xx:xx</th>
-            <th style="width: 3.65%">13:00</th>
-            <th style="width: 3.65%; color: white">xx:xx</th>
-            <th style="width: 3.65%">14:00</th>
-            <th style="width: 3.65%; color: white">xx:xx</th>
-            <th style="width: 3.65%">15:00</th>
-            <th style="width: 3.65%; color: white">xx:xx</th>
-            <th style="width: 3.65%">16:00</th>
-            <th style="width: 3.65%; color: white">xx:xx</th>
-            <th style="width: 3.65%">17:00</th>
-            <th style="width: 3.65%; color: white">xx:xx</th>
-            <th style="width: 3.65%">18:00</th>
-            <th style="width: 3.65%; color: white">xx:xx</th>
-            <th style="width: 3.65%">19:00</th>
-            <th style="width: 3.65%; color: white">xx:xx</th>
-            <th style="width: 3.65%">20:00</th>
-            <th style="width: 3.65%; color: white">xx:xx</th>
-            <th style="width: 3.65%">21:00</th>
-            <th style="width: 3.65%; color: white">xx:xx</th>
-            <th style="width: 3.65%">22:00</th>
-            <th style="width: 3.65%; color: white">xx:xx</th>
-            <th style="width: 3.65%">23:00</th>
-            <th style="width: 3.65%; color: white">xx:xx</th>
-            <th style="width: 3.65%">00:00</th>
-            <th style="width: 3.65%; color: white">xx:xx</th>
+            {% for t in time_range %}
+              <th style="width: 3.65%">{{t}}:00</th>
+              <th style="width: 3.65%; color: white">xx:xx</th>
+            {% endfor %}
           </tr>
         </thead>
-        <tbody>
-          <tr>
-          	<th>Bord 1 </th> 
+          	<!-- th>Bord 1 </th> 
           	<td colspan="2" class="rounded-pill align-middle" style="background-color: #00ff00">Per</td>
             <td></td>
-          	<td colspan="8" class="rounded-pill align-middle" style="background-color: #00ff00">Kari Normann (2 pers)</td>
-          	<td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr>
-          <tr>
-          	<th>Bord 2 </th>
-            <th></th>
-          	<td colspan="4" class="rounded-pill align-middle" style="background-color: #00ff00">Ola Hansen (4 pers)</td>
-          	<td colspan="4" class="rounded-pill align-middle" style="background-color: #00ff00">Kari Normann (2 pers)</td>
-          	<td colspan="4" class="rounded-pill align-middle" style="background-color: #ffff00">Walk In (3 pers)</td>
-          </tr>
-          <tr>
-          	<th>Bord 3 </th> 
-            <td></td>
-          	<td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-          	<td colspan="8" class="rounded-pill align-middle" style="background-color: #00ff00">Kari Normann (2 pers)</td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-          	<td colspan="2" class="rounded-pill align-middle" style="background-color: #00ff00">Per </td>
-            <td></td>
-            <td></td>
-          </tr>
-          <tr>
-          	<th>Bord 4 </th> 
-          	<td colspan="4" class="rounded-pill align-middle" style="background-color: #00ff00">Per </td>
-            <td></td>
-          	<td colspan="4" class="rounded-pill align-middle" style="background-color: #00ff00">Kari Normann (2 pers)</td>
-          	<td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr>
-          <tr>
-          	<th>Bord 5 </th> 
-          	<td colspan="4" class="rounded-pill align-middle" style="background-color: #00ff00">Per </td>
-            <td></td>
-          	<td colspan="4" class="rounded-pill align-middle" style="background-color: #00ff00">Kari Normann (2 pers)</td>
-          	<td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr>
+          	<td colspan="8" class="rounded-pill align-middle" style="background-color: #00ff00">Kari Normann (2 pers)</td -->
+        <tbody>
+          {% for table in reservations %}
+            <tr>
+              <th>{{ table.table }}</th>
+              {% for reservation in table.reservations %}
+                {% if reservation.is_walk_in %}
+                  <td colspan="{{ reservation.duration }}" class="rounded-pill align-middle" style="background-color: #ff4507">
+                    {{ reservation.name}}
+                  </td>
+                {% else %}
+                  <td colspan="{{ reservation.duration }}" class="rounded-pill align-middle" style="background-color: #45ff07">
+                    <h6>{{ reservation.name }} ({{ reservation.number_of_guests }})</h6>
+                  </td>
+                {% endif %}
+              {% endfor %}
+            </tr>
+          {% endfor %}
         </tbody>
       </table>
     </div>

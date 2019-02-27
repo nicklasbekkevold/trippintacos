@@ -24,11 +24,13 @@
                 <div class="collapse navbar-collapse" id="navbarToggle">
                     <div class="navbar-nav mr-auto">
                         <a class="nav-item nav-link" href="{% url 'guest' %}">Hjem</a>
-                        <a class="nav-item nav-link" href="{% url 'employee' %}">Meny</a>
+                        <a class="nav-item nav-link" href="{% url 'guest' %}">Meny</a>
+                        <a class="nav-item nav-link" href="{% url 'guest' %}">...</a>
                     </div>
                     <!-- Navbar Right Side -->
                     <div class="navbar-nav">
                         {% if user.is_authenticated %}
+                            <i><a class="nav-item nav-link" href="{% url 'employee' %}">Reservasjoner</a></i>
                             <i><a class="nav-item nav-link" href="{% url 'logout' %}">Log ut</a></i>
                         {% else %}
                             <i><a class="nav-item nav-link" href="{% url 'login' %}">Ansatt</a></i>
