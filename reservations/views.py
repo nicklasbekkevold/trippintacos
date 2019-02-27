@@ -1,10 +1,11 @@
 from django.shortcuts import render
-from .forms import ReservationForm
+from .forms import ReservationForm, CancelForm
 from django.shortcuts import redirect
 from guest.models import *
 from reservations.models import *
 from reservations.reservation import make_reservation
-from employee.helpers import send_confirmation
+from employee.helpers import send_confirmation, send_cancellation
+
 
 
 # Create your views here.
@@ -40,3 +41,18 @@ def booking(request):
         return render(request, 'booking.html', {'form': form})
 
 
+def cancel(request):
+    if request.method == 'POST':
+        form = CancelForm(request.POST)
+        if form.is_valid():
+            res = Reservation.objects.all().get(id=int(form.cleaned_data['id']))
+            if res.guest.email == form.cleaned_data['email']:
+                res.delete()
+                send_cancellation(form.cleaned_data['email'], int(form.cleaned_data['id']))
+                return redirect('reservations/success.html')
+        return redirect('reservations/not_success.html')
+    else:
+        print("Hei")
+        form = CancelForm()
+        print('FROM: ', form)
+        return render(request, 'cancel.html', {'form': form})

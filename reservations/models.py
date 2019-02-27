@@ -17,7 +17,7 @@ class Restaurant(models.Model):
 
 
 class Table(models.Model):
-    restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE, null=True, blank=True)
+    restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE, null=True, blank=True, unique=False)
     number_of_seats = models.IntegerField()
     is_occupied = models.BooleanField(default=False)
 

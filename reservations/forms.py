@@ -46,3 +46,12 @@ class TableForm(forms.ModelForm):
     class Meta:
         model = Table
         fields = ('restaurant', 'number_of_seats', 'is_occupied',)
+
+
+class CancelForm(forms.Form):
+    id = forms.CharField()
+    email = forms.CharField()
+
+    class Meta:
+        fields = ('id', 'email')
+

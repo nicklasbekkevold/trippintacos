@@ -217,7 +217,7 @@ def send_confirmation(email, res):
     return True
 
 
-def send_cancellation(email, res):
+def send_cancellation(email, id):
     """
     Sends confirmation mail.
     :param email: The email of the client
@@ -225,10 +225,10 @@ def send_cancellation(email, res):
     :return: Bool value indicating whether mail was sent.
     """
 
-    msg_plain = "Your reservation with reservation ID" + str(res.id) + " has now been successfully cancelled."
+    msg_plain = "Your reservation with reservation ID " + str(id) + " has now been successfully cancelled."
     try:
         send_mail(
-            'Cancellation confirmation ' + str(res.id),
+            'Cancellation confirmation ' + str(id),
             msg_plain,
             EMAIL_HOST_USER,
             [str(email)],
