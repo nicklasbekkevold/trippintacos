@@ -1,11 +1,13 @@
 from django.shortcuts import render
-from django.contrib.auth.decorators import  login_required
+from django.contrib.auth.decorators import login_required
 from reservations.models import Reservation, Restaurant
 from guest.models import Guest
 from employee.forms import DateForm
-from reservations.forms import ReservationForm
+from reservations.forms import ReservationForm, WalkinForm
 from reservations.reservation import make_reservation
 from django.contrib.auth.decorators import login_required
+
+
 # Create your views here.
 
 @login_required
@@ -13,7 +15,10 @@ def employee(request):
     context = {
         'title': 'Ansatt',
         'form': DateForm(),
+        'reservationForm': ReservationForm(),
+        'walkinForm': WalkinForm(),
     }
+
     return render(request, 'employeepage.html', context)
 
 
@@ -33,7 +38,8 @@ def walkin(request):
                 guest.save()
             else:
                 guest = Guest.objects.all().get(email=email)
-            success = make_reservation(Restaurant.objects.first(), guest, form.cleaned_data['start_date_time'], form.cleaned_data['number_of_people'], 1)
+            success = make_reservation(Restaurant.objects.first(), guest, form.cleaned_data['start_date_time'],
+                                       form.cleaned_data['number_of_people'], 1)
 
             if success:
                 return render(request, 'success.html')
