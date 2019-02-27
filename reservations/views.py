@@ -13,8 +13,9 @@ from employee.helpers import send_confirmation
 def booking(request):
     if request.method == 'POST':
         form = ReservationForm(request.POST)
-
+        print('bookingHIE')
         if form.is_valid():
+            print('formvalid')
             email = form.cleaned_data['email'].lower()
             email_liste = []
             for each in Guest.objects.all():
@@ -22,7 +23,7 @@ def booking(request):
 
             if email not in email_liste:
                 guest = Guest(email=email, reminder=form.cleaned_data['reminder'])
-                # guest = Guest.objects.create(email=email, reminder=form.cleaned_data['reminder'])
+                #guest = Guest.objects.create(email=email, reminder=form.cleaned_data['reminder'])
                 guest.save()
             else:
                 guest = Guest.objects.all().get(email=email)
@@ -30,7 +31,7 @@ def booking(request):
             print("SUCCESS: ", success)
             if success:
                 send_confirmation(guest.email, Reservation.objects.all().get(id=success['reservation']))
-                return render(request, 'success.html')
+                return render(request, 'reservations/success.html')
             else:
                 return render(request, 'not_success.html')
 

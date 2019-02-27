@@ -19,6 +19,6 @@ from django.conf.urls.static import static
 from django.conf import settings
 
 urlpatterns = [
-    url(r'^', views.Employee.as_view(), name='employee'),
-    # url(r'^employee/(?P<date>\d{4}-\d{2}-\d{2})/$', views.showRes, name='showRes')
-] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+                  url(r'^$', views.Employee.as_view(), name='employee')
+              ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL,
+                                                                                           document_root=settings.MEDIA_ROOT)
