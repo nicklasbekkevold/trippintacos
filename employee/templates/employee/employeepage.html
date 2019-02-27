@@ -53,18 +53,14 @@
             <tr>
               <th>{{ table.table }}</th>
               {% for reservation in table.reservations %}
-                {% if reservation.is_walk_in %}
-                  <td colspan="{{ reservation.duration }}" class="rounded-pill align-middle" style="background-color: #ff4507">
-                    {{ reservation.name}}
+                {% if reservation.walkin %}
+                  <td colspan="4" class="rounded-pill align-middle" style="background-color: #ff4507">
+                    <h6>{{ reservation.guest.email }} ({{ reservation.number_of_people }})</h6>
                   </td>
                 {% else %}
-                  {% if reservation|length == 0 %}
-                    <td></td>
-                  {% else %}
-                    <td colspan="{{ reservation.duration }}" class="rounded-pill align-middle" style="background-color: #45ff07">
-                      <h6>{{ reservation.name }} ({{ reservation.number_of_guests }})</h6>
-                    </td>
-                  {% endif %}
+                  <td colspan="4" class="rounded-pill align-middle" style="background-color: #45ff07">
+                    <h6>{{ reservation.guest.email }} ({{ reservation.number_of_people }})</h6>
+                  </td>
                 {% endif %}
               {% endfor %}
             </tr>

@@ -118,33 +118,12 @@ class Employee(TemplateView):
 
         context = {
             'title': 'Ansatt',
-            'form': DateForm(),
+            'form': DateForm(initial={'_': datetime(datetime.now().year, datetime.now().month, datetime.now().day)}),
             'reservations': RESERVATIONS,
             'time_range': range(12, 25)
         }
         
         if request.GET.get('showRes') == 'showRes':
-            '''
-            print(request.GET.get('_'))
-            date = request.GET.get('_').split(' ')
-            day = date[1][0:2]
-            month = MONTHS[date[2]]
-            year = date[-1]
-            updated_request = request.GET.copy()
-            updated_request.update({'_': year + "-" + month + "-" + day})
-            form = DateForm(updated_request)
-            if form.is_valid():
-                # tables = showRes(request, form.cleaned_data['_'])
-                showRes(request, form.cleaned_data['_'])
-                # context['reservations'] = tables
-                #print("ADDED")
-                # return render(request, )
-                return
-            else:
-              print("-----------------------From not valid----------------------")
-        print("CONTEXT: ", context)
-        return render(request, self.template_name, context)
-            '''
             date = request.GET.get('_').split(' ')
             day = date[1][0:2]
             month = MONTHS[date[2]]
@@ -152,16 +131,13 @@ class Employee(TemplateView):
             full_date = year + "-" + month + "-" + day
             print("FULL DATE: " + full_date)
             context['reservations'] = showRes(request, full_date)
+            context['form'] = DateForm(initial={'_': request.GET.get('_')})
             print(context)
             return render(request, self.template_name, context)
-
-            # return redirect(showRes(request, full_date), context)
         else:
             return render(request, self.template_name, context)
 
     def post(self, request):
-        pass
-
         return render(request, self.template_name)
 
 
@@ -194,52 +170,16 @@ def walkin(request):
 
 
 def showRes(request, date):
-    '''
-    reservations_this_date = Reservation.objects.filter(start_date_time__year=date.year,
-                                                        start_date_time__day=date.day,
-                                                        start_date_time__month=date.month,
-                                                        )
-    '''
     date = date.split("-")
-    # print(date)
-    # date = datetime(int(date[0:4]), int(date[4:6]), int(date[6:]))
     year = date[0]
     month = date[1]
     day = date[2]
-
 
     reservations_this_date = list()
     for res in Reservation.objects.all():
         print(res.start_date_time.day, res.start_date_time.year, res.start_date_time.month)
         if res.start_date_time.day == int(day) and res.start_date_time.year == int(year) and res.start_date_time.month == int(month):
             reservations_this_date.append(res)
-
-        '''
-        {
-           'table': 'Bord 1',
-           'number_of_seats': 4,
-           'reservations': [
-               {
-                   'name': 'Kari',
-                   'number_of_guests': 3,
-                   'duration': 4,
-                   'is_walk_in': False,
-               },
-               {
-                   'name': 'Lars',
-                   'number_of_guests': 4,
-                   'duration': 6,
-                   'is_walk_in': False,
-               },
-               {
-                   'name': 'Walk in',
-                   'number_of_guests': 4,
-                   'duration': 6,
-                   'is_walk_in': True,
-               }
-           ]
-       }    
-    '''
 
     lst = list()
     table_ids = list()
@@ -251,5 +191,4 @@ def showRes(request, date):
                 'reservations': reservations_this_date
             })
             table_ids.append(res.table_id)
-
     return lst
