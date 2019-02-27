@@ -27,4 +27,5 @@ urlpatterns = [
     path('', include('guest.urls'), name='guest'),
     path('employee/', include('employee.urls'), name='employee'),
     path('reservations/', include('reservations.urls'), name='reservations'),
+    # path(r'employee/(?P<date>\d+)/$', ShowRes.as_view, name='showMyPost'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
