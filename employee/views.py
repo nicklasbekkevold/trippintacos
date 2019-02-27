@@ -114,7 +114,7 @@ class Employee(TemplateView):
     template_name = 'employeepage.html'
 
     @method_decorator(login_required)
-    def get(self, request, date=datetime.now()):
+    def post(self, request, date=datetime.now()):
 
         context = {
             'title': 'Ansatt',
@@ -123,8 +123,29 @@ class Employee(TemplateView):
             'time_range': range(12, 25)
         }
         
-        if request.GET.get('showRes') == 'showRes':
+        if request.POST.get('showRes') == 'showRes':
+            '''
+            print(request.GET.get('_'))
             date = request.GET.get('_').split(' ')
+            day = date[1][0:2]
+            month = MONTHS[date[2]]
+            year = date[-1]
+            updated_request = request.GET.copy()
+            updated_request.update({'_': year + "-" + month + "-" + day})
+            form = DateForm(updated_request)
+            if form.is_valid():
+                # tables = showRes(request, form.cleaned_data['_'])
+                showRes(request, form.cleaned_data['_'])
+                # context['reservations'] = tables
+                #print("ADDED")
+                # return render(request, )
+                return
+            else:
+              print("-----------------------From not valid----------------------")
+        print("CONTEXT: ", context)
+        return render(request, self.template_name, context)
+            '''
+            date = request.POST.get('_').split(' ')
             day = date[1][0:2]
             month = MONTHS[date[2]]
             year = date[-1]
@@ -137,8 +158,15 @@ class Employee(TemplateView):
         else:
             return render(request, self.template_name, context)
 
-    def post(self, request):
-        return render(request, self.template_name)
+    def get(self, request):
+        context = {
+            'title': 'Ansatt',
+            'form': DateForm(),
+        }
+
+        return render(request, self.template_name, context)
+
+        # return render(request, self.template_name)
 
 
 @login_required
