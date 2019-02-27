@@ -7,6 +7,9 @@ from reservations.forms import ReservationForm
 from reservations.reservation import make_reservation
 from django.contrib.auth.decorators import login_required
 from django.views.generic import TemplateView
+from datetime import datetime
+# Create your views here.
+
 from django.utils.decorators import method_decorator
 
 RESERVATIONS = [
@@ -121,28 +124,35 @@ class Employee(TemplateView):
             'title': 'Ansatt',
             'form': DateForm(),
         }
+        
+        if request.GET.get('showRes') == 'showRes':
 
-        return render(request, self.template_name, context)
-
-    def post(self, request):
-        if request.POST.get('showRes') == 'showRes':
-
-            print(request.POST.get('_'))
-            date = request.POST.get('_').split(' ')
+            print(request.GET.get('_'))
+            date = request.GET.get('_').split(' ')
             day = date[1][0:2]
             month = MONTHS[date[2]]
             year = date[-1]
-            updated_request = request.POST.copy()
+            updated_request = request.GET.copy()
             updated_request.update({'_': year + "-" + month + "-" + day})
             form = DateForm(updated_request)
             if form.is_valid():
-                print("---------------Form IS valid-----------------")
+                # tables = showRes(request, form.cleaned_data['_'])
                 showRes(request, form.cleaned_data['_'])
-
+                # context['reservations'] = tables
+                #print("ADDED")
+                # return render(request, )
+                return
             else:
               print("-----------------------From not valid----------------------")
+        print("CONTEXT: ", context)
+        return render(request, self.template_name, context)
+
+    def post(self, request):
+        pass
 
         return render(request, self.template_name)
+
+
 
 @login_required
 def walkin(request):
@@ -179,6 +189,10 @@ def showRes(request, date):
                                                         start_date_time__month=date.month,
                                                         )
     '''
+    # date = date.split("-")
+    #print(date)
+    # date = datetime(int(date[0:4]), int(date[4:6]), int(date[6:]))
+    print(date)
     reservations_this_date = list()
     for res in Reservation.objects.all():
         if res.start_date_time.day == date.day and res.start_date_time.year == date.year and res.start_date_time.month == date.month:
@@ -211,12 +225,15 @@ def showRes(request, date):
        ]
    }    
     '''
+
     lst = list()
+    table_ids = list()
     for res in reservations_this_date:
-        lst.append({
-            'table': 'Bord ' + str(res.table_id),
-            'number_of_seats': res.table.number_of_seats,
-            'reservations': [
-                
-            ]
-        })
+        if res.table_id not in table_ids:
+            lst.append({
+                'table': 'Bord ' + str(res.table_id),
+                'number_of_seats': res.table.number_of_seats,
+                'reservations': Reservation.objects.filter(table=res.table_id)
+            })
+
+    return render(request, 'employeepage.html', {'reservations': lst, 'form': DateForm()})

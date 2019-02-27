@@ -15,7 +15,10 @@
         <div class="card">
             <div class="card-body">
               <h2 class="card-title">Reserver bord her:</h2>
-              <p class="card-text">Form ... <br> User ... <br> test ... <br> jazz <br> ... <br> ___ <br> </p>
+              <form method="post">
+                  {% csrf_token %}
+                  {{ form.as_p }}
+              </form>
               <a href="#" class="btn btn-primary">Go somewhere</a>
             </div>
         </div>
