@@ -61,7 +61,7 @@ def get_next_available_table(restaurant, reservation_date_time, number_of_people
 def make_reservation(restaurant, guest, reservation_date_time, number_of_people, walkin, minutes_slot=120):
     # funksjon som bruker get_next_available_table for å reservere et ledig bord på et ledig tidspunkt
     # print("NUMBER OF PEOPLE:", number_of_people)
-    table = get_next_available_table(restaurant, reservation_date_time, number_of_people, walkin, minutes_slot)
+    table = get_next_available_table(restaurant, reservation_date_time, number_of_people, minutes_slot)
     print("TABLE:", table)
     if table:
         delta = timedelta(seconds=60 * minutes_slot)

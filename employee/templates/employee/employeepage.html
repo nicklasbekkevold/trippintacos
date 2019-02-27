@@ -49,7 +49,7 @@
                     <form method="post">
                         {% csrf_token %}
                         {{ walkinForm.as_p }}
-                        <button type="submit" value="walkin">Save</button>
+                        <button type="submit" value="walkin" name="walkin">Save</button>
                     </form>
                 </div>
             </div>
@@ -64,7 +64,7 @@
 
                         {% csrf_token %}
                         {{ reservationForm.as_p }}
-                        <button type="submit">Save</button>
+                        <button type="submit" value="booking" name="booking">Save</button>
                     </form>
                 </div>
             </div>
