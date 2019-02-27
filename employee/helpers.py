@@ -7,6 +7,7 @@ from django.core.mail import send_mail
 from django.template import Context
 from django.template.loader import render_to_string
 from trippinTacos.settings import EMAIL_HOST_USER
+import smtplib
 
 sentinel = object()
 
@@ -72,14 +73,15 @@ def isValidNewReservation(start, stop, newDate, reservation_num):
     """
     _reservation = models.Reservation.objects.get(id=reservation_num)
     _table = _reservation.table
-    if newDate == _reservation.start_date_time.date:
+    old_date=_reservation.start_date_time.date()
+    if newDate == _reservation.start_date_time.date():
         # Check if the table currently booked is available at new time at same date, with current time set temporarily as open.
         coll = 0
         reservations_at_table = models.Reservation.objects.filter(
-            table=_table).exlude(id=_reservation.id)
+            table=_table).exclude(id=_reservation.id)
         for reservation1 in reservations_at_table:
             if checkForCollision(start, stop,
-                                 reservation1):  # TOdo Men i faen nå kjem den te å si Ja uten å sjekke alle, Gjeld alle nedover. Her mp æ heller legg inn ved bruk av filter. Kutte ned på kodelengde og komplexitet.
+                                 reservation1):
                 coll += 1
                 break  # Breaks if collision as checking any more at same table is redundant
         if coll == 0:
@@ -91,7 +93,7 @@ def isValidNewReservation(start, stop, newDate, reservation_num):
             reservations_at_table = models.Reservation.objects.filter(~Q(id=_reservation.id), table=checktable)
             for reservation2 in reservations_at_table:
                 if checkForCollision(start, stop,
-                                     reservation2):  # TOdo Men i faen nå kjem den te å si Ja uten å sjekke alle, Gjeld alle nedover. Her mp æ heller legg inn ved bruk av filter. Kutte ned på kodelengde og komplexitet.
+                                     reservation2):
                     coll += 1
                     break  # Breaks if collision as checking any more at same table is redundant
             if coll == 0:
@@ -213,3 +215,44 @@ def send_confirmation(email, res):
     )
 
     return True
+
+
+def send_cancellation(email, res):
+    """
+    Sends confirmation mail.
+    :param email: The email of the client
+    :param res: The reservation of which is cancelling
+    :return: Bool value indicating whether mail was sent.
+    """
+
+    msg_plain = "Your reservation with reservation ID" + str(res.id) + " has now been successfully cancelled."
+    try:
+        send_mail(
+            'Cancellation confirmation ' + str(res.id),
+            msg_plain,
+            EMAIL_HOST_USER,
+            [str(email)],
+        )
+
+        return True
+
+    except smtplib.SMTPException:
+        return False
+
+
+def get_booked_times_by_date(date, number_of_people):
+    """
+
+    :param date: date to check
+    :param number_of_people: number of people that will be dining
+    :return:
+    """
+
+    reservations = models.Reservation.objects.filter(
+        start_date_time__year=2019,
+    )
+
+    print(reservations)
+
+
+get_booked_times_by_date(datetime(2019, 2, 25, 12, 0, 0), 5)
