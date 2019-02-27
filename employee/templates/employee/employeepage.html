@@ -34,7 +34,7 @@
                                role="button" aria-expanded="false" aria-controls="multiCollapseExample1">Walk in</a>
                             <button class="btn btn-primary" type="button" data-toggle="collapse"
                                     data-target="#multiCollapseExample2" aria-expanded="false"
-                                    aria-controls="multiCollapseExample2" >Reserver Bord
+                                    aria-controls="multiCollapseExample2">Reserver Bord
                             </button>
                         </p>
                     </div>
@@ -49,19 +49,23 @@
                     <form method="post">
                         {% csrf_token %}
                         {{ walkinForm.as_p }}
-                        <button type="submit">Save</button>
+                        <button type="submit" value="walkin">Save</button>
                     </form>
                 </div>
             </div>
         </div>
     </div>
     <div class="row">
-         <div class="col">
+        <div class="col">
             <div class="collapse multi-collapse" id="multiCollapseExample2">
                 <div class="card card-body">
-                    {% csrf_token %}
-                    {{ reservationForm.as_p }}
-                    <button type="submit">Save</button>
+                    <form method="post">
+
+
+                        {% csrf_token %}
+                        {{ reservationForm.as_p }}
+                        <button type="submit">Save</button>
+                    </form>
                 </div>
             </div>
         </div>

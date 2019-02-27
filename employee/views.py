@@ -2,8 +2,11 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from reservations.models import Reservation, Restaurant
 from guest.models import Guest
+
+
 from employee.forms import DateForm
 from reservations.forms import ReservationForm, WalkinForm
+from reservations.views import booking
 from reservations.reservation import make_reservation
 from django.contrib.auth.decorators import login_required
 
@@ -15,9 +18,10 @@ def employee(request):
     context = {
         'title': 'Ansatt',
         'form': DateForm(),
-        'reservationForm': ReservationForm(),
-        'walkinForm': WalkinForm(),
+        'reservationForm': ReservationForm,
+        'walkinForm': WalkinForm,
     }
+    
 
     return render(request, 'employeepage.html', context)
 
@@ -49,3 +53,4 @@ def walkin(request):
     else:
         form = ReservationForm()
         return render(request, 'newwalkin.html', {'form': form})
+
