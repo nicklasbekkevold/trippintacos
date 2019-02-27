@@ -1,9 +1,12 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import  login_required
 from reservations.models import Reservation, Restaurant, Table
+from django.contrib.auth.decorators import login_required
+from reservations.models import Reservation, Restaurant
 from guest.models import Guest
+
 from employee.forms import DateForm
-from reservations.forms import ReservationForm
+from reservations.forms import ReservationForm, WalkinForm
 from reservations.reservation import make_reservation
 from django.contrib.auth.decorators import login_required
 from django.views.generic import TemplateView
@@ -11,87 +14,6 @@ from datetime import datetime
 # Create your views here.
 
 from django.utils.decorators import method_decorator
-
-RESERVATIONS = [
-    {
-        'table': 'Bord 1',
-        'number_of_seats': 4,
-        'reservations': [
-            {
-
-            },  
-            {
-                'name': 'Kari',
-                'number_of_guests': 3,
-                'duration': 4,
-                'is_walk_in': False,
-            },
-            {
-
-            },
-            {
-                'name': 'Lars',
-                'number_of_guests': 4,
-                'duration': 6,
-                'is_walk_in': False,
-            },
-            {
-                'name': 'Walk in',
-                'number_of_guests': 4,
-                'duration': 6,
-                'is_walk_in': True,
-            }
-        ]
-    },
-    {
-        'table': 'Bord 2',
-        'number_of_seats': 4,
-        'reservations': [
-            {
-                'name': 'Kari',
-                'number_of_guests': 3,
-                'duration': 4,
-                'is_walk_in': False,
-            },
-            {
-                'name': 'Lars',
-                'number_of_guests': 4,
-                'duration': 6,
-                'is_walk_in': False,
-            },
-            {
-                'name': 'Walk in',
-                'number_of_guests': 4,
-                'duration': 6,
-                'is_walk_in': True,
-            }
-        ]
-    },
-    {
-        'table': 'Bord 3',
-        'number_of_seats': 4,
-        'reservations': [
-            {
-                'name': 'Kari',
-                'number_of_guests': 3,
-                'duration': 4,
-                'is_walk_in': False,
-            },
-            {
-                'name': 'Lars',
-                'number_of_guests': 4,
-                'duration': 6,
-                'is_walk_in': False,
-            },
-            {
-                'name': 'Walk in',
-                'number_of_guests': 4,
-                'duration': 6,
-                'is_walk_in': True,
-            }
-        ]
-    },
-]
 
 MONTHS = {
     'January': '01',
@@ -119,7 +41,6 @@ class Employee(TemplateView):
         context = {
             'title': 'Ansatt',
             'form': DateForm(initial={'_': datetime(datetime.now().year, datetime.now().month, datetime.now().day)}),
-            'reservations': RESERVATIONS,
             'time_range': range(12, 25)
         }
         
@@ -155,6 +76,17 @@ class Employee(TemplateView):
             context['form'] = DateForm(initial={'_': request.POST.get('_')})
             print(context)
             return render(request, self.template_name, context)
+
+        elif request.POST.get('booking') == 'booking':
+            if booking(request):
+                return render(request, 'reservations/success.html')
+            return render(request, 'reservations/not_success.html')
+
+        elif request.POST.get('walkin') == 'walkin':
+            if walkin(request):
+                return render(request, 'reservations/success.html')
+            return render(request, 'reservations/not_success.html')
+
         else:
             return render(request, self.template_name, context)
 
@@ -168,31 +100,47 @@ class Employee(TemplateView):
 
         return render(request, self.template_name, context)
 
-        # return render(request, self.template_name)
-
 
 @login_required
 def walkin(request):
-    if request.method == 'POST':
-        form = ReservationForm(request.POST)
+    print("HEI")
+    form = WalkinForm(request.POST)
+    if form.is_valid():
+        print("halla")
+        first_name = form.cleaned_data['first_name'].lower()
+        guest = Guest.objects.create(first_name=first_name, reminder=0)
 
-        if form.is_valid():
-            email = form.cleaned_data['email'].lower()
-            email_liste = []
-            for each in Guest.objects.all():
-                email_liste.append(each.email.lower())
+        success = make_reservation(Restaurant.objects.first(), guest, form.cleaned_data['start_date_time'],
+                                   form.cleaned_data['number_of_people'], 1)
+        if success:
+            return True
+        else:
+            return False
 
-            if email not in email_liste:
-                guest = Guest(email=email, reminder=form.cleaned_data['reminder'])
-                guest.save()
-            else:
-                guest = Guest.objects.all().get(email=email)
-            success = make_reservation(Restaurant.objects.first(), guest, form.cleaned_data['start_date_time'], form.cleaned_data['number_of_people'], 1)
 
-            if success:
-                return render(request, 'success.html')
-            else:
-                return render(request, 'not_success.html')
+def booking(request):
+    form = ReservationForm(request.POST)
+    print('bookingHIE')
+    if form.is_valid():
+        print('formvalid')
+        email = form.cleaned_data['email'].lower()
+        email_liste = []
+        for each in Guest.objects.all():
+            email_liste.append(each.email.lower())
+
+        if email not in email_liste:
+            guest = Guest(email=email, reminder=form.cleaned_data['reminder'])
+            #guest = Guest.objects.create(email=email, reminder=form.cleaned_data['reminder'])
+            guest.save()
+        else:
+            guest = Guest.objects.all().get(email=email)
+        success = make_reservation(Restaurant.objects.first(), guest, form.cleaned_data['start_date_time'], form.cleaned_data['number_of_people'], 0)
+        print("SUCCESS: ", success)
+        if success:
+            send_confirmation(guest.email, Reservation.objects.all().get(id=success['reservation']))
+            return True
+        else:
+            return False
 
     else:
         form = ReservationForm()

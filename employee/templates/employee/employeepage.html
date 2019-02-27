@@ -1,42 +1,76 @@
 {% extends 'base.html' %}
 
 {% block head %}
-  {% load bootstrap4 %}       {# import bootstrap4/bootstrap3 #}
-  {% bootstrap_css %}         {# Embed Bootstrap CSS #}
-  {% bootstrap_javascript jquery='full' %}  {# Embed Bootstrap JS+jQuery #}
-  {{ form.media }}            {# Adds date-picker required JS and CSS #}
+    {% load bootstrap4 %}       {# import bootstrap4/bootstrap3 #}
+    {% bootstrap_css %}         {# Embed Bootstrap CSS #}
+    {% bootstrap_javascript jquery='full' %}  {# Embed Bootstrap JS+jQuery #}
+    {{ form.media }}            {# Adds date-picker required JS and CSS #}
 {% endblock %}
 
 {% block content %}
     <div class="container" style="margin-top: 120px">
-      <div class="row">
-        <div class="container col-12">
-          <form>
-            <div class="input-group">
-              <input type="text" class="form-control" placeholder="Søk etter reservasjon">
-              <div class="input-group-btn">
-                <button class="btn btn-default btn-primary" type="submit">Søk</button>
-              </div>
+        <div class="row">
+            <div class="container col-12">
+                <form>
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Søk etter reservasjon">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default btn-primary" type="submit">Søk</button>
+                        </div>
+                    </div>
+                </form>
             </div>
-          </form>
+            <div class="container" style="margin-top: 100px">
+                <div class="row align-items-center">
+                    <div class="col-4">
+                        <form method="post">
+                            {% csrf_token %}
+                            {% bootstrap_form form %}
+                        </form>
+                    </div>
+                    <div class="col-5">
+                        <p>
+                            <a class="btn btn-primary" data-toggle="collapse" href="#multiCollapseExample1"
+                               role="button" aria-expanded="false" aria-controls="multiCollapseExample1">Walk in</a>
+                            <button class="btn btn-primary" type="button" data-toggle="collapse"
+                                    data-target="#multiCollapseExample2" aria-expanded="false"
+                                    aria-controls="multiCollapseExample2">Reserver Bord
+                            </button>
+                        </p>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="container" style="margin-top: 100px">
-          <div class="row align-items-center">
-            <div class="col-4">
-              <form id="showRes" method="post">
-                  {% csrf_token %}
-                  {% bootstrap_form form %}
-                  <button id="showResBtn" type="submit" class="submitBtn" name="showRes" value="showRes">Show</button>
-              </form>
-            </div>
-            <div class="col-3">
-                <a href="#" class="btn btn-primary active rounded-right" role="button" aria-pressed="true">Lag reservasjon</a>
-                <a href="#" class="btn btn-secondary active" role="button" aria-pressed="true">Walk-in</a>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
+    <div class="row">
+        <div class="col">
+            <div class="collapse multi-collapse" id="multiCollapseExample1">
+                <div class="card card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        {{ walkinForm.as_p }}
+                        <button type="submit" value="walkin" name="walkin">Save</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="collapse multi-collapse" id="multiCollapseExample2">
+                <div class="card card-body">
+                    <form method="post">
+
+
+                        {% csrf_token %}
+                        {{ reservationForm.as_p }}
+                        <button type="submit" value="booking" name="booking">Save</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div style="margin-top: 20px">
       <table class="table table-hover table-responsive">
         <thead>
@@ -68,4 +102,6 @@
         </tbody>
       </table>
     </div>
+
+
 {% endblock content %}
