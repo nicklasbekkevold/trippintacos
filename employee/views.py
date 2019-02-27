@@ -1,16 +1,20 @@
 from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import  login_required
+from reservations.models import Reservation, Restaurant, Table
+from django.contrib.auth.decorators import login_required
 from reservations.models import Reservation, Restaurant
 from guest.models import Guest
 from employee.forms import DateForm
 from reservations.forms import ReservationForm, WalkinForm
 from reservations.reservation import make_reservation
 from django.contrib.auth.decorators import login_required
+from django.views.generic import TemplateView
 from datetime import datetime
 from django.views.generic import TemplateView
+from employee.helpers import send_confirmation
 # Create your views here.
 
 from django.utils.decorators import method_decorator
-
 
 MONTHS = {
     'January': '01',
@@ -38,7 +42,9 @@ class Employee(TemplateView):
         context = {
             'title': 'Ansatt',
             'form': DateForm(initial={'_': datetime(datetime.now().year, datetime.now().month, datetime.now().day)}),
-            'time_range': range(12, 25)
+            'time_range': range(12, 25),
+            'reservationForm': ReservationForm(),
+            'walkinForm': WalkinForm(),
         }
         
         if request.POST.get('showRes') == 'showRes':
@@ -90,13 +96,12 @@ class Employee(TemplateView):
             'title': 'Ansatt',
             'form': DateForm(initial={'_': datetime(datetime.now().year, datetime.now().month, datetime.now().day)}),
             'reservations': showRes(request, datetime.strftime(datetime(datetime.now().year, datetime.now().month, datetime.now().day), '%Y-%m-%d')),
-            'time_range': range(12, 25)
+            'time_range': range(12, 25),
+            'reservationForm': ReservationForm(),
+            'walkinForm': WalkinForm(),
         }
 
         return render(request, self.template_name, context)
-
-        # return render(request, self.template_name)
-
 
 @login_required
 def walkin(request):
@@ -124,6 +129,19 @@ def booking(request):
         email_liste = []
         for each in Guest.objects.all():
             email_liste.append(each.email.lower())
+        if email not in email_liste:
+            guest = Guest(email=email, reminder=form.cleaned_data['reminder'])
+            #guest = Guest.objects.create(email=email, reminder=form.cleaned_data['reminder'])
+            guest.save()
+        else:
+            guest = Guest.objects.all().get(email=email)
+        success = make_reservation(Restaurant.objects.first(), guest, form.cleaned_data['start_date_time'], form.cleaned_data['number_of_people'], 0)
+        print("SUCCESS: ", success)
+        if success:
+            send_confirmation(guest.email, Reservation.objects.all().get(id=success['reservation']))
+            return True
+        else:
+            return False
 
     else:
         form = ReservationForm()
