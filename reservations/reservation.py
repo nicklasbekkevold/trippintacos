@@ -78,7 +78,6 @@ def make_reservation(restaurant, guest, reservation_date_time, number_of_people,
 def count_reservations():
     return Reservation.objects.count()
 
+
 def count_unique_guests():
     return Guest.objects.count()
-
-def count
