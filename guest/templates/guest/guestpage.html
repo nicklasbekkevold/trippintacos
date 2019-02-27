@@ -1,6 +1,11 @@
 {% extends 'base.html'%}
 {% load static %}
+
 {% block head %}
+    {% load bootstrap4 %}       {# import bootstrap4/bootstrap3 #}
+    {% bootstrap_css %}         {# Embed Bootstrap CSS #}
+    {% bootstrap_javascript jquery='full' %}  {# Embed Bootstrap JS+jQuery #}
+    {{ form.media }}            {# Adds date-picker required JS and CSS #}
     <style>
         body {
           background-image: url("media/{{ 'tacos-header.jpg' }}");
@@ -9,6 +14,7 @@
         }
     </style>
 {% endblock %}
+
 {% block content %}
     <!-- img src="media/{{ 'tacos-header.jpg' }}" alt="Two Mexican Tacos" width="100%" -->
     <div class="container" style="margin-top: 400px">
