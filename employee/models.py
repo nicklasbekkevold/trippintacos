@@ -11,4 +11,4 @@ class Employee(models.Model):
         return self.first_name + " " + self.last_name
 
     class Meta:
-        app_label = 'emlpoyee'
+        app_label = 'employee'
