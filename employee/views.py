@@ -15,10 +15,16 @@ RESERVATIONS = [
         'number_of_seats': 4,
         'reservations': [
             {
+
+            },  
+            {
                 'name': 'Kari',
                 'number_of_guests': 3,
                 'duration': 4,
                 'is_walk_in': False,
+            },
+            {
+
             },
             {
                 'name': 'Lars',
@@ -100,16 +106,6 @@ MONTHS = {
 
 }
 
-@login_required
-def employee(request):
-    context = {
-        'title': 'Ansatt',
-        'form': DateForm(),
-        'reservations': RESERVATIONS,
-        'time_range': range(12, 25)
-    }
-    return render(request, 'employeepage.html', context)
-
 @method_decorator(login_required, name='get')
 class Employee(TemplateView):
     template_name = 'employeepage.html'
@@ -120,6 +116,8 @@ class Employee(TemplateView):
         context = {
             'title': 'Ansatt',
             'form': DateForm(),
+            'reservations': RESERVATIONS,
+            'time_range': range(12, 25)
         }
 
         return render(request, self.template_name, context)
