@@ -31,7 +31,7 @@ def booking(request):
             print("SUCCESS: ", success)
             if success:
                 send_confirmation(guest.email, Reservation.objects.all().get(id=success['reservation']))
-                return render(request, 'success.html')
+                return render(request, 'reservations/success.html')
             else:
                 return render(request, 'not_success.html')
 
