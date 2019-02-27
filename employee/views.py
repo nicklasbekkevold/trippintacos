@@ -126,7 +126,7 @@ class Employee(TemplateView):
 
     def post(self, request):
         if request.POST.get('showRes') == 'showRes':
-            form = DateForm(request.POST)
+
             print(request.POST.get('_'))
             date = request.POST.get('_').split(' ')
             day = date[1][0:2]
@@ -136,6 +136,7 @@ class Employee(TemplateView):
             updated_request.update({'_': year + "-" + month + "-" + day})
             form = DateForm(updated_request)
             if form.is_valid():
+                print("---------------Form IS valid-----------------")
                 showRes(request, form.cleaned_data['_'])
 
             else:
@@ -172,11 +173,44 @@ def walkin(request):
 
 
 def showRes(request, date):
+    '''
+    reservations_this_date = Reservation.objects.filter(start_date_time__year=date.year,
+                                                        start_date_time__day=date.day,
+                                                        start_date_time__month=date.month,
+                                                        )
+    '''
     reservations_this_date = list()
     for res in Reservation.objects.all():
         if res.start_date_time.day == date.day and res.start_date_time.year == date.year and res.start_date_time.month == date.month:
             reservations_this_date.append(res)
-    
+
+
+    '''
+    {
+       'table': 'Bord 1',
+       'number_of_seats': 4,
+       'reservations': [
+           {
+               'name': 'Kari',
+               'number_of_guests': 3,
+               'duration': 4,
+               'is_walk_in': False,
+           },
+           {
+               'name': 'Lars',
+               'number_of_guests': 4,
+               'duration': 6,
+               'is_walk_in': False,
+           },
+           {
+               'name': 'Walk in',
+               'number_of_guests': 4,
+               'duration': 6,
+               'is_walk_in': True,
+           }
+       ]
+   }    
+    '''
     lst = list()
     for res in reservations_this_date:
         lst.append({
