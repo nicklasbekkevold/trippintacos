@@ -81,3 +81,34 @@ def count_reservations():
 
 def count_unique_guests():
     return Guest.objects.count()
+
+
+def get_total_on_weekday(dayofweek: int):
+    cap = [[], [0]*12, [0]*12]
+    for i in range(12, 24):
+        cap[0].append(i)
+    resStart = datetime.today().date()
+    for res in Reservation.objects.all():
+        if res.start_date_time.date() < datetime.today().date():
+            if res.start_date_time.date() < resStart:
+                resStart = res.start_date_time.date()
+            if res.start_date_time.weekday() == dayofweek:
+                start_hour = res.start_date_time.hour
+                end_hour = res.end_date_time.hour
+                cap[1][start_hour - 12] += 1
+                cap[2][start_hour - 12] += res.number_of_people
+                start_hour += 1
+                while start_hour <= end_hour:
+                    cap[1][start_hour - 12] += 1
+                    cap[2][start_hour - 12] += res.number_of_people
+                    start_hour += 1
+    return cap, resStart
+
+
+def get_average_capacity(dayofweek: int): # 0 is monday, 6 is sunday
+    cap, res_start = get_total_on_weekday(dayofweek)
+    week_difference = (datetime.today().date() - res_start).days // 7
+    for i in range(12):
+        cap[1][i] = cap[1][i] / week_difference
+        cap[2][i] = cap[2][i] / week_difference
+    return cap
