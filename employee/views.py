@@ -2,23 +2,19 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import  login_required
 from reservations.models import Reservation, Restaurant
 from guest.models import Guest
+from employee.forms import DateForm
 from reservations.forms import ReservationForm
 from reservations.reservation import make_reservation
-
 from django.contrib.auth.decorators import login_required
 # Create your views here.
-
-
-def test(request):
-    return render(request, 'employee/employeepage.html')
-
 
 @login_required
 def employee(request):
     context = {
-        'title': 'Ansatt'
+        'title': 'Ansatt',
+        'form': DateForm(),
     }
-    return render(request, 'employee/employeepage.html', context)
+    return render(request, 'employeepage.html', context)
 
 
 @login_required

@@ -238,3 +238,21 @@ def send_cancellation(email, res):
 
     except smtplib.SMTPException:
         return False
+
+
+def get_booked_times_by_date(date, number_of_people):
+    """
+
+    :param date: date to check
+    :param number_of_people: number of people that will be dining
+    :return:
+    """
+
+    reservations = models.Reservation.objects.filter(
+        start_date_time__year=2019,
+    )
+
+    print(reservations)
+
+
+get_booked_times_by_date(datetime(2019, 2, 25, 12, 0, 0), 5)
