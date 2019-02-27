@@ -152,7 +152,7 @@ class Employee(TemplateView):
             full_date = year + "-" + month + "-" + day
             print("FULL DATE: " + full_date)
             context['reservations'] = showRes(request, full_date)
-            context['form'] = DateForm(initial={'_': request.GET.get('_')})
+            context['form'] = DateForm(initial={'_': request.POST.get('_')})
             print(context)
             return render(request, self.template_name, context)
         else:
@@ -161,7 +161,9 @@ class Employee(TemplateView):
     def get(self, request):
         context = {
             'title': 'Ansatt',
-            'form': DateForm(),
+            'form': DateForm(initial={'_': datetime(datetime.now().year, datetime.now().month, datetime.now().day)}),
+            'reservations': showRes(request, datetime.strftime(datetime(datetime.now().year, datetime.now().month, datetime.now().day), '%Y-%m-%d')),
+            'time_range': range(12, 25)
         }
 
         return render(request, self.template_name, context)

@@ -11,5 +11,6 @@ class DateForm(forms.Form):
                     "showClear": False,
                     "showTodayButton": False,
                 }
+
         )
     )
