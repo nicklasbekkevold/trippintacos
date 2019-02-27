@@ -14,7 +14,7 @@ def employee(request):
         'title': 'Ansatt',
         'form': DateForm(),
     }
-    return render(request, 'employee/employeepage.html', context)
+    return render(request, 'employeepage.html', context)
 
 
 @login_required

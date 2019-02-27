@@ -1,17 +1,26 @@
 from django import forms
 from .models import *
 from bootstrap_datepicker_plus import *
+from employee.helpers import get_all_booked_dates_and_time
 
+booked = get_all_booked_dates_and_time()
 
 class ReservationForm(forms.Form):
     email = forms.EmailField(required=True)
     reminder = forms.BooleanField()
     number_of_people = forms.IntegerField()
     start_date_time = forms.DateTimeField(
-        widget=DateTimePickerInput()
+        widget=DateTimePickerInput(
+            format='%d/%m/%Y, %H:%M',
+            options={
+                'disabledDates': booked
+            }
+        )
     )
     end_date_time = forms.DateTimeField(
-        widget=DateTimePickerInput()
+        widget=DateTimePickerInput(
+            format='%d/%m/%Y, %H:%M'
+        )
     )
 
 
