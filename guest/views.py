@@ -27,4 +27,4 @@ def guest(request):
 
     else:
         form = ReservationForm()
-    return render(request, 'guestpage.html', {'form': form})
+        return render(request, 'guestpage.html', {'form': form})
