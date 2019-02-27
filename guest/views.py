@@ -1,14 +1,5 @@
 from django.shortcuts import render
-from django.shortcuts import redirect
-from guest.models import *
-from reservations.models import *
 from reservations.forms import ReservationForm
-from reservations.reservation import make_reservation
-from employee.helpers import send_confirmation
-
-
-# Create your views here.
-
 
 def guest(request):
     if request.method == 'POST':

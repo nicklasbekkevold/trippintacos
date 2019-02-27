@@ -3,7 +3,6 @@ from .models import *
 from bootstrap_datepicker_plus import *
 from employee.helpers import get_all_booked_dates_and_time
 
-
 class ReservationForm(forms.Form):
     email = forms.EmailField(required=True)
     reminder = forms.BooleanField()
