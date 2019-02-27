@@ -10,12 +10,10 @@ class ReservationForm(forms.Form):
     number_of_people = forms.IntegerField()
     start_date_time = forms.DateTimeField(
         widget=DateTimePickerInput(
-            format='%d/%m/%Y, %H:%M',
         )
     )
     end_date_time = forms.DateTimeField(
         widget=DateTimePickerInput(
-            format='%d/%m/%Y, %H:%M'
         )
     )
 

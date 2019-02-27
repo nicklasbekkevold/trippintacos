@@ -23,11 +23,11 @@
               <h2 class="card-title">Reserver bord:</h2>
                     <h3 class="card-subtitle mb-2 text-muted">Velkommen til Trippin' Tacos - gjør deg klar til å oppleve en kulinarisk reise du sent vil glemme.</h3>
               <p class="card-text"> <br>
-                     <form method="POST">
-                        {% csrf_token %}
-                         {{ form.as_p }}
-                         <button type="submit" class="btn btn-outline-success">Send inn</button>
-            <!--</form> <br> test ... <br> jazz <br> ... <br> ___ <br> </p>-->
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit" class="btn btn-outline-success">Send inn</button>
+                </form>
             </div>
         </div>
     </div>

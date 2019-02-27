@@ -8,7 +8,7 @@ from django.utils import timezone
 from reservations.reservation import *
 # Create your tests here.
 
-'''
+
 class GetTablesWithCapacityTestCase(TestCase):
 
     def setUp(self):
@@ -143,7 +143,7 @@ class EditReservationTestCase(TestCase):
         # Test edit slot taken by other reservation
         # self.assertFalse(edit(res.id, self.now + timedelta(days=1)))
         pass
-
+'''
 class MakeReservation(TestCase):
     def setUp(self):
         Restaurant.objects.create(
@@ -156,7 +156,7 @@ class MakeReservation(TestCase):
 
 '''
 
-'''
+
 class TestSendConfirmation(TestCase):
     def setUp(self):
         self.now = timezone.now()
@@ -183,6 +183,7 @@ class TestSendConfirmation(TestCase):
         guest = res.guest
         self.assertTrue(send_confirmation(guest.email, res))
 
+'''
 class TestCountReservations(TestCase):
     def setUp(self):
         self.now = timezone.now()
