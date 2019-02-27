@@ -41,7 +41,9 @@ class Employee(TemplateView):
         context = {
             'title': 'Ansatt',
             'form': DateForm(initial={'_': datetime(datetime.now().year, datetime.now().month, datetime.now().day)}),
-            'time_range': range(12, 25)
+            'time_range': range(12, 25),
+            'reservationForm': ReservationForm(),
+            'walkinForm': WalkinForm(),
         }
         
         if request.POST.get('showRes') == 'showRes':
@@ -95,7 +97,9 @@ class Employee(TemplateView):
             'title': 'Ansatt',
             'form': DateForm(initial={'_': datetime(datetime.now().year, datetime.now().month, datetime.now().day)}),
             'reservations': showRes(request, datetime.strftime(datetime(datetime.now().year, datetime.now().month, datetime.now().day), '%Y-%m-%d')),
-            'time_range': range(12, 25)
+            'time_range': range(12, 25),
+            'reservationForm': ReservationForm(),
+            'walkinForm': WalkinForm(),
         }
 
         return render(request, self.template_name, context)

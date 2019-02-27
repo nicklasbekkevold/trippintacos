@@ -26,6 +26,7 @@
                         <form method="post">
                             {% csrf_token %}
                             {% bootstrap_form form %}
+                            <button id="showRes" name="showRes" value="showRes">Show</button>
                         </form>
                     </div>
                     <div class="col-5">
@@ -60,8 +61,6 @@
             <div class="collapse multi-collapse" id="multiCollapseExample2">
                 <div class="card card-body">
                     <form method="post">
-
-
                         {% csrf_token %}
                         {{ reservationForm.as_p }}
                         <button type="submit" value="booking" name="booking">Save</button>
