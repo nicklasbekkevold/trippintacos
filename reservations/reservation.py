@@ -2,6 +2,8 @@ from datetime import timedelta
 from .models import Reservation, Table
 from datetime import datetime
 from guest.models import *
+from matplotlib import pyplot as plt
+import numpy as np
 
 
 def get_next_available_table(restaurant, reservation_date_time, number_of_people, minutes_slot=120):
@@ -112,3 +114,42 @@ def get_average_capacity(dayofweek: int): # 0 is monday, 6 is sunday
         cap[1][i] = cap[1][i] / week_difference
         cap[2][i] = cap[2][i] / week_difference
     return cap
+
+def matplotfuckeroo(capacity_matrix, dayofweek):
+    res_count = capacity_matrix[1]
+    guest_count = capacity_matrix[2]
+    ind = np.arange(len(res_count))
+    width = 0.15
+
+    fig, ax = plt.subplots()
+    rects1 = ax.bar(ind - width/2, res_count, width, color='SkyBlue', label='Reservations')
+    rects2 = ax.bar(ind + width/2, guest_count, width, color='IndianRed', label='Guests')
+
+    ax.set_ylabel('Count')
+    ax.set_xticklabels('timeOfDay')
+    ax.set_title('Count of customers and guests on day' + str(dayofweek))
+    ax.set_xticks(ind)
+    ax.set_xticklabels(('12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23'))
+    ax.legend()
+
+    autolabel(ax, rects1, "left")
+    autolabel(ax, rects2, "right")
+
+    plt.show()
+
+def autolabel(ax, rects, xpos='center',):
+    """
+    Attach a text label above each bar in *rects*, displaying its height.
+
+    *xpos* indicates which side to place the text w.r.t. the center of
+    the bar. It can be one of the following {'center', 'right', 'left'}.
+    """
+
+    xpos = xpos.lower()  # normalize the case of the parameter
+    ha = {'center': 'center', 'right': 'left', 'left': 'right'}
+    offset = {'center': 0.5, 'right': 0.57, 'left': 0.43}  # x_txt = x + w*off
+
+    for rect in rects:
+        height = rect.get_height()
+        ax.text(rect.get_x() + rect.get_width()*offset[xpos], 1.01*height,
+                '{}'.format(int(round(height))), ha=ha[xpos], va='bottom')

@@ -263,4 +263,6 @@ class TestGetAverageCapacity(TestCase):
         print(capMat[1])
         print(capMat[2])
 
+        matplotfuckeroo(capMat, datetime.today().weekday())
+
 
