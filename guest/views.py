@@ -1,5 +1,10 @@
 from django.shortcuts import render
 from reservations.forms import ReservationForm
+from .models import Guest
+from employee.helpers import send_confirmation
+from reservations.reservation import make_reservation
+from reservations.models import Reservation, Restaurant, Table
+
 
 def guest(request):
     if request.method == 'POST':
