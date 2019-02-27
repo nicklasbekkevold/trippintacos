@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import  login_required
 from reservations.models import Reservation, Restaurant, Table
 from guest.models import Guest
@@ -118,7 +118,7 @@ class Employee(TemplateView):
     template_name = 'employeepage.html'
 
     @method_decorator(login_required)
-    def get(self, request):
+    def get(self, request, date=datetime.now()):
 
         context = {
             'title': 'Ansatt',
@@ -126,7 +126,7 @@ class Employee(TemplateView):
         }
         
         if request.GET.get('showRes') == 'showRes':
-
+            '''
             print(request.GET.get('_'))
             date = request.GET.get('_').split(' ')
             day = date[1][0:2]
@@ -146,12 +146,25 @@ class Employee(TemplateView):
               print("-----------------------From not valid----------------------")
         print("CONTEXT: ", context)
         return render(request, self.template_name, context)
+            '''
+            date = request.GET.get('_').split(' ')
+            day = date[1][0:2]
+            month = MONTHS[date[2]]
+            year = date[-1]
+            full_date = year + "-" + month + "-" + day
+            print("FULL DATE: " + full_date)
+            context['reservations'] = showRes(request, full_date)
+            print(context)
+            return render(request, self.template_name, context)
+
+            # return redirect(showRes(request, full_date), context)
+        else:
+            return render(request, self.template_name, context)
 
     def post(self, request):
         pass
 
         return render(request, self.template_name)
-
 
 
 @login_required
@@ -189,41 +202,45 @@ def showRes(request, date):
                                                         start_date_time__month=date.month,
                                                         )
     '''
-    # date = date.split("-")
-    #print(date)
+    date = date.split("-")
+    # print(date)
     # date = datetime(int(date[0:4]), int(date[4:6]), int(date[6:]))
-    print(date)
+    year = date[0]
+    month = date[1]
+    day = date[2]
+
+
     reservations_this_date = list()
     for res in Reservation.objects.all():
-        if res.start_date_time.day == date.day and res.start_date_time.year == date.year and res.start_date_time.month == date.month:
+        print(res.start_date_time.day, res.start_date_time.year, res.start_date_time.month)
+        if res.start_date_time.day == int(day) and res.start_date_time.year == int(year) and res.start_date_time.month == int(month):
             reservations_this_date.append(res)
 
-
-    '''
-    {
-       'table': 'Bord 1',
-       'number_of_seats': 4,
-       'reservations': [
-           {
-               'name': 'Kari',
-               'number_of_guests': 3,
-               'duration': 4,
-               'is_walk_in': False,
-           },
-           {
-               'name': 'Lars',
-               'number_of_guests': 4,
-               'duration': 6,
-               'is_walk_in': False,
-           },
-           {
-               'name': 'Walk in',
-               'number_of_guests': 4,
-               'duration': 6,
-               'is_walk_in': True,
-           }
-       ]
-   }    
+        '''
+        {
+           'table': 'Bord 1',
+           'number_of_seats': 4,
+           'reservations': [
+               {
+                   'name': 'Kari',
+                   'number_of_guests': 3,
+                   'duration': 4,
+                   'is_walk_in': False,
+               },
+               {
+                   'name': 'Lars',
+                   'number_of_guests': 4,
+                   'duration': 6,
+                   'is_walk_in': False,
+               },
+               {
+                   'name': 'Walk in',
+                   'number_of_guests': 4,
+                   'duration': 6,
+                   'is_walk_in': True,
+               }
+           ]
+       }    
     '''
 
     lst = list()
@@ -233,7 +250,8 @@ def showRes(request, date):
             lst.append({
                 'table': 'Bord ' + str(res.table_id),
                 'number_of_seats': res.table.number_of_seats,
-                'reservations': Reservation.objects.filter(table=res.table_id)
+                'reservations': reservations_this_date
             })
+            table_ids.append(res.table_id)
 
-    return render(request, 'employeepage.html', {'reservations': lst, 'form': DateForm()})
+    return lst
