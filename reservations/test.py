@@ -1,4 +1,5 @@
 import unittest
+from django.test import TestCase
 from .models import *
 
 
@@ -10,20 +11,20 @@ def math(x):
         return True
     return False
 
-class MyTest(unittest.TestCase):
-    def test(self):
+class MyTestTestCase(TestCase):
+    def test11(self):
         self.assertEqual(fun(3), 4)
 
     def test2(self):
         self.assertTrue(math(11))
 
-class ReservationTest(unittest.TestCase):
-    def setUp(self):
-      Table.objects.create(restaurant = True,number_of_people= 6,is_occupied = False)
+class ReservationTestCase(TestCase):
+    def func(self):
+      Table.objects.create(id = 1, restaurant = True,number_of_people= 6,is_occupied = False)
 
     def test3(self):
-        test.setUp(self)
-        if (Table):
+        t= Table.objects.all().get(id=1)
+        if t is not None:
             print('table finnes')
         else:
             print('table finnes ikke')
