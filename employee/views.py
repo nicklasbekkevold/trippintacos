@@ -113,7 +113,7 @@ def walkin(request):
                       last_name=form.cleaned_data['last_name'])
 
         success = make_reservation(Restaurant.objects.first(), guest, form.cleaned_data['start_date_time'],
-                                   form.cleaned_data['number_of_people'], 1)
+                                   form.cleaned_data['number_of_people'], 1, form.cleaned_data['remminder'])
         if success:
             return True
         else:
