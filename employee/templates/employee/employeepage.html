@@ -86,14 +86,18 @@
             <tr>
               <th>{{ table.table }}</th>
               {% for reservation in table.reservations %}
-                {% if reservation.walkin %}
-                  <td colspan="4" class="rounded-pill align-middle" style="background-color: #ff4507">
-                    <h6>{{ reservation.guest.email }} ({{ reservation.number_of_people }})</h6>
-                  </td>
+                {% if reservation.info %}
+                  {% if reservation.info.walkin %}
+                    <td colspan="{{ reservation.duration }}" class="rounded-pill align-middle" style="background-color: #ff4507">
+                      <h6>{{ reservation.info.guest.first_name }} ({{ reservation.info.number_of_people }})</h6>
+                    </td>
+                  {% else %}
+                    <td colspan="{{ reservation.duration }}" class="rounded-pill align-middle" style="background-color: #45ff07">
+                      <h6>{{ reservation.info.guest.first_name }} ({{ reservation.info.number_of_people }})</h6>
+                    </td>
+                  {% endif %}
                 {% else %}
-                  <td colspan="4" class="rounded-pill align-middle" style="background-color: #45ff07">
-                    <h6>{{ reservation.guest.email }} ({{ reservation.number_of_people }})</h6>
-                  </td>
+                  <td></td>
                 {% endif %}
               {% endfor %}
             </tr>

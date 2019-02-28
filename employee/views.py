@@ -74,10 +74,10 @@ class Employee(TemplateView):
             month = MONTHS[date[2]]
             year = date[-1]
             full_date = year + "-" + month + "-" + day
-            print("FULL DATE: " + full_date)
+            # print("FULL DATE: " + full_date)
             context['reservations'] = showRes(request, full_date)
             context['form'] = DateForm(initial={'_': request.POST.get('_')})
-            print(context)
+            # print(context)
             return render(request, self.template_name, context)
         elif request.POST.get('booking') == 'booking':
             if booking(request):
@@ -156,18 +156,40 @@ def showRes(request, date):
 
     reservations_this_date = list()
     for res in Reservation.objects.all():
-        print(res.start_date_time.day, res.start_date_time.year, res.start_date_time.month)
+        # print(res.start_date_time.day, res.start_date_time.year, res.start_date_time.month)
         if res.start_date_time.day == int(day) and res.start_date_time.year == int(year) and res.start_date_time.month == int(month):
             reservations_this_date.append(res)
 
     lst = list()
     table_ids = list()
+    time_slots = list()
+    slot_number = 0
+    while slot_number < 26:
+        for reservation in reservations_this_date:
+            start = reservation.start_date_time.time()
+            end = reservation.end_date_time.time()
+            index = 2*(start.hour%12) + start.minute//30
+            duration = ((end.hour - start.hour)*60 + (end.minute - start.minute)) // 30
+            if index == slot_number:
+                time_slots.append({
+                    'info': reservation,
+                    'duration': duration,
+                })
+                slot_number += duration
+            else:
+                time_slots.append({
+                    'info': '',
+                    'duration': '',
+                })
+                slot_number += 1 
+
     for res in reservations_this_date:
         if res.table_id not in table_ids:
             lst.append({
                 'table': 'Bord ' + str(res.table_id),
                 'number_of_seats': res.table.number_of_seats,
-                'reservations': reservations_this_date
+                'reservations': time_slots,
             })
             table_ids.append(res.table_id)
+    print(time_slots)
     return lst
