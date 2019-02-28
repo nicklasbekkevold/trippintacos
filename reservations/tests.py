@@ -221,3 +221,4 @@ class TestCountReservations(TestCase):
         self.assertEquals(1, delete(1, "test@testcase.no"))
         self.assertEquals(1, countReservations())
         print(countReservations())
+'''

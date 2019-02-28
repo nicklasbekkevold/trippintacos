@@ -1,3 +1,4 @@
+
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import  login_required
 from reservations.models import Reservation, Restaurant, Table
@@ -110,7 +111,8 @@ def walkin(request):
     if form.is_valid():
         print("halla")
         first_name = form.cleaned_data['first_name'].lower()
-        guest = Guest.objects.create(first_name=first_name, reminder=0)
+        guest = Guest(email=form.cleaned_data['email'].lower(), reminder=form.cleaned_data['reminder'], first_name=form.cleaned_data['first_name'],
+                      last_name=form.cleaned_data['last_name'])
 
         success = make_reservation(Restaurant.objects.first(), guest, form.cleaned_data['start_date_time'],
                                    form.cleaned_data['number_of_people'], 1)
@@ -130,12 +132,15 @@ def booking(request):
         for each in Guest.objects.all():
             email_liste.append(each.email.lower())
         if email not in email_liste:
-            guest = Guest(email=email, reminder=form.cleaned_data['reminder'])
+            guest = Guest(email=email,
+                          first_name=form.cleaned_data['first_name'],
+                          last_name=form.cleaned_data['last_name'])
             #guest = Guest.objects.create(email=email, reminder=form.cleaned_data['reminder'])
             guest.save()
         else:
             guest = Guest.objects.all().get(email=email)
-        success = make_reservation(Restaurant.objects.first(), guest, form.cleaned_data['start_date_time'], form.cleaned_data['number_of_people'], 0)
+        success = make_reservation(Restaurant.objects.first(), guest, form.cleaned_data['start_date_time'],
+                                   form.cleaned_data['number_of_people'], 0, reminder=form.cleaned_data['reminder'])
         print("SUCCESS: ", success)
         if success:
             send_confirmation(guest.email, Reservation.objects.all().get(id=success['reservation']))

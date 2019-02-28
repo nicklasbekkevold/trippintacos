@@ -1,5 +1,4 @@
 from django.db import models
-from guest.models import Guest
 # Create your models here.
 
 
