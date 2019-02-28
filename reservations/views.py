@@ -7,7 +7,6 @@ from reservations.reservation import make_reservation
 from employee.helpers import send_confirmation, send_cancellation
 
 
-
 # Create your views here.
 
 
@@ -23,12 +22,14 @@ def booking(request):
                 email_liste.append(each.email.lower())
 
             if email not in email_liste:
-                guest = Guest(email=email, reminder=form.cleaned_data['reminder'])
+                guest = Guest(email=email, first_name=form.cleaned_data['first_name'],
+                              last_name=form.cleaned_data['last_name'])
                 #guest = Guest.objects.create(email=email, reminder=form.cleaned_data['reminder'])
                 guest.save()
             else:
                 guest = Guest.objects.all().get(email=email)
-            success = make_reservation(Restaurant.objects.first(), guest, form.cleaned_data['start_date_time'], form.cleaned_data['number_of_people'], 0)
+            success = make_reservation(Restaurant.objects.first(), guest, form.cleaned_data['start_date_time'],
+                                       form.cleaned_data['number_of_people'], 0, reminder=form.cleaned_data['reminder'])
             print("SUCCESS: ", success)
             if success:
                 send_confirmation(guest.email, Reservation.objects.all().get(id=success['reservation']))

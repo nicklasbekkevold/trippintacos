@@ -36,6 +36,7 @@ class Reservation(models.Model):
     created_date = models.DateTimeField(default=timezone.now)  # added this field for later use when adding statistics
     table = models.ForeignKey(Table, on_delete=models.CASCADE, null=True, blank=True)
     walkin = models.BooleanField(default=False)
+    reminder = models.BooleanField(null=True, blank=True)
 
     def __str__(self):
         return str(self.start_date_time)
