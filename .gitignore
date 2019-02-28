@@ -54,7 +54,8 @@ coverage.xml
 # Django stuff:
 *.log
 local_settings.py
-#db.sqlite3
+db.sqlite3
+static
 #**/settings.py
 **/migrations
 
@@ -117,3 +118,4 @@ venv.bak/
 .idea/
 **/__pycache__/
 **/__init__.py
+**/.DS_Store

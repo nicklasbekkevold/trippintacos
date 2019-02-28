@@ -1,0 +1,1 @@
+web: gunicorn trippinTacos.wsgi --log-file -
