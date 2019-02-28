@@ -1,0 +1,10 @@
+before_script:
+  - git config user.email "nicklasbekkevold@gmail.com"
+  - git config user.name "Nicklas Bekkevold"
+
+test_on_heroku:
+  type: deploy
+  script:
+    - git push --force https://heroku:$HEROKU_API_KEY@git.heroku.com/trippintacos.git HEAD:master
+  only:
+    - master
