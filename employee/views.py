@@ -1,6 +1,5 @@
-
 from django.shortcuts import render, redirect
-from django.contrib.auth.decorators import  login_required
+from django.contrib.auth.decorators import login_required
 from reservations.models import Reservation, Restaurant, Table
 from django.contrib.auth.decorators import login_required
 from reservations.models import Reservation, Restaurant
@@ -14,6 +13,7 @@ from datetime import datetime
 from django.views.generic import TemplateView
 from employee.helpers import send_confirmation
 from django.utils.decorators import method_decorator
+
 # Create your views here.
 
 MONTHS = {
@@ -32,6 +32,7 @@ MONTHS = {
 
 }
 
+
 @method_decorator(login_required, name='get')
 class Employee(TemplateView):
     template_name = 'employeepage.html'
@@ -42,12 +43,13 @@ class Employee(TemplateView):
         context = {
             'title': 'Ansatt',
             'form': DateForm(initial={'_': datetime(datetime.now().year, datetime.now().month, datetime.now().day)}),
-            'reservations': showRes(request, datetime.strftime(datetime(datetime.now().year, datetime.now().month, datetime.now().day), '%Y-%m-%d')),
+            'reservations': showRes(request, datetime.strftime(
+                datetime(datetime.now().year, datetime.now().month, datetime.now().day), '%Y-%m-%d')),
             'time_range': range(12, 25),
             'reservationForm': ReservationForm(),
             'walkinForm': WalkinForm(),
         }
-        
+
         if request.POST.get('showRes') == 'showRes':
             '''
             print(request.GET.get('_'))
@@ -96,7 +98,8 @@ class Employee(TemplateView):
         context = {
             'title': 'Ansatt',
             'form': DateForm(initial={'_': datetime(datetime.now().year, datetime.now().month, datetime.now().day)}),
-            'reservations': showRes(request, datetime.strftime(datetime(datetime.now().year, datetime.now().month, datetime.now().day), '%Y-%m-%d')),
+            'reservations': showRes(request, datetime.strftime(
+                datetime(datetime.now().year, datetime.now().month, datetime.now().day), '%Y-%m-%d')),
             'time_range': range(12, 25),
             'reservationForm': ReservationForm(),
             'walkinForm': WalkinForm(),
@@ -104,16 +107,17 @@ class Employee(TemplateView):
 
         return render(request, self.template_name, context)
 
+
 @login_required
 def walkin(request):
     form = WalkinForm(request.POST)
     if form.is_valid():
-        first_name = form.cleaned_data['first_name'].lower()
-        guest = Guest(email=form.cleaned_data['email'].lower(), reminder=form.cleaned_data['reminder'], first_name=form.cleaned_data['first_name'],
-                      last_name=form.cleaned_data['last_name'])
-
+        guest = Guest(first_name=form.cleaned_data['first_name'],
+                      )
+        guest.save()
         success = make_reservation(Restaurant.objects.first(), guest, form.cleaned_data['start_date_time'],
-                                   form.cleaned_data['number_of_people'], 1)
+                                   form.cleaned_data['number_of_people'], 1, 0)
+
         if success:
             return True
         else:
@@ -131,7 +135,7 @@ def booking(request):
             guest = Guest(email=email,
                           first_name=form.cleaned_data['first_name'],
                           last_name=form.cleaned_data['last_name'])
-            #guest = Guest.objects.create(email=email, reminder=form.cleaned_data['reminder'])
+            # guest = Guest.objects.create(email=email, reminder=form.cleaned_data['reminder'])
             guest.save()
         else:
             guest = Guest.objects.all().get(email=email)
@@ -157,7 +161,8 @@ def showRes(request, date):
     reservations_this_date = list()
     for res in Reservation.objects.all():
         # print(res.start_date_time.day, res.start_date_time.year, res.start_date_time.month)
-        if res.start_date_time.day == int(day) and res.start_date_time.year == int(year) and res.start_date_time.month == int(month):
+        if res.start_date_time.day == int(day) and res.start_date_time.year == int(
+                year) and res.start_date_time.month == int(month):
             reservations_this_date.append(res)
 
     lst = list()
@@ -168,8 +173,8 @@ def showRes(request, date):
         for reservation in reservations_this_date:
             start = reservation.start_date_time.time()
             end = reservation.end_date_time.time()
-            index = 2*(start.hour%12) + start.minute//30
-            duration = ((end.hour - start.hour)*60 + (end.minute - start.minute)) // 30
+            index = 2 * (start.hour % 12) + start.minute // 30
+            duration = ((end.hour - start.hour) * 60 + (end.minute - start.minute)) // 30
             print(slot_number, index)
             if index == slot_number:
                 time_slots.append({
@@ -183,7 +188,7 @@ def showRes(request, date):
                 'info': '',
                 'duration': '',
             })
-            slot_number += 1 
+            slot_number += 1
 
     for res in reservations_this_date:
         if res.table_id not in table_ids:
