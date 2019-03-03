@@ -162,6 +162,17 @@ def showRes(request, date):
 
     lst = list()
     table_ids = list()
+    for res in reservations_this_date:
+        if res.table_id not in table_ids:
+            lst.append({
+                'table': 'Bord ' + str(res.table_id),
+                'number_of_seats': res.table.number_of_seats,
+                'reservations': compute_time_slots(reservations_this_date),
+            })
+            table_ids.append(res.table_id)
+    return lst
+
+def compute_time_slots(reservations_this_date):
     time_slots = list()
     slot_number = 0
     while slot_number < 26:
@@ -170,7 +181,6 @@ def showRes(request, date):
             end = reservation.end_date_time.time()
             index = 2*(start.hour%12) + start.minute//30
             duration = ((end.hour - start.hour)*60 + (end.minute - start.minute)) // 30
-            print(slot_number, index)
             if index == slot_number:
                 time_slots.append({
                     'info': reservation,
@@ -184,13 +194,5 @@ def showRes(request, date):
                 'duration': '',
             })
             slot_number += 1 
+    return time_slots
 
-    for res in reservations_this_date:
-        if res.table_id not in table_ids:
-            lst.append({
-                'table': 'Bord ' + str(res.table_id),
-                'number_of_seats': res.table.number_of_seats,
-                'reservations': time_slots,
-            })
-            table_ids.append(res.table_id)
-    return lst
