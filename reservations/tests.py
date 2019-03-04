@@ -108,7 +108,6 @@ class EditReservationTestCase(TestCase):
             id=1,
             guest=Guest.objects.create(
                 email="test@testcase.no",
-                reminder=False
             ),
             number_of_people=4,
             start_date_time=self.now,
@@ -125,7 +124,6 @@ class EditReservationTestCase(TestCase):
             id=2,
             guest=Guest.objects.create(
                 email="test@testcase.no",
-                reminder=False
             ),
             number_of_people=4,
             start_date_time=(self.now + timedelta(days=1)),
@@ -137,11 +135,11 @@ class EditReservationTestCase(TestCase):
     def testEditReservation(self):
         # Test edit to new open slot works
         res = Reservation.objects.get(id=1)
-        # self.assertTrue(edit(res.id, self.now + timedelta(days=3)))
+        self.assertTrue(edit(res.id, self.now + timedelta(days=3)))
         # Test edit to new slot open overlapping with the same reservation
         self.assertTrue(edit(res.id, res.start_date_time + timedelta(hours=1)))
         # Test edit slot taken by other reservation
-        # self.assertFalse(edit(res.id, self.now + timedelta(days=1)))
+        self.assertFalse(edit(res.id, self.now + timedelta(days=1)))
         pass
 '''
 class MakeReservation(TestCase):

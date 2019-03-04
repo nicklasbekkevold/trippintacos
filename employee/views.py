@@ -199,6 +199,7 @@ def showRes(request, date):
     return table_list
 
 
+@login_required
 def editReservation(request):
     if request.method == 'POST':
         form = EditReservationFrom(request.POST)
