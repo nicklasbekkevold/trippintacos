@@ -1,4 +1,3 @@
-
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import  login_required
 from reservations.models import Reservation, Restaurant, Table
@@ -149,6 +148,31 @@ def booking(request):
 
 
 def showRes(request, date):
+
+    def compute_time_slots(res_this_table):
+        time_slots = list()
+        slot_number = 0
+        while slot_number < 26:
+            for reservation in res_this_table:
+                start = reservation.start_date_time.time()
+                end = reservation.end_date_time.time()
+                index = 2*(start.hour%12) + start.minute//30
+                duration = ((end.hour - start.hour)*60 + (end.minute - start.minute)) // 30
+                if index == slot_number:
+                    time_slots.append({
+                        'info': reservation,
+                        'duration': duration,
+                    })
+                    slot_number += duration
+                    break
+            else:
+                time_slots.append({
+                    'info': '',
+                    'duration': '',
+                })
+                slot_number += 1 
+        return time_slots
+        
     date = date.split("-")
     year = date[0]
     month = date[1]
@@ -156,43 +180,21 @@ def showRes(request, date):
 
     reservations_this_date = list()
     for res in Reservation.objects.all():
-        # print(res.start_date_time.day, res.start_date_time.year, res.start_date_time.month)
         if res.start_date_time.day == int(day) and res.start_date_time.year == int(year) and res.start_date_time.month == int(month):
             reservations_this_date.append(res)
 
-    lst = list()
-    table_ids = list()
-    for res in reservations_this_date:
-        if res.table_id not in table_ids:
-            lst.append({
-                'table': 'Bord ' + str(res.table_id),
-                'number_of_seats': res.table.number_of_seats,
-                'reservations': compute_time_slots(reservations_this_date),
-            })
-            table_ids.append(res.table_id)
-    return lst
+    table_list = list()
+    tables = Table.objects.all()
+    for table in tables:
+        res_this_table = list()
+        for res in reservations_this_date:
+            if res.table == table:
+                res_this_table.append(res)
 
-def compute_time_slots(reservations_this_date):
-    time_slots = list()
-    slot_number = 0
-    while slot_number < 26:
-        for reservation in reservations_this_date:
-            start = reservation.start_date_time.time()
-            end = reservation.end_date_time.time()
-            index = 2*(start.hour%12) + start.minute//30
-            duration = ((end.hour - start.hour)*60 + (end.minute - start.minute)) // 30
-            if index == slot_number:
-                time_slots.append({
-                    'info': reservation,
-                    'duration': duration,
-                })
-                slot_number += duration
-                break
-        else:
-            time_slots.append({
-                'info': '',
-                'duration': '',
-            })
-            slot_number += 1 
-    return time_slots
+        table_list.append({
+            'table': 'Bord ' + str(table.id),
+            'number_of_seats': table.number_of_seats,
+            'reservations': compute_time_slots(res_this_table),
+        })
+    return table_list
 
