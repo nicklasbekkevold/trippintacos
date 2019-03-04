@@ -156,7 +156,7 @@ def showRes(request, date):
             for reservation in res_this_table:
                 start = reservation.start_date_time.time()
                 end = reservation.end_date_time.time()
-                index = 2*(start.hour%12) + start.minute//30
+                index = 2*(start.hour%12) + start.minute//30 + 2 #TODO fix timezone - remove +2 
                 duration = ((end.hour - start.hour)*60 + (end.minute - start.minute)) // 30
                 if index == slot_number:
                     time_slots.append({
