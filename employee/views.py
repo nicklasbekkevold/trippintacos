@@ -4,14 +4,14 @@ from reservations.models import Reservation, Restaurant, Table
 from django.contrib.auth.decorators import login_required
 from reservations.models import Reservation, Restaurant
 from guest.models import Guest
-from employee.forms import DateForm
+from employee.forms import DateForm, EditReservationFrom
 from reservations.forms import ReservationForm, WalkinForm
 from reservations.reservation import make_reservation
 from django.contrib.auth.decorators import login_required
 from django.views.generic import TemplateView
 from datetime import datetime
 from django.views.generic import TemplateView
-from employee.helpers import send_confirmation
+from employee.helpers import send_confirmation, edit
 from django.utils.decorators import method_decorator
 # Create your views here.
 
@@ -198,3 +198,22 @@ def showRes(request, date):
         })
     return table_list
 
+
+def editReservation(request):
+    if request.method == 'POST':
+        form = EditReservationFrom(request.POST)
+
+        if form.is_valid():
+            res = Reservation.objects.filter(id=int(form.cleaned_data['reservation_id']))[0]
+
+            if form.cleaned_data['new_end'] is not None:
+                if edit(res.id, form.cleaned_data['new_start'], form.cleaned_data['new_end']):
+                    return render(request, 'reservations/success.html')
+            else:
+                if edit(res.id, form.cleaned_data['new_start']):
+                    return render(request, 'reservations/success.html')
+        return render(request, 'reservations/not_success.html')
+    else:
+        form = EditReservationFrom()
+
+        return render(request, 'editreservation.html', {'form': form})
