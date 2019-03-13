@@ -106,7 +106,6 @@ class EditReservationTestCase(TestCase):
             id=1,
             guest=Guest.objects.create(
                 email="test@testcase.no",
-                reminder=False
             ),
             number_of_people=4,
             start_date_time=self.now,
