@@ -1,6 +1,7 @@
 from django import forms
 from .models import *
 from bootstrap_datepicker_plus import *
+from django.utils.safestring import mark_safe
 
 
 class ReservationForm(forms.Form):
@@ -18,6 +19,7 @@ class ReservationForm(forms.Form):
 
         )
     )
+    i_have_read_and_agree_to_the_Terms_and_Conditions_and_Privacy_Policy = forms.BooleanField(label=mark_safe('I have read and agree to <a href="/termsandconditions/" target="_blank"> Terms of Use and Privacy Policy</a>'))
 
 
 class WalkinForm(forms.Form):
