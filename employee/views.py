@@ -13,6 +13,7 @@ from datetime import datetime
 from django.views.generic import TemplateView
 from employee.helpers import send_confirmation, edit
 from django.utils.decorators import method_decorator
+from reservations.reservation import get_total_on_weekday,get_average_capacity,matplotfuckeroo
 
 # Create your views here.
 
@@ -226,4 +227,36 @@ def editReservation(request):
 
 
 def showStatistikk(request):
-    return render(request, 'statistikk.html')
+    html_code = matplotfuckeroo(get_average_capacity(1), 1)
+
+    return render(request, 'statistikk.html', {'code' : html_code})
+
+'''
+def cloud_gen(request):
+   if request.method == 'POST':
+       form = CharForm(request.POST)
+       if form.is_valid():
+           text = form.cleaned_data['post']
+           phrases = ''
+           stopWords = ''
+
+           MyData= dict(countWords(text, phrases, stopWords, True))
+           wc = WordCloud(scale=10, max_words=100).generate_from_frequencies(MyData)
+
+           plt.figure(figsize=(32,18))
+           plt.imshow(wc, interpolation="bilinear", aspect='auto')
+
+           fig = plt.gcf()
+           buf = io.BytesIO()
+           fig.savefig(buf, format='png')
+           buf.seek(0)
+           string = base64.b64encode(buf.read())
+
+           uri = 'data:image/png;base64,' + urllib.parse.quote(string)
+
+           args = {'form':form, 'text':text, 'image':uri}
+           return render(request, 'wordcloudgen/cloud_gen.html', args)
+   else:
+       form = CharForm()
+       return render(request, 'wordcloudgen/cloud_gen.html', {'form':form})
+       '''
