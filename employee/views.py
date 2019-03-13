@@ -42,7 +42,7 @@ class Employee(TemplateView):
 
         context = {
             'title': 'Ansatt',
-            'form': DateForm(initial={'_': datetime(datetime.now().year, datetime.now().month, datetime.now().day)}),
+            'form': DateForm(initial={'reservation_date': datetime(datetime.now().year, datetime.now().month, datetime.now().day)}),
             'reservations': showRes(request, datetime.strftime(
                 datetime(datetime.now().year, datetime.now().month, datetime.now().day), '%Y-%m-%d')),
             'time_range': range(12, 25),
@@ -52,17 +52,17 @@ class Employee(TemplateView):
 
         if request.POST.get('showRes') == 'showRes':
             '''
-            print(request.GET.get('_'))
-            date = request.GET.get('_').split(' ')
+            print(request.GET.get('reservation_date'))
+            date = request.GET.get('reservation_date').split(' ')
             day = date[1][0:2]
             month = MONTHS[date[2]]
             year = date[-1]
             updated_request = request.GET.copy()
-            updated_request.update({'_': year + "-" + month + "-" + day})
+            updated_request.update({'reservation_date': year + "-" + month + "-" + day})
             form = DateForm(updated_request)
             if form.is_valid():
-                # tables = showRes(request, form.cleaned_data['_'])
-                showRes(request, form.cleaned_data['_'])
+                # tables = showRes(request, form.cleaned_data['reservation_date'])
+                showRes(request, form.cleaned_data['reservation_date'])
                 # context['reservations'] = tables
                 #print("ADDED")
                 # return render(request, )
@@ -72,14 +72,14 @@ class Employee(TemplateView):
         print("CONTEXT: ", context)
         return render(request, self.template_name, context)
             '''
-            date = request.POST.get('_').split(' ')
+            date = request.POST.get('reservation_date').split(' ')
             day = date[1][0:2]
             month = MONTHS[date[2]]
             year = date[-1]
             full_date = year + "-" + month + "-" + day
             # print("FULL DATE: " + full_date)
             context['reservations'] = showRes(request, full_date)
-            context['form'] = DateForm(initial={'_': request.POST.get('_')})
+            context['form'] = DateForm(initial={'reservation_date': request.POST.get('reservation_date')})
             # print(context)
             return render(request, self.template_name, context)
         elif request.POST.get('booking') == 'booking':
@@ -97,7 +97,7 @@ class Employee(TemplateView):
     def get(self, request):
         context = {
             'title': 'Ansatt',
-            'form': DateForm(initial={'_': datetime(datetime.now().year, datetime.now().month, datetime.now().day)}),
+            'form': DateForm(initial={'reservation_date': datetime(datetime.now().year, datetime.now().month, datetime.now().day)}),
             'reservations': showRes(request, datetime.strftime(
                 datetime(datetime.now().year, datetime.now().month, datetime.now().day), '%Y-%m-%d')),
             'time_range': range(12, 25),

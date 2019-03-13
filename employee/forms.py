@@ -3,7 +3,8 @@ from bootstrap_datepicker_plus import DatePickerInput
 
 
 class DateForm(forms.Form):
-    _ = forms.DateField(
+    reservation_date = forms.DateField(
+        label="",
         widget=DatePickerInput(options={
             "format": "dddd DD. MMMM YYYY",  # moment date-time format
             "calendarWeeks": True,
