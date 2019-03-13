@@ -4,7 +4,7 @@ from reservations.models import Reservation, Restaurant, Table
 from django.contrib.auth.decorators import login_required
 from reservations.models import Reservation, Restaurant
 from guest.models import Guest
-from employee.forms import DateForm, EditReservationFrom
+from employee.forms import DateForm, EditReservationFrom, statisticInputForm
 from reservations.forms import ReservationForm, WalkinForm
 from reservations.reservation import make_reservation
 from django.contrib.auth.decorators import login_required
@@ -13,7 +13,7 @@ from datetime import datetime
 from django.views.generic import TemplateView
 from employee.helpers import send_confirmation, edit
 from django.utils.decorators import method_decorator
-from reservations.reservation import get_total_on_weekday,get_average_capacity,matplotfuckeroo
+from reservations.reservation import get_total_on_weekday, get_average_capacity, matplotfuckeroo
 
 # Create your views here.
 
@@ -227,9 +227,31 @@ def editReservation(request):
 
 
 def showStatistikk(request):
-    html_code = matplotfuckeroo(get_average_capacity(1), 1)
+    if request.method == 'POST':
+        form = statisticInputForm(request.POST)
+        if form.is_valid():
+            input = form.cleaned_data['day']
 
-    return render(request, 'statistikk.html', {'code' : html_code})
+            input = dayToInt(input)
+
+            html_code = matplotfuckeroo(get_average_capacity(input), input)
+
+            return render(request, 'statistikk.html', {'code': html_code, 'form': form})
+
+    form = statisticInputForm(request.POST)
+    html_code = matplotfuckeroo(get_average_capacity(0), 0)
+    return render(request, 'statistikk.html', {'form': form, 'code': html_code})
+
+
+
+def dayToInt(day):
+    liste = ["Mandag", "Tirsdag", "Onsdag", "Torsdag", "Fredag", "Lørdag", "Søndag"]
+    i = 0
+    for each in liste:
+        if each == day:
+            return i
+        i += 1
+
 
 '''
 def cloud_gen(request):

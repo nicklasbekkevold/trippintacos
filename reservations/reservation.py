@@ -148,7 +148,7 @@ def matplotfuckeroo(capacity_matrix, dayofweek):
     autolabel(ax, rects1, "left")
     autolabel(ax, rects2, "right")
 
-    plt.plot([3, 1, 4, 1, 5], 'ks-', mec='w', mew=5, ms=20)
+
 
 
     return mpld3.fig_to_html(fig)
