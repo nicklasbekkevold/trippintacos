@@ -69,7 +69,6 @@ class DeleteReservationTestCase(TestCase):
             id=1,
             guest=Guest.objects.create(
                 email="test@testcase.no",
-                reminder=False
             ),
             number_of_people=4,
             start_date_time=timezone.now(),
@@ -83,7 +82,6 @@ class DeleteReservationTestCase(TestCase):
             id=2,
             guest=Guest.objects.create(
                 email="test@testcase.no",
-                reminder=False
             ),
             number_of_people=4,
             start_date_time=timezone.now(),
@@ -125,7 +123,6 @@ class EditReservationTestCase(TestCase):
             id=2,
             guest=Guest.objects.create(
                 email="test@testcase.no",
-                reminder=False
             ),
             number_of_people=4,
             start_date_time=(self.now + timedelta(days=1)),
@@ -162,7 +159,6 @@ class TestSendConfirmation(TestCase):
             id=1,
             guest=Guest.objects.create(
                 email="sander.b.lindberg@gmail.com",
-                reminder=False,
             ),
             number_of_people=4,
             start_date_time=(self.now + timedelta(days=1)),
