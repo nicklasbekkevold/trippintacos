@@ -5,21 +5,21 @@ from django.utils.safestring import mark_safe
 
 
 class ReservationForm(forms.Form):
-    first_name = forms.CharField(max_length=40, required=True)
-    last_name = forms.CharField(max_length=40, required=False)
-    email = forms.EmailField(required=True)
-    reminder = forms.BooleanField(required=False)
-    number_of_people = forms.IntegerField()
+    first_name = forms.CharField(max_length=40, required=True,label='Fornavn')
+    last_name = forms.CharField(max_length=40, required=False, label='Etternavn')
+    email = forms.EmailField(required=True, label='E-mail')
+    reminder = forms.BooleanField(required=False,label = 'Påminnelse på E-mail')
+    number_of_people = forms.IntegerField(label= 'Antall gjester')
     start_date_time = forms.DateTimeField(
         widget=DateTimePickerInput(
-        )
+        ), label = 'Starttid for reservasjon'
     )
     end_date_time = forms.DateTimeField(
         widget=DateTimePickerInput(
 
-        )
+        ), label = 'Sluttid for reservasjon'
     )
-    i_have_read_and_agree_to_the_Terms_and_Conditions_and_Privacy_Policy = forms.BooleanField(label=mark_safe('I have read and agree to <a href="/termsandconditions/" target="_blank"> Terms of Use and Privacy Policy</a>'))
+    i_have_read_and_agree_checkbox = forms.BooleanField(label=mark_safe('Jeg har lest og forstått <a href=termsandconditions/ target="_blank"> Brukervilkår og Personvernpolicy</a>'),required=True)
 
 
 class WalkinForm(forms.Form):
@@ -49,8 +49,8 @@ class TableForm(forms.ModelForm):
 
 
 class CancelForm(forms.Form):
-    id = forms.CharField()
-    email = forms.CharField()
+    id = forms.CharField(label= 'Reservasjons-ID (mottatt på e-mail)')
+    email = forms.CharField(label= 'E-mail')
 
     class Meta:
         fields = ('id', 'email')

@@ -14,7 +14,8 @@ def guest(request):
             email = form.cleaned_data['email'].lower()
             email_liste = []
             for each in Guest.objects.all():
-                email_liste.append(each.email.lower())
+                if each.email is not None:
+                    email_liste.append(each.email.lower())
 
             if email not in email_liste:
                 guest = Guest(email=email, first_name=form.cleaned_data['first_name'], last_name=form.cleaned_data['last_name'])

@@ -57,3 +57,6 @@ def cancel(request):
         form = CancelForm()
         print('FROM: ', form)
         return render(request, 'cancel.html', {'form': form})
+
+def termsandconditions(request):
+    return render(request, 'termsandconditions.html')

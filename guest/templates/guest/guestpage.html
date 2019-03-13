@@ -1,5 +1,6 @@
 {% extends 'base.html'%}
 {% load static %}
+{% load crispy_forms_tags %}
 
 {% block head %}
     {% load bootstrap4 %}       {# import bootstrap4/bootstrap3 #}
@@ -22,10 +23,12 @@
             <div class="card-body">
               <h2 class="card-title">Reserver bord:</h2>
                     <h5 class="card-subtitle mb-2 text-muted">Velkommen til Trippin' Tacos - forbered deg på en kulinarisk reise du sent vil glemme!</h5>
+                <h6 class="card-title">"*" betyr obligatorisk felt</h6>
               <p class="card-text"> <br>
                 <form method="post">
                     {% csrf_token %}
-                    {{ form.as_p }}
+                    {{ form|crispy }}
+
                     <button type="submit" class="btn btn-outline-success">Send inn</button>
                 </form>
             </div>
