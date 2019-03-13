@@ -9,13 +9,23 @@ class ReservationForm(forms.Form):
     email = forms.EmailField(required=True)
     reminder = forms.BooleanField(required=False)
     number_of_people = forms.IntegerField()
-    start_date_time = forms.DateTimeField(
-        widget=DateTimePickerInput(
+    start_date_time = forms.DateField(
+        widget=DatePickerInput()
+    )
+    start_time = forms.TimeField(
+        widget=TimePickerInput(
+            options = {
+                'enabledHours': [12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23],
+                'stepping': 30,
+            }
         )
     )
-    end_date_time = forms.DateTimeField(
-        widget=DateTimePickerInput(
-
+    end_time = forms.TimeField(
+        widget=TimePickerInput(
+            options = {
+                'enabledHours': [12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23],
+                'stepping': 30,
+            }
         )
     )
 

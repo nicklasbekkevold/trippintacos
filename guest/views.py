@@ -27,11 +27,11 @@ def guest(request):
             print("SUCCESS: ", success)
             if success:
                 send_confirmation(guest.email, Reservation.objects.all().get(id=success['reservation']))
-                return render(request, 'reservations/success.html')
+                return render(request, 'reservations/success.html') # TODO change this
             else:
-                return render(request, 'reservations/not_success.html')
+                return render(request, 'reservations/not_success.html') # TODO change this
         else:
-            print("HÆÆÆÆÆÆÆÆÆÆÆÆÆÆ")
+            pass # form is invalid
     else:
         form = ReservationForm()
         return render(request, 'guestpage.html', {'form': form})
