@@ -227,7 +227,7 @@ class TestGetAverageCapacity(TestCase):
             id=1,
             guest=Guest.objects.create(
                 email="test@testcase.no",
-                reminder=False
+
             ),
             number_of_people=4,
             start_date_time=datetime.today() + timedelta(hours=4) - timedelta(days=14),
@@ -244,7 +244,7 @@ class TestGetAverageCapacity(TestCase):
             id=2,
             guest=Guest.objects.create(
                 email="test@testcase.no",
-                reminder=False
+
             ),
             number_of_people=7,
             start_date_time=datetime.today() + timedelta(hours=5) - timedelta(days=7),

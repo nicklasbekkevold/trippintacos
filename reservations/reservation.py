@@ -134,7 +134,7 @@ def matplotfuckeroo(capacity_matrix, dayofweek):
 
     autolabel(ax, rects1, "left")
     autolabel(ax, rects2, "right")
-
+    plt.savefig('statistics.png')
     plt.show()
 
 def autolabel(ax, rects, xpos='center',):
