@@ -26,7 +26,8 @@
                 <form method="POST" id="reservationForm" data-available-times-url="{% url 'ajax_load_available_times' %}" novalidate>
                     {% csrf_token %}
                     <table>
-                    {{ form.as_table }}
+                    {{ guestForm.as_table }}
+                    {{ reservationForm.as_table }}
                     </table>
                     <button type="submit">Save</button>
                 </form>
