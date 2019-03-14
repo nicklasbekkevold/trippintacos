@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+     <div class="container" style="margin-top: 10%">
+        <div class="card">
+            <div class="card-body">
+                    <h3 class="card-subtitle mb-2 text-muted">Slett profilen din her</h3>
+              <p class="card-text"> <br>
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit" class="btn btn-outline-success">Slett meg</button>
+                </form>
+
+                {% if invalid_email %}
+                    <div>
+                        <p style="color:red">Ingen bruker med den epost-adressen</p>
+                    </div>
+                {% elif invalid_last_name %}
+                    <div>
+                        <p style="color:red">Vi finner ingen kombinasjon av den eposten og etternavnet</p>
+                    </div>
+                {% elif sucess %}
+                    <div>
+                        <p style="color:green">Suksess! Bruker {{ email }} har blitt slettet</p>
+                    </div>
+                {% elif unexpected %}
+                    <div>
+                        <p style="color:yellow">Upsann, noe gikk galt, vi vet ikke hva. Prøv igjen :)</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

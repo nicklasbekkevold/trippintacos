@@ -256,3 +256,13 @@ def get_booked_times_by_date(date, number_of_people):
 
 
 get_booked_times_by_date(datetime(2019, 2, 25, 12, 0, 0), 5)
+
+
+def deleteGuest(guest):
+
+    guest.email = None
+    guest.first_name = None
+    guest.last_name = None
+    guest.save()
+
+    return True
