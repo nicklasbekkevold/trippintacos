@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .forms import ReservationForm, CancelForm
+from reservations.forms import ReservationForm, CancelForm
 from django.shortcuts import redirect
 from guest.models import *
 from reservations.models import *

@@ -1,14 +1,15 @@
 from django.shortcuts import render
-from reservations.forms import ReservationForm
-from .models import Guest
+from reservations.forms import DynamicReservationForm
+from reservations.models import Guest
 from employee.helpers import send_confirmation
 from reservations.reservation import make_reservation
 from reservations.models import Reservation, Restaurant, Table
 
 
 def guest(request):
+
     if request.method == 'POST':
-        form = ReservationForm(request.POST)
+        form = DynamicReservationForm(request.POST)
 
         if form.is_valid():
             email = form.cleaned_data['email'].lower()
@@ -33,5 +34,11 @@ def guest(request):
         else:
             pass # form is invalid
     else:
-        form = ReservationForm()
+        form = DynamicReservationForm()
         return render(request, 'guestpage.html', {'form': form})
+
+def load_available_times(request):
+    number_of_people = request.GET.get('number_of_people')
+    start_date = request.GET.get('start_date')
+    available_times = [tuple([x,x]) for x in range(12, 18)]
+    return render(request, 'guest/available_times_dropdown_list_options.html', {'available_times': available_times})
