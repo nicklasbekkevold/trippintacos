@@ -31,12 +31,12 @@ class DynamicReservationForm(forms.ModelForm):
         def __init__(self, *args, **kwargs):
             super().__init__(*args, **kwargs)
 
+
 class GuestReservationForm(forms.ModelForm):
 
     class Meta:
         model = Guest
         fields = ('email', 'first_name', 'last_name')
-
 
 
 class ReservationForm(forms.Form):
@@ -47,28 +47,11 @@ class ReservationForm(forms.Form):
     number_of_people = forms.IntegerField()
     start_date_time = forms.DateTimeField(
         widget=DateTimePickerInput(
-            options={
-                'calendarWeeks': True,
-                'sideBySide': True,
-                'enabledHours': [12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23],
-                'stepping': 30,
-            }
         )
     )
-    start_time = forms.TimeField(
-        widget=TimePickerInput(
-            options={
-                'enabledHours': [12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23],
-                'stepping': 30,
-            }
-        )
-    )
-    duration = forms.TimeField(
-        widget=TimePickerInput(
-            options={
-                'enabledHours': [0, 1, 2, 3, 4],
-                'stepping': 30,
-            }
+    end_date_time = forms.DateTimeField(
+        widget=DateTimePickerInput(
+
         )
     )
 

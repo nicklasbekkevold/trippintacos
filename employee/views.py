@@ -115,8 +115,12 @@ def walkin(request):
         guest = Guest(first_name=form.cleaned_data['first_name'],
                       )
         guest.save()
-        success = make_reservation(Restaurant.objects.first(), guest, form.cleaned_data['start_date_time'],
-                                   form.cleaned_data['number_of_people'], 1, 0)
+        success = make_reservation(Restaurant.objects.first(), 
+                                   guest, 
+                                   form.cleaned_data['start_date_time'],
+                                   form.cleaned_data['number_of_people'], 
+                                   1, 
+                                   0)
 
         if success:
             return True
@@ -130,7 +134,8 @@ def booking(request):
         email = form.cleaned_data['email'].lower()
         email_liste = []
         for each in Guest.objects.all():
-            email_liste.append(each.email.lower())
+            if each.email is not None:
+                email_liste.append(each.email.lower())
         if email not in email_liste:
             guest = Guest(email=email,
                           first_name=form.cleaned_data['first_name'],
@@ -139,8 +144,11 @@ def booking(request):
             guest.save()
         else:
             guest = Guest.objects.all().get(email=email)
-        success = make_reservation(Restaurant.objects.first(), guest, form.cleaned_data['start_date_time'],
-                                   form.cleaned_data['number_of_people'], 0, reminder=form.cleaned_data['reminder'])
+        success = make_reservation(Restaurant.objects.first(), 
+                                   guest, form.cleaned_data['start_date_time'],
+                                   form.cleaned_data['number_of_people'], 
+                                   0, 
+                                   reminder=form.cleaned_data['reminder'])
         if success:
             send_confirmation(guest.email, Reservation.objects.all().get(id=success['reservation']))
             return True
@@ -161,8 +169,7 @@ def showRes(request, date):
     reservations_this_date = list()
     for res in Reservation.objects.all():
         # print(res.start_date_time.day, res.start_date_time.year, res.start_date_time.month)
-        if res.start_date_time.day == int(day) and res.start_date_time.year == int(
-                year) and res.start_date_time.month == int(month):
+        if res.start_date_time.day == int(day) and res.start_date_time.year == int(year) and res.start_date_time.month == int(month):
             reservations_this_date.append(res)
 
     lst = list()
