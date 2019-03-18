@@ -13,7 +13,7 @@ from datetime import datetime
 from django.views.generic import TemplateView
 from employee.helpers import send_confirmation, edit
 from django.utils.decorators import method_decorator
-from reservations.reservation import get_total_on_weekday, get_average_capacity, matplotfuckeroo
+from reservations.reservation import get_total_on_weekday, get_average_capacity, matplotfuckeroo, count_reservations, count_unique_guests
 
 # Create your views here.
 
@@ -236,11 +236,13 @@ def showStatistikk(request):
 
             html_code = matplotfuckeroo(get_average_capacity(input), input)
 
-            return render(request, 'statistikk.html', {'code': html_code, 'form': form})
+            return render(request, 'statistikk.html', {'code': html_code, 'form': form, 'tall': count_reservations()})
 
     form = statisticInputForm(request.POST)
     html_code = matplotfuckeroo(get_average_capacity(0), 0)
-    return render(request, 'statistikk.html', {'form': form, 'code': html_code})
+    return render(request, 'statistikk.html', {'form': form, 'code': html_code, 'tall': count_reservations(),'totguests': count_unique_guests() })
+
+
 
 
 
@@ -252,8 +254,12 @@ def dayToInt(day):
             return i
         i += 1
 
-
+'''def allTimeVisits(request):
+    pass
 '''
+
+
+''''
 def cloud_gen(request):
    if request.method == 'POST':
        form = CharForm(request.POST)
@@ -281,4 +287,4 @@ def cloud_gen(request):
    else:
        form = CharForm()
        return render(request, 'wordcloudgen/cloud_gen.html', {'form':form})
-       '''
+'''

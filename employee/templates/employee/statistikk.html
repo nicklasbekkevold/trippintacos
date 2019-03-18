@@ -5,16 +5,27 @@
             <form method="post">
                 {% csrf_token %}
                 {{ form.as_p }}
-            <button type="submit" class="btn btn-outline-success">Send inn</button>
+            <button class="btn btn-default btn-primary" type="submit" >Send inn</button>
             </form>
         </div>
-
-
     </div>
-    <div class="align-content-xl-center">
+
+     <div class="container bg-warning rounded col-2 align-content-xl-center">
+        <p> Totalt antall besøkere: </p> {{ tall }}
+    </div>
+     <div class="container bg-warning rounded col-2 align-content-xl-center">
+        <p> Totalt antall unike gjester: </p> {{ totguests }}
+    </div>
+
+    <div class="col-2 align-content-xl-center">
 
     {{ code|safe }}
 
     </div>
+
+
+
 {% endblock content %}
+
+
 
