@@ -1,14 +1,52 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Terms of Use and Privacy Policy</title>
-</head>
-<body>
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris consectetur risus non eros mattis euismod.
-Vivamus mollis elit lectus, vel dignissim ex porta sed. Sed lacinia nunc sit amet lorem hendrerit, quis iaculis nisi luctus.
-Sed eget cursus nisl, sit amet hendrerit mi. Vivamus vitae tristique tellus. In pretium sollicitudin nisl ut porta.
-Suspendisse velit dolor, eleifend in justo at, rutrum porttitor magna. Cras id nisl id ligula lacinia dictum a sit amet odio.
-Etiam nibh erat, scelerisque eget dui sit amet, efficitur lacinia lacus.
-</body>
-</html>
+{% extends 'base.html' %}
+{%  load static %}
+
+{%  block content %}'
+  <div class="container" style="margin-top: 150px">
+    <div class = ".container-fluid">
+        <div class="card">
+            <div class="card-body">
+              <h2 class="card-title">Brukervilkår og personvernpolicy:</h2>
+                <br>
+                <h5 class="card-subtitle mb-2 text-muted"> 1. Behandlingsansvarlig: </h5>
+                    Gruppe 29 i Programvareutvikling 2019 er på vegne av Trippin' Tacos behandlingsansvarlig for selskapets behandling av personopplysninger.
+                <br> <br>
+                <h5 class="card-subtitle mb-2 text-muted"> 2. Personopplysninger som lagres: </h5>
+                    Vi lagrer følgende personopplysninger om våre kunder:
+                <b>Navn</b> og <b>e-postadresse</b>. Vi lagrer i tillegg reservasjonene i vår database.
+                <br> <br>
+                <h5 class="card-subtitle mb-2 text-muted"> 3. Formål med behandling: </h5>
+                    Vi behandler opplysningene for å kunne gjennomføre våre forpliktelser etter avtale med deg som kunde.
+                    Vi benytter også opplysningene for å kunne gi deg informasjon og service i forbindelse med din reservasjon via e-post.
+                <br> <br>
+                <h5 class="card-subtitle mb-2 text-muted"> 4. Grunnlaget for behandlingen: </h5>
+                    Informasjon om navn og e-postadresse benyttes for å oppfylle kjøpsavtalen. Grunnlaget for denne behandlingen er personvernforordningens artikkel Art 6 (b).
+                    Der du har samtykket til det benyttes også opplysningene til å gi deg informasjon og service i forbindelse med ditt kjøp via e-post. Grunnlaget for denne behandlingen er personvernforordningen Art 6 (a). Du kan ved å ikke huke av for "påminnelse" unngå å motta slik informasjon fra oss.
+                <br> <br>
+                <h5 class="card-subtitle mb-2 text-muted"> 5. Utlevering av opplysninger til tredjeparter: </h5>
+                    For å kunne oppfylle våre forpliktelser etter avtalen utleveres nødvendige opplysninger til våre samarbeidspartnere; studentassister i faget TDT4140.
+                <br> <br>
+                <h5 class="card-subtitle mb-2 text-muted"> 6. Sletting av personopplysninger: </h5>
+                    Opplysninger vi har mottatt i forbindelse med din reservasjon lagres i vårt aktive kunderegister i to (2) år.
+                    Opplysninger vi etter bokføringsloven er forpliktet til å bevare vil lagres i inntil fem (5) år, i henhold til lovens krav.
+                <br> <br>
+                <h5 class="card-subtitle mb-2 text-muted"> 7. Rettigheter for den registrerte: </h5>
+                    Vi behandler dine personopplysninger i henhold til personopplysningsloven og gjeldende forskrifter. Det gjøres oppmerksom på at du kan kreve innsyn i og flytting av egne personopplysninger, samt kreve retting eller sletting av opplysninger.
+                    Det kan klages til Datatilsynet på behandling i strid med reglene.
+                <br> <br>
+                <h5 class="card-subtitle mb-2 text-muted"> 8. Personvernombud: </h5>
+                    Vi har et personvernombud, August Meo, som påser at personopplysningslovens regler om behandling av personopplysninger blir fulgt.
+                <br> <br>
+                <h5 class="card-subtitle mb-2 text-muted"> 9. Informasjonssikkerhet </h5>
+                    Vi sikrer dine personopplysninger ved passord- og tilgangskontroll, og deler ikke sensitiv informasjon med andre enn bedriften.
+                <br> <br>
+                <h5 class="card-subtitle mb-2 text-muted"> 10. Kontaktinformasjon </h5>
+                    Henvendelser om hvilke opplysninger som er registrert, retting og sletting kan sendes skriftlig til følgende adresse: <br> <br>
+                    E-post: augustlonningmeo@gmail.com <br>
+                    Trippin' Tacos
+            </div>
+        </div>
+    </div>
+  </div>
+
+{% endblock%}
