@@ -27,7 +27,7 @@ def guest(request):
             success = make_reservation(Restaurant.objects.first(), guest, form.cleaned_data['start_date_time'],
                                        form.cleaned_data['number_of_people'], 0, reminder=form.cleaned_data['reminder'])
             if success:
-                send_confirmation(guest.email, Reservation.objects.all().get(id=success['reservation']))
+                send_confirmation(guest, Reservation.objects.all().get(id=success['reservation']))
                 return render(request, 'reservations/success.html')
             else:
                 return render(request, 'reservations/not_success.html')
@@ -65,6 +65,13 @@ def deleteMe(request):
                 pass
         print(request.GET.get('hei'))
         print('Dette er en test: \n', request.GET.get('id'), request.GET.get('test'))
+        last_name = request.GET.get('last_name')
+        email = request.GET.get('email')
+
+        if last_name is not None and email is not None:
+            deleteGuest(Guest.objects.all().get(last_name=last_name, email=email))
+            return render(request, 'deleteMe.html', {'sucess': True, 'form': DeleteMeForm(), 'email': email})
+
         form = DeleteMeForm()
         return render(request, 'deleteMe.html', {'form': form})
 

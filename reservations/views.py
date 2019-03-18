@@ -32,7 +32,7 @@ def booking(request):
                                        form.cleaned_data['number_of_people'], 0, reminder=form.cleaned_data['reminder'])
             print("SUCCESS: ", success)
             if success:
-                send_confirmation(guest.email, Reservation.objects.all().get(id=success['reservation']))
+                send_confirmation(guest, Reservation.objects.all().get(id=success['reservation']))
                 return render(request, 'reservations/success.html')
             else:
                 return render(request, 'not_success.html')

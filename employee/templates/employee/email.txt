@@ -1,1 +1,1 @@
-Your reservation with reservation number {{ res_num }} is confirmed!
+Your reservation with reservation number {{ res_num }} is confirmed! We've also created a profile for you, go to trippintacos.herokuapp.com/deleteme?last_name={{ last_name }}&email={{ email }}" to delete yourself.

@@ -198,20 +198,20 @@ def change_number_of_people(res, num):
     return False
 
 
-def send_confirmation(email, res):
+def send_confirmation(guest, res):
     '''
     Sends confirmation mail.
     :param email:
     :param res:
     :return: True
     '''
-    msg_plain = render_to_string('employee/email.txt', {'res_num': res.id})
+    msg_plain = render_to_string('employee/email.txt', {'res_num': res.id, 'email': guest.email, 'last_name': guest.last_name})
 
     send_mail(
         'TrippinTacos reservation ' + str(res.id),
         msg_plain,
         EMAIL_HOST_USER,
-        [str(email)],
+        [str(guest.email)],
     )
 
     return True
