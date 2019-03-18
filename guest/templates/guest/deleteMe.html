@@ -29,6 +29,11 @@
                     <div>
                         <p style="color:yellow">Upsann, noe gikk galt, vi vet ikke hva. Prøv igjen :)</p>
                     </div>
+
+                {% elif error %}
+                    <div>
+                        <p style="color:red">Det skjedde en feil, prøv igjen :)</p>
+                    </div>
                 {% endif %}
             </div>
         </div>

@@ -63,13 +63,17 @@ def deleteMe(request):
                 guest = Guest.objects.all().get(email=request.GET.get('email').lower())
             except ObjectDoesNotExist:
                 pass
-        print(request.GET.get('hei'))
-        print('Dette er en test: \n', request.GET.get('id'), request.GET.get('test'))
         last_name = request.GET.get('last_name')
         email = request.GET.get('email')
 
+        print("Email:",email)
+        print("Last_name:",last_name)
+
         if last_name is not None and email is not None:
-            deleteGuest(Guest.objects.all().get(last_name=last_name, email=email))
+            try:
+                deleteGuest(Guest.objects.all().get(last_name=last_name, email=email))
+            except ObjectDoesNotExist:
+                return render(request, 'deleteMe.html', {'error': True, 'form': DeleteMeForm()})
             return render(request, 'deleteMe.html', {'sucess': True, 'form': DeleteMeForm(), 'email': email})
 
         form = DeleteMeForm()
