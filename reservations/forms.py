@@ -8,7 +8,7 @@ class DynamicReservationForm(forms.ModelForm):
     class Meta:
         model = NewReservation
         fields = ('number_of_people', 'start_date', 'start_time', 'end_time', 'reminder')
-        AVAILABLE_TIMES = [("2", "---------"), ("1", "luring")]
+        AVAILABLE_TIMES = [("", "---------")]
         widgets = {
             'start_date': DatePickerInput(
                 attrs={

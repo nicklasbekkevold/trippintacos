@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from reservations.forms import DynamicReservationForm, GuestReservationForm
 from reservations.models import Guest
+from datetime import datetime
 from employee.helpers import send_confirmation
 from reservations.reservation import make_reservation
 from reservations.models import Reservation, Restaurant, Table
@@ -28,13 +29,17 @@ def guest(request):
             else:
                 guest = Guest.objects.all().get(email=email)
         if reservationForm.is_valid():
+            date = reservationForm.cleaned_data['start_date']
+            time = reservationForm.cleaned_data['start_time']
+            start_date_time = datetime.combine(date, time)
             success = make_reservation(
                 Restaurant.objects.first(), 
                 guest, 
-                reservationForm.cleaned_data['start_date_time'], 
+                start_date_time, 
                 reservationForm.cleaned_data['number_of_people'], 
-                0, 
-                reminder=reservationForm.cleaned_data['reminder'])
+                False, 
+                reminder=reservationForm.cleaned_data['reminder'],
+                minutes_slot=120)
 
             if success:
                 send_confirmation(guest.email, Reservation.objects.all().get(id=success['reservation']))
