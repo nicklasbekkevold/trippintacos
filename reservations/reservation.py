@@ -156,9 +156,9 @@ def autolabel(ax, rects, xpos='center',):
         height = rect.get_height()
         ax.text(rect.get_x() + rect.get_width()*offset[xpos], 1.01*height,
                 '{}'.format(int(round(height))), ha=ha[xpos], va='bottom')
+                
 
-
-def get_available_times(numberOfPersons:int, dateOfReservation):
+def get_available_times(numberOfPersons:int, dateOfReservation:djangomodels.DateField):
     """
     :param numberOfPersons: Number of people in pending reservation
     :param date: date of proposed reservation
@@ -178,6 +178,7 @@ def get_available_times(numberOfPersons:int, dateOfReservation):
     available_times_list = []
     tables = Table.objects.filter(number_of_seats__gte=numberOfPersons)
     datetime_time = datetime(_year, _month, _day, 12)
+    find = False
     coll = False
     while datetime_time <= datetime(_year, _month, _day, 22):
         for _table in tables:
@@ -191,3 +192,4 @@ def get_available_times(numberOfPersons:int, dateOfReservation):
                 break
         datetime_time = datetime_time + timedelta(minutes=30)
     return available_times_list
+
