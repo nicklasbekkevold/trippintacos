@@ -10,6 +10,9 @@ class DynamicReservationForm(forms.ModelForm):
         fields = ('number_of_people', 'start_date', 'start_time', 'end_time', 'reminder')
         AVAILABLE_TIMES = [("", "---------")]
         widgets = {
+            'number_of_people': forms.IntegerField(
+                min_value=1
+            ),
             'start_date': DatePickerInput(
                 attrs={
                     'id': 'datepicker',

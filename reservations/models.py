@@ -46,7 +46,7 @@ class Reservation(models.Model):
 
 class NewReservation(models.Model):
     guest = models.ForeignKey(Guest, on_delete=models.CASCADE)
-    number_of_people = models.IntegerField(default=0)
+    number_of_people = models.IntegerField(default=1)
     start_date = models.DateField(default=timezone.now)
     start_time = models.IntegerField()
     end_time = models.TimeField(default=timezone.now)
