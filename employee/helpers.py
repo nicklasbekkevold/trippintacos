@@ -125,8 +125,10 @@ def checkForCollision(start_of_new_res, end_of_new_res, preexisting_res):
     :param preexisting_res: The reservation object of the preexisting reservation
     :return: A bool value indicating whether a collision will happen.
     """
-    preexisting_start = preexisting_res.start_date_time
-    preexisting_end = preexisting_res.end_date_time
+    preexisting_start = preexisting_res.start_date_time.replace(tzinfo=None)
+    preexisting_end = preexisting_res.end_date_time.replace(tzinfo=None)
+    start_of_new_res = start_of_new_res.replace(tzinfo=None)
+
     if start_of_new_res < preexisting_start and end_of_new_res <= preexisting_start:
         return False
     if start_of_new_res >= preexisting_end and end_of_new_res > preexisting_end:

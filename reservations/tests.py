@@ -277,25 +277,30 @@ class TestGetAvailableTable(TestCase):
 
         Reservation.objects.create(
             id=1,
-            guest=Guest.objects.get(email="test@testcase.no"),
+            guest=Guest.objects.all().get(email="test@testcase.no"),
             number_of_people=4,
-            start_date_time=datetime.now() + timedelta(hours=4),
-            end_date_time=datetime.now() + timedelta(hours=6),
+            start_date_time=datetime(2019, 3, 20, 17),
+            end_date_time=datetime(2019, 3, 20, 19),
             table=Table.objects.get(id=1),
             walkin=1,
         )
 
         Reservation.objects.create(
             id=2,
-            guest=Guest.objects.get(
+            guest=Guest.objects.all().get(
                 email="test@testcase.no"
             ),
             number_of_people=4,
-            start_date_time=datetime.now() + timedelta(hours=7),
-            end_date_time=datetime.now() + timedelta(hours=9),
+            start_date_time=datetime(2019, 3, 20, 20),
+            end_date_time=datetime(2019, 3, 20, 22),
             table=Table.objects.get(id=1),
             walkin=0,
         )
 
     def test_get_available_times(self):
-        print(get_available_times(5, datetime.now() + timedelta(hours=4)))
+        self.assertEqual([(datetime(2019, 3, 20, 12), 12), (datetime(2019, 3, 20, 12, 30), 12.5),
+                          (datetime(2019, 3, 20, 13), 13), (datetime(2019, 3, 20, 13, 30), 13.5),
+                          (datetime(2019, 3, 20, 14), 14), (datetime(2019, 3, 20, 14, 30), 14.5),
+                          (datetime(2019, 3, 20, 15), 15), ], get_available_times(5, datetime.now() + timedelta(hours=4)))
+
+        self.assertEqual([], get_available_times(6, datetime.now() + timedelta(hours=4)))
