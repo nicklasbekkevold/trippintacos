@@ -52,3 +52,6 @@ def cancel(request):
     else:
         form = CancelForm()
         return render(request, 'cancel.html', {'form': form})
+
+def termsandconditions(request):
+    return render(request, 'termsandconditions.html')
