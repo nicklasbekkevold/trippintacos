@@ -138,7 +138,7 @@ class EditReservationTestCase(TestCase):
         self.assertTrue(edit(res.id, res.start_date_time + timedelta(hours=1)))
         # Test edit slot taken by other reservation
         self.assertFalse(edit(res.id, self.now + timedelta(days=1)))
-        pass
+
 '''
 class MakeReservation(TestCase):
     def setUp(self):

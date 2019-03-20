@@ -142,7 +142,7 @@ def booking(request):
         success = make_reservation(Restaurant.objects.first(), guest, form.cleaned_data['start_date_time'],
                                    form.cleaned_data['number_of_people'], 0, reminder=form.cleaned_data['reminder'])
         if success:
-            send_confirmation(guest.email, Reservation.objects.all().get(id=success['reservation']))
+            send_confirmation(guest, Reservation.objects.all().get(id=success['reservation']))
             return True
         else:
             return False
