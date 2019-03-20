@@ -133,11 +133,11 @@ class EditReservationTestCase(TestCase):
     def testEditReservation(self):
         # Test edit to new open slot works
         res = Reservation.objects.get(id=1)
-        # self.assertTrue(edit(res.id, self.now + timedelta(days=3)))
+        self.assertTrue(edit(res.id, self.now + timedelta(days=3)))
         # Test edit to new slot open overlapping with the same reservation
         self.assertTrue(edit(res.id, res.start_date_time + timedelta(hours=1)))
         # Test edit slot taken by other reservation
-        # self.assertFalse(edit(res.id, self.now + timedelta(days=1)))
+        self.assertFalse(edit(res.id, self.now + timedelta(days=1)))
         pass
 '''
 class MakeReservation(TestCase):
@@ -217,3 +217,43 @@ class TestCountReservations(TestCase):
         self.assertEquals(1, countReservations())
         print(countReservations())
 '''
+
+class TestGetAverageCapacity(TestCase):
+    def setUp(self):
+        Reservation.objects.create(
+            id=1,
+            guest=Guest.objects.create(
+                email="test@testcase.no",
+                reminder=False
+            ),
+            number_of_people=4,
+            start_date_time=datetime.today() + timedelta(hours=4) - timedelta(days=14),
+            end_date_time=datetime.today() + timedelta(hours=8) - timedelta(days=14),
+            table=Table.objects.create(
+                id=1,
+                restaurant=Restaurant.objects.first(),
+                number_of_seats=5,
+                is_occupied=0
+            ),
+            walkin=1,
+        )
+        Reservation.objects.create(
+            id=2,
+            guest=Guest.objects.create(
+                email="test@testcase.no",
+                reminder=False
+            ),
+            number_of_people=7,
+            start_date_time=datetime.today() + timedelta(hours=5) - timedelta(days=7),
+            end_date_time=datetime.today() + timedelta(hours=9) - timedelta(days=7),
+            table=Table.objects.get(id=1),
+            walkin=0,
+        )
+
+    def testAveCap(self):
+        capMat = get_average_capacity(datetime.today().weekday())
+        print(capMat[0])
+        print(capMat[1])
+        print(capMat[2])
+
+        matplotfuckeroo(capMat, datetime.today().weekday())

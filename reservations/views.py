@@ -13,9 +13,7 @@ from employee.helpers import send_confirmation, send_cancellation
 def booking(request):
     if request.method == 'POST':
         form = ReservationForm(request.POST)
-        print('bookingHIE')
         if form.is_valid():
-            print('formvalid')
             email = form.cleaned_data['email'].lower()
             email_liste = []
             for each in Guest.objects.all():
@@ -30,7 +28,6 @@ def booking(request):
                 guest = Guest.objects.all().get(email=email)
             success = make_reservation(Restaurant.objects.first(), guest, form.cleaned_data['start_date_time'],
                                        form.cleaned_data['number_of_people'], 0, reminder=form.cleaned_data['reminder'])
-            print("SUCCESS: ", success)
             if success:
                 send_confirmation(guest.email, Reservation.objects.all().get(id=success['reservation']))
                 return render(request, 'reservations/success.html')
@@ -50,10 +47,8 @@ def cancel(request):
             if res.guest.email == form.cleaned_data['email']:
                 res.delete()
                 send_cancellation(form.cleaned_data['email'], int(form.cleaned_data['id']))
-                return redirect('reservations/success.html')
-        return redirect('reservations/not_success.html')
+                return render(request, 'reservations/success.html')
+        return render(request, 'reservations/not_success.html')
     else:
-        print("Hei")
         form = CancelForm()
-        print('FROM: ', form)
         return render(request, 'cancel.html', {'form': form})

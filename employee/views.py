@@ -4,14 +4,14 @@ from reservations.models import Reservation, Restaurant, Table
 from django.contrib.auth.decorators import login_required
 from reservations.models import Reservation, Restaurant
 from guest.models import Guest
-from employee.forms import DateForm
+from employee.forms import DateForm, EditReservationFrom
 from reservations.forms import ReservationForm, WalkinForm
 from reservations.reservation import make_reservation
 from django.contrib.auth.decorators import login_required
 from django.views.generic import TemplateView
 from datetime import datetime
 from django.views.generic import TemplateView
-from employee.helpers import send_confirmation
+from employee.helpers import send_confirmation, edit
 from django.utils.decorators import method_decorator
 
 # Create your views here.
@@ -153,6 +153,31 @@ def booking(request):
 
 
 def showRes(request, date):
+
+    def compute_time_slots(res_this_table):
+        time_slots = list()
+        slot_number = 0
+        while slot_number < 26:
+            for reservation in res_this_table:
+                start = reservation.start_date_time.time()
+                end = reservation.end_date_time.time()
+                index = 2*(start.hour%12) + start.minute//30 + 2 #TODO fix timezone - remove +2 
+                duration = ((end.hour - start.hour)*60 + (end.minute - start.minute)) // 30
+                if index == slot_number:
+                    time_slots.append({
+                        'info': reservation,
+                        'duration': duration,
+                    })
+                    slot_number += duration
+                    break
+            else:
+                time_slots.append({
+                    'info': '',
+                    'duration': '',
+                })
+                slot_number += 1 
+        return time_slots
+        
     date = date.split("-")
     year = date[0]
     month = date[1]
@@ -190,12 +215,30 @@ def showRes(request, date):
             })
             slot_number += 1
 
-    for res in reservations_this_date:
-        if res.table_id not in table_ids:
-            lst.append({
-                'table': 'Bord ' + str(res.table_id),
-                'number_of_seats': res.table.number_of_seats,
-                'reservations': time_slots,
-            })
-            table_ids.append(res.table_id)
-    return lst
+        table_list.append({
+            'table': 'Bord ' + str(table.id),
+            'number_of_seats': table.number_of_seats,
+            'reservations': compute_time_slots(res_this_table),
+        })
+    return table_list
+
+
+@login_required
+def editReservation(request):
+    if request.method == 'POST':
+        form = EditReservationFrom(request.POST)
+
+        if form.is_valid():
+            res = Reservation.objects.filter(id=int(form.cleaned_data['reservation_id']))[0]
+
+            if form.cleaned_data['new_end'] is not None:
+                if edit(res.id, form.cleaned_data['new_start'], form.cleaned_data['new_end']):
+                    return render(request, 'reservations/success.html')
+            else:
+                if edit(res.id, form.cleaned_data['new_start']):
+                    return render(request, 'reservations/success.html')
+        return render(request, 'reservations/not_success.html')
+    else:
+        form = EditReservationFrom()
+
+        return render(request, 'editreservation.html', {'form': form})

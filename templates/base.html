@@ -30,11 +30,11 @@
                         <a class="nav-item nav-link" href="{% url 'guest' %}">Hjem</a>
                         <a class="nav-item nav-link" href="{% url 'guest' %}">Meny</a>
                         <a class="nav-item nav-link" href="{% url 'cancel' %}">Kanseller bestilling</a>
-                        <a class="nav-item nav-link" href="{% url 'guest' %}">...</a>
                     </div>
                     <!-- Navbar Right Side -->
                     <div class="navbar-nav">
                         {% if user.is_authenticated %}
+                            <i><a class="nav-item nav-link" href="{% url 'edit' %}">Endre reservasjon</a></i>
                             <i><a class="nav-item nav-link" href="{% url 'employee' %}">Reservasjoner</a></i>
                             <i><a class="nav-item nav-link" href="{% url 'logout' %}">Log ut</a></i>
                         {% else %}

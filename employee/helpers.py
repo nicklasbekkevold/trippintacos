@@ -55,6 +55,7 @@ def edit(reservation_num, new_start: datetime, new_end=sentinel):
         rezzy.end_date_time = new_end
         rezzy.created_date = datetime.now()
         rezzy.table = validity_tuple[1]
+        rezzy.save()
         return True
     else:
         # Todo give a error to user which says the changes could not be made.
@@ -253,6 +254,3 @@ def get_booked_times_by_date(date, number_of_people):
     )
 
     print(reservations)
-
-
-get_booked_times_by_date(datetime(2019, 2, 25, 12, 0, 0), 5)

@@ -57,7 +57,7 @@ local_settings.py
 db.sqlite3
 static
 #**/settings.py
-**/migrations
+#**/migrations
 
 # Flask stuff:
 instance/

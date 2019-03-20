@@ -39,7 +39,7 @@ class Reservation(models.Model):
     reminder = models.BooleanField(null=True, blank=True)
 
     def __str__(self):
-        return str(self.start_date_time)
+        return str(self.start_date_time) + " ID: " + str(self.id)
 
     class Meta:
         app_label = 'reservations'
