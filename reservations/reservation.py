@@ -171,7 +171,7 @@ def get_available_times(numberOfPersons:int, dateOfReservation:djangomodels.Date
 
     # filter by date to get all reservations on date equal to dateOfReservation
 
-    QS_reservations_at_date = Reservation.objects.filter(start_date_time__day=_day, start_date_time__month=_month, start_date_time__year=_year)
+    QS_reservations_at_date = Reservation.objects.all()  # .get(start_date_time__day=_day, start_date_time__month=_month, start_date_time__year=_year)
     # use for loop to iterate through times and check for collision for it and two hours forward
     # Check for collisions and too early vs too late
     # if a time is available the tuple (time, something) will be added to the returned-list

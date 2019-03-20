@@ -8,7 +8,7 @@ from django.utils import timezone
 from reservations.reservation import *
 # Create your tests here.
 
-
+'''
 class GetTablesWithCapacityTestCase(TestCase):
 
     def setUp(self):
@@ -141,7 +141,7 @@ class EditReservationTestCase(TestCase):
         # Test edit slot taken by other reservation
         self.assertFalse(edit(res.id, self.now + timedelta(days=1)))
         pass
-'''
+
 class MakeReservation(TestCase):
     def setUp(self):
         Restaurant.objects.create(
@@ -150,7 +150,7 @@ class MakeReservation(TestCase):
             opening_time=datetime.time(12, '%h')
             
         )
-'''
+
 
 
 class TestSendConfirmation(TestCase):
@@ -179,7 +179,6 @@ class TestSendConfirmation(TestCase):
         guest = res.guest
         self.assertTrue(send_confirmation(guest.email, res))
 
-'''
 class TestCountReservations(TestCase):
     def setUp(self):
         self.now = timezone.now()
@@ -219,15 +218,14 @@ class TestCountReservations(TestCase):
         self.assertEquals(1, delete(1, "test@testcase.no"))
         self.assertEquals(1, countReservations())
         print(countReservations())
-'''
+
 
 class TestGetAverageCapacity(TestCase):
     def setUp(self):
         Reservation.objects.create(
             id=1,
             guest=Guest.objects.create(
-                email="test@testcase.no",
-                reminder=False
+                email="test@testcase.no"
             ),
             number_of_people=4,
             start_date_time=datetime.today() + timedelta(hours=4) - timedelta(days=14),
@@ -243,8 +241,7 @@ class TestGetAverageCapacity(TestCase):
         Reservation.objects.create(
             id=2,
             guest=Guest.objects.create(
-                email="test@testcase.no",
-                reminder=False
+                email="test@testcase.no"
             ),
             number_of_people=7,
             start_date_time=datetime.today() + timedelta(hours=5) - timedelta(days=7),
@@ -260,3 +257,45 @@ class TestGetAverageCapacity(TestCase):
         print(capMat[2])
 
         matplotfuckeroo(capMat, datetime.today().weekday())
+
+'''
+
+
+class TestGetAvailableTable(TestCase):
+    def setUp(self):
+        Guest.objects.create(
+            email="test@testcase.no",
+            first_name="test",
+            last_name="case"
+        )
+
+        Table.objects.create(
+            id=1,
+            restaurant=Restaurant.objects.first(),
+            number_of_seats=5
+        )
+
+        Reservation.objects.create(
+            id=1,
+            guest=Guest.objects.get(email="test@testcase.no"),
+            number_of_people=4,
+            start_date_time=datetime.now() + timedelta(hours=4),
+            end_date_time=datetime.now() + timedelta(hours=6),
+            table=Table.objects.get(id=1),
+            walkin=1,
+        )
+
+        Reservation.objects.create(
+            id=2,
+            guest=Guest.objects.get(
+                email="test@testcase.no"
+            ),
+            number_of_people=4,
+            start_date_time=datetime.now() + timedelta(hours=7),
+            end_date_time=datetime.now() + timedelta(hours=9),
+            table=Table.objects.get(id=1),
+            walkin=0,
+        )
+
+    def test_get_available_times(self):
+        print(get_available_times(5, datetime.now() + timedelta(hours=4)))
