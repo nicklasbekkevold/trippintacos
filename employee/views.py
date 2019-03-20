@@ -197,30 +197,13 @@ def showRes(request, date):
                 year) and res.start_date_time.month == int(month):
             reservations_this_date.append(res)
 
-    lst = list()
-    table_ids = list()
-    time_slots = list()
-    slot_number = 0
-    while slot_number < 26:
-        for reservation in reservations_this_date:
-            start = reservation.start_date_time.time()
-            end = reservation.end_date_time.time()
-            index = 2 * (start.hour % 12) + start.minute // 30
-            duration = ((end.hour - start.hour) * 60 + (end.minute - start.minute)) // 30
-            print(slot_number, index)
-            if index == slot_number:
-                time_slots.append({
-                    'info': reservation,
-                    'duration': duration,
-                })
-                slot_number += duration
-                break
-        else:
-            time_slots.append({
-                'info': '',
-                'duration': '',
-            })
-            slot_number += 1
+    table_list = list()
+    tables = Table.objects.all()
+    for table in tables:
+        res_this_table = list()
+        for res in reservations_this_date:
+            if res.table == table:
+                res_this_table.append(res)
 
         table_list.append({
             'table': 'Bord ' + str(table.id),
