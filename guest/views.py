@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from reservations.forms import ReservationForm
-from .models import Guest
+from guest.models import Guest
 from employee.helpers import send_confirmation, deleteGuest
 from reservations.forms import DynamicReservationForm, GuestReservationForm
 from reservations.models import Guest
@@ -12,7 +12,7 @@ from guest.forms import DeleteMeForm
 from django.core.exceptions import ObjectDoesNotExist
 
 
-def guest(request):
+def guest_page(request):
 
     if request.method == 'POST':
         guestForm = GuestReservationForm(request.POST)
@@ -21,15 +21,19 @@ def guest(request):
         if guestForm.is_valid():
             email = guestForm.cleaned_data['email'].lower()
             email_liste = []
-            for each in Guest.objects.all():
-                if each.email is not None:
-                    email_liste.append(each.email.lower())
+            for guestobj in Guest.objects.all():
+                if guestobj.email is not None:
+                    email_liste.append(guestobj.email.lower())
 
             if email not in email_liste:
-                guest = Guest(email=email, first_name=guestForm.cleaned_data['first_name'], last_name=guestForm.cleaned_data['last_name'])
+                guest = Guest(
+                    email=email,
+                    first_name=guestForm.cleaned_data['first_name'],
+                    last_name=guestForm.cleaned_data['last_name'])
                 guest.save()
             else:
                 guest = Guest.objects.all().get(email=email)
+
         if reservationForm.is_valid():
             date = reservationForm.cleaned_data['start_date']
             time = reservationForm.cleaned_data['start_time']

@@ -32,7 +32,9 @@ class DynamicReservationForm(forms.ModelForm):
                 },
                 choices=AVAILABLE_TIMES
             ),
-            'reminder': forms.CheckboxInput(),
+            'reminder': forms.CheckboxInput(
+
+            ),
         }
         
         def __init__(self, *args, **kwargs):
