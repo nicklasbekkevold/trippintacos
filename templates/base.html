@@ -4,14 +4,64 @@
 <head>
     <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
     <link rel="shortcut icon" href="media/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="{% static 'css/formstyling.css' %}">
     <meta charset="UTF-8">
     {% if title %}
         <title>Trippin' Tacos - {{ title }}</title>
     {% else %}
         <title>Trippin' Tacos</title>
-    {% endif %}
-    {% block head %}
-    {% endblock %}
+{% endif %}
+
+<style>
+/* Style The Dropdown Button */
+.dropbtn {
+  background-color: #ffc107;
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+}
+
+/* The container <div> - needed to position the dropdown content */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color:	#ffc107;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {background-color: #f1f1f1}
+
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+/* Change the background color of the dropdown button when the dropdown content is shown */
+.dropdown:hover .dropbtn {
+  background-color: #ffc107;
+}
+</style>
+
+{% block head %}
+{% endblock %}
 </head>
 
 <body>
@@ -25,23 +75,29 @@
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle"
                     aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarToggle">
-                <div class="navbar-nav mr-auto">
-                    <a class="nav-item nav-link" href="{% url 'guest' %}">Hjem</a>
-                    <a class="nav-item nav-link" href="{% url 'guest' %}">Meny</a>
-                    <a class="nav-item nav-link" href="{% url 'cancel' %}">Kanseller bestilling</a>
-                </div>
-                <!-- Navbar Right Side -->
-                <div class="navbar-nav">
-                    {% if user.is_authenticated %}
-                        <i><a class="nav-item nav-link" href="{% url 'edit' %}">Endre reservasjon</a></i>
-                        <i><a class="nav-item nav-link" href="{% url 'employee' %}">Reservasjoner</a></i>
-                        <i><a class="nav-item nav-link" href="{% url 'logout' %}">Log ut</a></i>
-                        <i><a class="nav-item nav-link" href="{% url 'statistikk' %}">Statistikk</a></i>
-                    {% else %}
-                        <i><a class="nav-item nav-link" href="{% url 'login' %}">Ansatt</a></i>
-                    {% endif %}
+                </button>
+                <div class="collapse navbar-collapse" id="navbarToggle">
+                    <div class="navbar-nav mr-auto">
+                        <a class="nav-item nav-link" href="{% url 'guest' %}">Hjem</a>
+                        <a class="nav-item nav-link" href="{% url 'guest' %}">Meny</a>
+                        <a class="nav-item nav-link" href="{% url 'guest' %}">...</a>
+                    </div>
+                    <!-- Navbar Right Side -->
+                    <div class="navbar-nav">
+                        {% if user.is_authenticated %}
+                            <div class="dropdown">
+                              <button class="dropbtn">Ansatt</button>
+                              <div class="dropdown-content">
+                                  <a class="nav-item nav-link" href="{% url 'employee' %}">Reservasjoner</a>
+                                  <a class="nav-item nav-link" href="{% url 'edit' %}">Endre reservasjon</a>
+                                  <a class="nav-item nav-link" href="{% url 'statistikk' %}">Statistikk</a>
+                                 <b><a class="nav-item nav-link" href="{% url 'logout' %}">Log ut</a></b>
+                              </div>
+                            </div>
+                        {% else %}
+                            <i><a class="nav-item nav-link" href="{% url 'login' %}">Ansatt</a></i>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
         </div>

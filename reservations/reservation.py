@@ -1,5 +1,5 @@
 from datetime import timedelta
-from .models import Reservation, Table
+from reservations.models import Reservation, Table
 from datetime import datetime
 from matplotlib import pyplot as plt
 import mpld3

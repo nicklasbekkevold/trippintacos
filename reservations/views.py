@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .forms import ReservationForm, CancelForm
+from reservations.forms import ReservationForm, CancelForm
 from django.shortcuts import redirect
 from guest.models import *
 from reservations.models import *
@@ -29,7 +29,7 @@ def booking(request):
             success = make_reservation(Restaurant.objects.first(), guest, form.cleaned_data['start_date_time'],
                                        form.cleaned_data['number_of_people'], 0, reminder=form.cleaned_data['reminder'])
             if success:
-                send_confirmation(guest.email, Reservation.objects.all().get(id=success['reservation']))
+                send_confirmation(guest, Reservation.objects.all().get(id=success['reservation']))
                 return render(request, 'reservations/success.html')
             else:
                 return render(request, 'not_success.html')
@@ -52,3 +52,6 @@ def cancel(request):
     else:
         form = CancelForm()
         return render(request, 'cancel.html', {'form': form})
+
+def termsandconditions(request):
+    return render(request, 'termsandconditions.html')

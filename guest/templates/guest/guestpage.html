@@ -1,5 +1,6 @@
 {% extends 'base.html'%}
 {% load static %}
+{% load crispy_forms_tags %}
 
 {% block head %}
     {% load bootstrap4 %}       {# import bootstrap4/bootstrap3 #}
@@ -22,13 +23,38 @@
             <div class="card-body">
               <h2 class="card-title">Reserver bord:</h2>
                     <h5 class="card-subtitle mb-2 text-muted">Velkommen til Trippin' Tacos - forbered deg på en kulinarisk reise du sent vil glemme!</h5>
+                <h6 class="card-title">"*" betyr obligatorisk felt</h6>
               <p class="card-text"> <br>
-                <form method="post">
+                <form method="POST" id="reservationForm" data-available-times-url="{% url 'ajax_load_available_times' %}" novalidate>
                     {% csrf_token %}
-                    {{ form.as_p }}
+                    <table>
+                    {{ guestForm|crispy }}
+                    {{ reservationForm|crispy }}
+                    </table>
                     <button type="submit" class="btn btn-outline-success">Send inn</button>
                 </form>
+                <div>
+                    Ønsker du kansellere din bestilling? Klikk <a href="{% url 'cancel' %}">her</a>
+                </div>
             </div>
         </div>
     </div>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script>
+        $("#datepicker").change(function () {
+            
+            var url = $("#reservationForm").attr("data-available-times-url");  // get the url of the `load_cities` view
+            var dateId = $(this).val();  // get the selected country ID from the HTML input
+            $.ajax({                       // initialize an AJAX request
+                url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+                data: {
+                    'start_date': dateId        // add the country id to the GET parameters
+                },
+                success: function (data) {   // `data` is the return of the `load_cities` view function
+                    $("#timepicker").html(data);  // replace the contents of the city input with the data that came from the server
+                },
+            });
+
+        });
+    </script>
 {% endblock %}

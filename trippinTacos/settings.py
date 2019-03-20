@@ -27,7 +27,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'lry^$zfx8ca0y^x%deyi=6t7$yhhly8cct9h^*3t38%$zovxry'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -41,12 +41,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'crispy_forms',
     'guest',
     'manager',
     'employee',
     'reservations',
     'bootstrap4',
     'bootstrap_datepicker_plus',
+
 ]
 
 BOOTSTRAP4 = {
@@ -165,3 +167,5 @@ try:
     from trippinTacos.local_settings import *
 except Exception as e:
    pass
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'

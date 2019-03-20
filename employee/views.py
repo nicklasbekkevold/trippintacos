@@ -43,7 +43,7 @@ class Employee(TemplateView):
 
         context = {
             'title': 'Ansatt',
-            'form': DateForm(initial={'_': datetime(datetime.now().year, datetime.now().month, datetime.now().day)}),
+            'form': DateForm(initial={'reservation_date': datetime(datetime.now().year, datetime.now().month, datetime.now().day)}),
             'reservations': showRes(request, datetime.strftime(
                 datetime(datetime.now().year, datetime.now().month, datetime.now().day), '%Y-%m-%d')),
             'time_range': range(12, 25),
@@ -53,17 +53,17 @@ class Employee(TemplateView):
 
         if request.POST.get('showRes') == 'showRes':
             '''
-            print(request.GET.get('_'))
-            date = request.GET.get('_').split(' ')
+            print(request.GET.get('reservation_date'))
+            date = request.GET.get('reservation_date').split(' ')
             day = date[1][0:2]
             month = MONTHS[date[2]]
             year = date[-1]
             updated_request = request.GET.copy()
-            updated_request.update({'_': year + "-" + month + "-" + day})
+            updated_request.update({'reservation_date': year + "-" + month + "-" + day})
             form = DateForm(updated_request)
             if form.is_valid():
-                # tables = showRes(request, form.cleaned_data['_'])
-                showRes(request, form.cleaned_data['_'])
+                # tables = showRes(request, form.cleaned_data['reservation_date'])
+                showRes(request, form.cleaned_data['reservation_date'])
                 # context['reservations'] = tables
                 #print("ADDED")
                 # return render(request, )
@@ -73,14 +73,14 @@ class Employee(TemplateView):
         print("CONTEXT: ", context)
         return render(request, self.template_name, context)
             '''
-            date = request.POST.get('_').split(' ')
+            date = request.POST.get('reservation_date').split(' ')
             day = date[1][0:2]
             month = MONTHS[date[2]]
             year = date[-1]
             full_date = year + "-" + month + "-" + day
             # print("FULL DATE: " + full_date)
             context['reservations'] = showRes(request, full_date)
-            context['form'] = DateForm(initial={'_': request.POST.get('_')})
+            context['form'] = DateForm(initial={'reservation_date': request.POST.get('reservation_date')})
             # print(context)
             return render(request, self.template_name, context)
         elif request.POST.get('booking') == 'booking':
@@ -98,7 +98,7 @@ class Employee(TemplateView):
     def get(self, request):
         context = {
             'title': 'Ansatt',
-            'form': DateForm(initial={'_': datetime(datetime.now().year, datetime.now().month, datetime.now().day)}),
+            'form': DateForm(initial={'reservation_date': datetime(datetime.now().year, datetime.now().month, datetime.now().day)}),
             'reservations': showRes(request, datetime.strftime(
                 datetime(datetime.now().year, datetime.now().month, datetime.now().day), '%Y-%m-%d')),
             'time_range': range(12, 25),
@@ -113,12 +113,16 @@ class Employee(TemplateView):
 def walkin(request):
     form = WalkinForm(request.POST)
     if form.is_valid():
-        first_name = form.cleaned_data['first_name'].lower()
-        guest = Guest(first_name=form.cleaned_data['first_name'])
+        guest = Guest(first_name=form.cleaned_data['first_name'],
+                      )
         guest.save()
+        success = make_reservation(Restaurant.objects.first(), 
+                                   guest, 
+                                   form.cleaned_data['start_date_time'],
+                                   form.cleaned_data['number_of_people'], 
+                                   1, 
+                                   0)
 
-        success = make_reservation(Restaurant.objects.first(), guest, form.cleaned_data['start_date_time'],
-                                   form.cleaned_data['number_of_people'], 1, 0)
         if success:
             return True
         else:
@@ -131,7 +135,8 @@ def booking(request):
         email = form.cleaned_data['email'].lower()
         email_liste = []
         for each in Guest.objects.all():
-            email_liste.append(each.email.lower())
+            if each.email is not None:
+                email_liste.append(each.email.lower())
         if email not in email_liste:
             guest = Guest(email=email,
                           first_name=form.cleaned_data['first_name'],
@@ -140,10 +145,13 @@ def booking(request):
             guest.save()
         else:
             guest = Guest.objects.all().get(email=email)
-        success = make_reservation(Restaurant.objects.first(), guest, form.cleaned_data['start_date_time'],
-                                   form.cleaned_data['number_of_people'], 0, reminder=form.cleaned_data['reminder'])
+        success = make_reservation(Restaurant.objects.first(), 
+                                   guest, form.cleaned_data['start_date_time'],
+                                   form.cleaned_data['number_of_people'], 
+                                   0, 
+                                   reminder=form.cleaned_data['reminder'])
         if success:
-            send_confirmation(guest.email, Reservation.objects.all().get(id=success['reservation']))
+            send_confirmation(guest, Reservation.objects.all().get(id=success['reservation']))
             return True
         else:
             return False
@@ -161,7 +169,7 @@ def showRes(request, date):
             for reservation in res_this_table:
                 start = reservation.start_date_time.time()
                 end = reservation.end_date_time.time()
-                index = 2 * (start.hour % 12) + start.minute // 30 + 2  # TODO fix timezone - remove +2
+                index = 2 * (start.hour % 12) + start.minute // 30
                 duration = ((end.hour - start.hour) * 60 + (end.minute - start.minute)) // 30
                 if index == slot_number:
                     time_slots.append({
