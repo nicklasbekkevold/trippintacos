@@ -4,7 +4,7 @@ from reservations.models import Reservation, Restaurant, Table
 from django.contrib.auth.decorators import login_required
 from reservations.models import Reservation, Restaurant
 from guest.models import Guest
-from employee.forms import DateForm, EditReservationFrom
+from employee.forms import DateForm, EditReservationFrom, statisticInputForm
 from reservations.forms import ReservationForm, WalkinForm
 from reservations.reservation import make_reservation
 from django.contrib.auth.decorators import login_required
@@ -13,6 +13,7 @@ from datetime import datetime
 from django.views.generic import TemplateView
 from employee.helpers import send_confirmation, edit
 from django.utils.decorators import method_decorator
+from reservations.reservation import get_total_on_weekday, get_average_capacity, matplotfuckeroo, count_reservations, count_unique_guests
 
 # Create your views here.
 
@@ -153,7 +154,6 @@ def booking(request):
 
 
 def showRes(request, date):
-
     def compute_time_slots(res_this_table):
         time_slots = list()
         slot_number = 0
@@ -161,8 +161,8 @@ def showRes(request, date):
             for reservation in res_this_table:
                 start = reservation.start_date_time.time()
                 end = reservation.end_date_time.time()
-                index = 2*(start.hour%12) + start.minute//30 + 2 #TODO fix timezone - remove +2 
-                duration = ((end.hour - start.hour)*60 + (end.minute - start.minute)) // 30
+                index = 2 * (start.hour % 12) + start.minute // 30 + 2  # TODO fix timezone - remove +2
+                duration = ((end.hour - start.hour) * 60 + (end.minute - start.minute)) // 30
                 if index == slot_number:
                     time_slots.append({
                         'info': reservation,
@@ -175,9 +175,9 @@ def showRes(request, date):
                     'info': '',
                     'duration': '',
                 })
-                slot_number += 1 
+                slot_number += 1
         return time_slots
-        
+
     date = date.split("-")
     year = date[0]
     month = date[1]
@@ -185,7 +185,6 @@ def showRes(request, date):
 
     reservations_this_date = list()
     for res in Reservation.objects.all():
-        # print(res.start_date_time.day, res.start_date_time.year, res.start_date_time.month)
         if res.start_date_time.day == int(day) and res.start_date_time.year == int(
                 year) and res.start_date_time.month == int(month):
             reservations_this_date.append(res)
@@ -242,3 +241,67 @@ def editReservation(request):
         form = EditReservationFrom()
 
         return render(request, 'editreservation.html', {'form': form})
+
+
+def showStatistikk(request):
+    if request.method == 'POST':
+        form = statisticInputForm(request.POST)
+        if form.is_valid():
+            input = form.cleaned_data['day']
+
+            input = dayToInt(input)
+
+            html_code = matplotfuckeroo(get_average_capacity(input), input)
+
+            return render(request, 'statistikk.html', {'code': html_code, 'form': form, 'tall': count_reservations()})
+
+    form = statisticInputForm(request.POST)
+    html_code = matplotfuckeroo(get_average_capacity(0), 0)
+    return render(request, 'statistikk.html', {'form': form, 'code': html_code, 'tall': count_reservations(),'totguests': count_unique_guests() })
+
+
+
+
+
+def dayToInt(day):
+    liste = ["Mandag", "Tirsdag", "Onsdag", "Torsdag", "Fredag", "Lørdag", "Søndag"]
+    i = 0
+    for each in liste:
+        if each == day:
+            return i
+        i += 1
+
+'''def allTimeVisits(request):
+    pass
+'''
+
+
+''''
+def cloud_gen(request):
+   if request.method == 'POST':
+       form = CharForm(request.POST)
+       if form.is_valid():
+           text = form.cleaned_data['post']
+           phrases = ''
+           stopWords = ''
+
+           MyData= dict(countWords(text, phrases, stopWords, True))
+           wc = WordCloud(scale=10, max_words=100).generate_from_frequencies(MyData)
+
+           plt.figure(figsize=(32,18))
+           plt.imshow(wc, interpolation="bilinear", aspect='auto')
+
+           fig = plt.gcf()
+           buf = io.BytesIO()
+           fig.savefig(buf, format='png')
+           buf.seek(0)
+           string = base64.b64encode(buf.read())
+
+           uri = 'data:image/png;base64,' + urllib.parse.quote(string)
+
+           args = {'form':form, 'text':text, 'image':uri}
+           return render(request, 'wordcloudgen/cloud_gen.html', args)
+   else:
+       form = CharForm()
+       return render(request, 'wordcloudgen/cloud_gen.html', {'form':form})
+'''

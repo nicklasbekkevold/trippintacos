@@ -2,8 +2,19 @@ from datetime import timedelta
 from .models import Reservation, Table
 from datetime import datetime
 from matplotlib import pyplot as plt
+import mpld3
 import numpy as np
 from guest.models import *
+import cgi
+
+from io import *
+
+from io import BytesIO
+
+try:
+    from StringIO import StringIO
+except ImportError:
+    from io import StringIO
 
 
 def get_next_available_table(restaurant, reservation_date_time, number_of_people, minutes_slot=120):
@@ -52,7 +63,7 @@ def get_next_available_table(restaurant, reservation_date_time, number_of_people
         restaurant=restaurant,
         restaurant__opening_time__lte=str(reservation_date_time.hour) + ":" + str(reservation_date_time.minute),
         restaurant__closing_time__gte=str((reservation_date_time + timedelta(hours=temp_time_hardcode)).hour) + ":" +
-        str((reservation_date_time + timedelta(hours=temp_time_hardcode)).minute),
+                                      str((reservation_date_time + timedelta(hours=temp_time_hardcode)).minute),
         number_of_seats__gte=number_of_people).exclude(id__in=tables_booked_ids).order_by('number_of_seats')
     if tables.count() == 0:
         return None
@@ -67,7 +78,8 @@ def make_reservation(restaurant, guest, reservation_date_time, number_of_people,
     print("TABLE:", table)
     if table:
         delta = timedelta(seconds=60 * minutes_slot)
-        reservation = Reservation(guest=guest, reminder=reminder, number_of_people=number_of_people, start_date_time=reservation_date_time,
+        reservation = Reservation(guest=guest, reminder=reminder, number_of_people=number_of_people,
+                                  start_date_time=reservation_date_time,
                                   end_date_time=reservation_date_time + delta, created_date=datetime.now(), table=table,
                                   walkin=walkin)
         reservation.save()
@@ -86,7 +98,7 @@ def count_unique_guests():
 
 
 def get_total_on_weekday(dayofweek: int):
-    cap = [[], [0]*12, [0]*12]
+    cap = [[], [0] * 12, [0] * 12]
     for i in range(12, 24):
         cap[0].append(i)
     resStart = datetime.today().date()
@@ -107,13 +119,14 @@ def get_total_on_weekday(dayofweek: int):
     return cap, resStart
 
 
-def get_average_capacity(dayofweek: int): # 0 is monday, 6 is sunday
+def get_average_capacity(dayofweek: int):  # 0 is monday, 6 is sunday
     cap, res_start = get_total_on_weekday(dayofweek)
     week_difference = (datetime.today().date() - res_start).days // 7
     for i in range(12):
         cap[1][i] = cap[1][i] / week_difference
         cap[2][i] = cap[2][i] / week_difference
     return cap
+
 
 def matplotfuckeroo(capacity_matrix, dayofweek):
     res_count = capacity_matrix[1]
@@ -122,8 +135,8 @@ def matplotfuckeroo(capacity_matrix, dayofweek):
     width = 0.15
 
     fig, ax = plt.subplots()
-    rects1 = ax.bar(ind - width/2, res_count, width, color='SkyBlue', label='Reservations')
-    rects2 = ax.bar(ind + width/2, guest_count, width, color='IndianRed', label='Guests')
+    rects1 = ax.bar(ind - width / 2, res_count, width, color='SkyBlue', label='Reservations')
+    rects2 = ax.bar(ind + width / 2, guest_count, width, color='IndianRed', label='Guests')
 
     ax.set_ylabel('Count')
     ax.set_xticklabels('timeOfDay')
@@ -135,9 +148,31 @@ def matplotfuckeroo(capacity_matrix, dayofweek):
     autolabel(ax, rects1, "left")
     autolabel(ax, rects2, "right")
 
-    plt.show()
 
-def autolabel(ax, rects, xpos='center',):
+
+
+    return mpld3.fig_to_html(fig)
+
+
+'''
+    format = "png"
+    sio = StringIO()
+    plt.savefig(sio, format=format)
+    print("Content-Type: image/%s\n" % format)
+
+    msvcrt.setmode(sys.stdout.fileno(), os.O_BINARY)  # Needed this on windows, IIS
+    sys.stdout.write(sio.getvalue())
+
+    buf = io.BytesIO()
+    plt.savefig(buf, format='png')
+    image_base64 = base64.b64encode(buf.getvalue()).decode('utf-8').replace('\n', '')
+    buf.close()
+    '''
+
+
+
+
+def autolabel(ax, rects, xpos='center', ):
     """
     Attach a text label above each bar in *rects*, displaying its height.
 
@@ -151,5 +186,5 @@ def autolabel(ax, rects, xpos='center',):
 
     for rect in rects:
         height = rect.get_height()
-        ax.text(rect.get_x() + rect.get_width()*offset[xpos], 1.01*height,
+        ax.text(rect.get_x() + rect.get_width() * offset[xpos], 1.01 * height,
                 '{}'.format(int(round(height))), ha=ha[xpos], va='bottom')
