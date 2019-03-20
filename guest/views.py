@@ -2,7 +2,7 @@ from django.shortcuts import render
 from reservations.forms import ReservationForm
 from guest.models import Guest
 from employee.helpers import send_confirmation, deleteGuest
-from reservations.forms import DynamicReservationForm, GuestReservationForm
+from reservations.forms import ReservationForm, GuestReservationForm
 from reservations.models import Guest
 from datetime import datetime
 from employee.helpers import send_confirmation
@@ -16,10 +16,10 @@ def guest_page(request):
 
     if request.method == 'POST':
         guestForm = GuestReservationForm(request.POST)
-        reservationForm = DynamicReservationForm(request.POST)
+        form = ReservationForm(request.POST)
 
-        if guestForm.is_valid():
-            email = guestForm.cleaned_data['email'].lower()
+        if form.is_valid():
+            email = form.cleaned_data['email'].lower()
             email_liste = []
             for guestobj in Guest.objects.all():
                 if guestobj.email is not None:
@@ -28,23 +28,23 @@ def guest_page(request):
             if email not in email_liste:
                 guest = Guest(
                     email=email,
-                    first_name=guestForm.cleaned_data['first_name'],
-                    last_name=guestForm.cleaned_data['last_name'])
+                    first_name=form.cleaned_data['first_name'],
+                    last_name=form.cleaned_data['last_name'])
                 guest.save()
             else:
                 guest = Guest.objects.all().get(email=email)
 
-        if reservationForm.is_valid():
-            date = reservationForm.cleaned_data['start_date']
-            time = reservationForm.cleaned_data['start_time']
+        if form.is_valid():
+            date = form.cleaned_data['start_date']
+            time = form.cleaned_data['start_time']
             start_date_time = datetime.combine(date, time)
             success = make_reservation(
                 Restaurant.objects.first(), 
                 guest, 
                 start_date_time, 
-                reservationForm.cleaned_data['number_of_people'], 
+                form.cleaned_data['number_of_people'], 
                 False, 
-                reminder=reservationForm.cleaned_data['reminder'],
+                reminder=form.cleaned_data['reminder'],
                 minutes_slot=120)
 
             if success:
@@ -57,12 +57,13 @@ def guest_page(request):
     
     else:
         guestForm = GuestReservationForm()
-        reservationForm = DynamicReservationForm()
-        return render(request, 'guestpage.html', {'guestForm': guestForm, 'reservationForm': reservationForm})
+        form = ReservationForm()
+        return render(request, 'guestpage.html', {'form': form})
 
 def load_available_times(request):
     start_date = request.GET.get('start_date')
-    available_times = [tuple([x,x]) for x in range(12, 18)]
+    number_of_people = request.GET.get('number_of_people')
+    available_times = [tuple([x,"{}:30".format(x)]) for x in range(12, 18)]
     return render(request, 'guest/available_times_dropdown_list_options.html', {'available_times': available_times})
 
 
