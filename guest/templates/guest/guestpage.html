@@ -41,17 +41,33 @@
     </div>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script>
-        $("#datepicker").change(function () {
-            
-            var url = $("#reservationForm").attr("data-available-times-url");  // get the url of the `load_cities` view
-            var dateId = $(this).val();  // get the selected country ID from the HTML input
-            $.ajax({                       // initialize an AJAX request
-                url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+        $("#numberpicker").change(function () {
+            var url = $("#reservationForm").attr("data-available-times-url");
+            var starte_date = $("#datepicker").val();
+            var number_of_people = $("#numberpicker").val();
+            $.ajax({
+                url: url,
                 data: {
-                    'start_date': dateId        // add the country id to the GET parameters
+                    'start_date': starte_date,
+                    'number_of_people': number_of_people
                 },
-                success: function (data) {   // `data` is the return of the `load_cities` view function
-                    $("#timepicker").html(data);  // replace the contents of the city input with the data that came from the server
+                success: function (data) {
+                    $("#timepicker").html(data);
+                },
+            });
+        });
+        $("#datepicker").change(function () {
+            var url = $("#reservationForm").attr("data-available-times-url");
+            var starte_date = $("#datepicker").val();
+            var number_of_people = $("#numberpicker").val();
+            $.ajax({
+                url: url,
+                data: {
+                    'start_date': starte_date,
+                    'number_of_people': number_of_people
+                },
+                success: function (data) {
+                    $("#timepicker").html(data);
                 },
             });
 
