@@ -44,6 +44,7 @@ class Reservation(models.Model):
     class Meta:
         app_label = 'reservations'
 
+
 class NewReservation(models.Model):
     guest = models.ForeignKey(Guest, on_delete=models.CASCADE)
     number_of_people = models.IntegerField(default=1)

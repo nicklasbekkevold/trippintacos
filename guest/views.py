@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from reservations.forms import DynamicReservationForm, GuestReservationForm
 from reservations.models import Guest
-from datetime import datetime
+from datetime import datetime, time, date
 from employee.helpers import send_confirmation
 from reservations.reservation import make_reservation
 from reservations.models import Reservation, Restaurant, Table
@@ -17,7 +17,8 @@ def guest(request):
             email = guestForm.cleaned_data['email'].lower()
             email_liste = []
             for each in Guest.objects.all():
-                email_liste.append(each.email.lower())
+                if each.email is not None:
+                    email_liste.append(each.email.lower())
 
             if email not in email_liste:
                 guest = Guest(
@@ -28,24 +29,27 @@ def guest(request):
                 guest.save()
             else:
                 guest = Guest.objects.all().get(email=email)
-        if reservationForm.is_valid():
-            date = reservationForm.cleaned_data['start_date']
-            time = reservationForm.cleaned_data['start_time']
-            start_date_time = datetime.combine(date, time)
-            success = make_reservation(
-                Restaurant.objects.first(), 
-                guest, 
-                start_date_time, 
-                reservationForm.cleaned_data['number_of_people'], 
-                False, 
-                reminder=reservationForm.cleaned_data['reminder'],
-                minutes_slot=120)
 
-            if success:
-                send_confirmation(guest.email, Reservation.objects.all().get(id=success['reservation']))
-                return render(request, 'reservations/success.html') # TODO change this
-            else:
-                return render(request, 'reservations/not_success.html') # TODO change this
+            if reservationForm.is_valid():
+                date = reservationForm.cleaned_data['start_date']
+
+                time = datetime.strptime(str(reservationForm.cleaned_data['start_time']), "%H").time()
+                start_date_time = datetime.combine(date, time)
+
+                success = make_reservation(
+                    Restaurant.objects.first(),
+                    guest,
+                    start_date_time,
+                    reservationForm.cleaned_data['number_of_people'],
+                    False,
+                    reminder=reservationForm.cleaned_data['reminder'],
+                    minutes_slot=120)
+
+                if success:
+                    send_confirmation(guest.email, Reservation.objects.all().get(id=success['reservation']))
+                    return render(request, 'reservations/success.html') # TODO change this
+                else:
+                    return render(request, 'reservations/not_success.html') # TODO change this
         else:
             pass # form is invalid
     

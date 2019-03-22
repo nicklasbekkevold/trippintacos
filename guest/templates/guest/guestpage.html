@@ -23,7 +23,7 @@
               <h2 class="card-title">Reserver bord:</h2>
                     <h5 class="card-subtitle mb-2 text-muted">Velkommen til Trippin' Tacos - forbered deg på en kulinarisk reise du sent vil glemme!</h5>
               <p class="card-text"> <br>
-                <form method="POST" id="reservationForm" data-available-times-url="{% url 'ajax_load_available_times' %}" novalidate>
+                <form method="POST" id="reservationForm" data-available-times-url="{% url 'ajax_load_available_times' %}">
                     {% csrf_token %}
                     <table>
                     {{ guestForm.as_table }}
