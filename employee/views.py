@@ -4,7 +4,7 @@ from reservations.models import Reservation, Restaurant, Table
 from django.contrib.auth.decorators import login_required
 from reservations.models import Reservation, Restaurant
 from guest.models import Guest
-from employee.forms import DateForm, EditReservationFrom, statisticInputForm
+from employee.forms import DateForm, EditReservationFrom, statisticInputForm, EditTableForm
 from reservations.forms import ReservationForm, WalkinForm
 from reservations.reservation import make_reservation
 from django.contrib.auth.decorators import login_required
@@ -296,3 +296,43 @@ def cloud_gen(request):
        form = CharForm()
        return render(request, 'wordcloudgen/cloud_gen.html', {'form':form})
 '''
+
+
+def editTable(request):
+    if request.method == 'POST':
+        form = EditTableForm(request.POST)
+
+        print(request.POST)
+        if form.is_valid():
+            table = Table.objects.all().get(id=int(form.cleaned_data['id']))
+            table.number_of_seats = int(form.cleaned_data['number_of_people'])
+            table.save()
+
+            QS_tables = Table.objects.all()
+            tables = list()
+
+            for table in QS_tables:
+                tables.append(table.id)
+
+            return render(request, 'editTable.html',
+                          {'success': True,
+                           'form': EditTableForm(initial={'id': int(form.cleaned_data['id'])}),
+                           'requested_id': int(form.cleaned_data['id']),
+                           'table_ids': tables})
+        return render(request, 'editTable.html', {'not_success': True})
+
+    else:
+        print(request.GET)
+        if request.GET.get('id') is not None:
+            requested_id = request.GET.get('id')
+        else:
+            requested_id = None
+
+        QS_tables = Table.objects.all()
+        tables = list()
+
+        for table in QS_tables:
+            tables.append(table.id)
+
+        form = EditTableForm(initial={'id': requested_id})
+        return render(request, 'editTable.html', {'table_ids': tables, 'requested_id': requested_id, 'form': form})
