@@ -69,16 +69,16 @@ def load_available_times(request):
 
 def deleteMe(request):
     if request.method == 'POST':
-        reservationForm = DeleteMeForm(request.POST)
+        deleteForm = DeleteMeForm(request.POST)
 
-        if reservationForm.is_valid():
+        if deleteForm.is_valid():
             try:
-                guest = Guest.objects.all().get(email=form.cleaned_data['email'].lower())
+                guest = Guest.objects.all().get(email=deleteForm.cleaned_data['email'].lower())
                 try:
-                    guest_with_last_name = Guest.objects.all().get(email=guest.email.lower(), last_name=form.cleaned_data['last_name'])
+                    guest_with_last_name = Guest.objects.all().get(email=guest.email.lower(), last_name=deleteForm.cleaned_data['last_name'])
 
                     if deleteGuest(guest_with_last_name):
-                        return render(request, 'deleteMe.html', {'sucess': True, 'email': reservationForm.cleaned_data['email'], 'last_name': reservationForm.cleaned_data['last_name'], 'form': DeleteMeForm()})
+                        return render(request, 'deleteMe.html', {'sucess': True, 'email': deleteForm.cleaned_data['email'], 'last_name': deleteForm.cleaned_data['last_name'], 'form': DeleteMeForm()})
 
                 except ObjectDoesNotExist:
                     return render(request, 'deleteMe.html', {'form': DeleteMeForm(), 'invalid_last_name': True})
@@ -107,6 +107,6 @@ def deleteMe(request):
                 return render(request, 'deleteMe.html', {'error': True, 'form': DeleteMeForm()})
             return render(request, 'deleteMe.html', {'sucess': True, 'form': DeleteMeForm(), 'email': email})
 
-        reservationForm = DeleteMeForm()
-        return render(request, 'deleteMe.html', {'form': reservationForm})
+        deleteForm = DeleteMeForm()
+        return render(request, 'deleteMe.html', {'form': deleteForm})
 
