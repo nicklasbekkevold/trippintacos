@@ -16,7 +16,7 @@ def guest_page(request):
 
     if request.method == 'POST':
         reservationForm = ReservationForm(request.POST)
-
+        print("ERRORS:", reservationForm.errors)
         if reservationForm.is_valid():
             print("HEI")
             email = reservationForm.cleaned_data['email'].lower()
@@ -54,7 +54,7 @@ def guest_page(request):
                 return render(request, 'reservations/not_success.html') # TODO change this
         else:
             print("ELSE")
-            pass # reservationForm is invalid
+            return render(request, 'guest/errors.html', {'html': reservationForm.errors})
     
     else:
         guestForm = GuestReservationForm()

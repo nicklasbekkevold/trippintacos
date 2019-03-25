@@ -64,6 +64,7 @@ class ReservationForm(forms.Form):
         ),
         label= 'Antall gjester'
     )
+
     start_date = forms.DateField(
         widget=forms.DateInput(
             attrs={
