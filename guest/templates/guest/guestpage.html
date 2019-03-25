@@ -28,8 +28,10 @@
                 <h6>"*" betyr obligatorisk felt</h6>
             </div>
             <div class="card-body">
-                <p class="card-text"> <br>
-                <form method="POST" id="reservationForm" data-available-times-url="{% url 'ajax_load_available_times' %}" novalidate>
+              <h2 class="card-title">Reserver bord:</h2>
+                    <h5 class="card-subtitle mb-2 text-muted">Velkommen til Trippin' Tacos - forbered deg på en kulinarisk reise du sent vil glemme!</h5>
+              <p class="card-text"> <br>
+                <form method="POST" id="reservationForm" data-available-times-url="{% url 'ajax_load_available_times' %}">
                     {% csrf_token %}
                     {{ form|crispy }}
                     <button type="submit" class="btn btn-outline-success">Send inn</button>
