@@ -50,10 +50,10 @@ class GuestReservationForm(forms.ModelForm):
 
 
 class ReservationForm(forms.Form):
-    first_name = forms.CharField(max_length=40, required=True,label='Fornavn')
+    first_name = forms.CharField(max_length=40, required=True, label='Fornavn')
     last_name = forms.CharField(max_length=40, required=False, label='Etternavn')
     email = forms.EmailField(required=True, label='E-post')
-    reminder = forms.BooleanField(required=False, label = 'Påminnelse på e-post')
+    reminder = forms.BooleanField(required=False, label='Påminnelse på e-post')
     number_of_people = forms.IntegerField(
         widget=forms.NumberInput(
             attrs={
@@ -61,7 +61,7 @@ class ReservationForm(forms.Form):
                 'min': 1
             }
         ),
-        label= 'Antall gjester'
+        label='Antall gjester'
     )
     start_date = forms.DateField(
         widget=forms.DateInput(
@@ -69,7 +69,7 @@ class ReservationForm(forms.Form):
                 'id': 'datepicker',
                 'type': 'date'
             },
-            format=['%d/%m/%Y %H:%M'],
+            format=['%d/%m/%Y'],
         )
     )
     start_time = forms.ChoiceField(
@@ -79,14 +79,9 @@ class ReservationForm(forms.Form):
             },
         ),
         choices=[("", "----------")],
-        label= 'Starttid for reservasjon'
+        label='Starttid for reservasjon'
     )
-    end_date_time = forms.DateTimeField(
-        widget=forms.DateInput(
-
-        ), label = 'Sluttid for reservasjon'
-    )
-    i_have_read_and_agree_checkbox = forms.BooleanField(label=mark_safe('Jeg har lest og forstått <a href=termsandconditions/ target="_blank"> Brukervilkår og Personvernpolicy</a>'),required=True)
+    i_have_read_and_agree_checkbox = forms.BooleanField(required=True, label=mark_safe('Jeg har lest og forstått <a href=termsandconditions/ target="_blank"> Brukervilkår og Personvernpolicy</a>'))
 
 
 class WalkinForm(forms.Form):

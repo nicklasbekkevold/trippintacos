@@ -53,10 +53,10 @@ def guest_page(request):
                 else:
                     return render(request, 'reservations/not_success.html') # TODO change this
         else:
-            pass # reservationForm is invalid
+            reservationForm = ReservationForm()
+            return render(request, 'guestpage.html', {'form': reservationForm})
     
     else:
-        guestForm = GuestReservationForm()
         reservationForm = ReservationForm()
         return render(request, 'guestpage.html', {'form': reservationForm})
 
