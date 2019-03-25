@@ -1,16 +1,13 @@
+from datetime import datetime
 from django.shortcuts import render
 from django.contrib import messages
-from reservations.forms import ReservationForm
-from guest.models import Guest
-from employee.helpers import send_confirmation, deleteGuest
-from reservations.forms import ReservationForm, GuestReservationForm
-from reservations.models import Guest
-from datetime import datetime, time, date
-from employee.helpers import send_confirmation
-from reservations.reservation import make_reservation
-from reservations.models import Reservation, Restaurant, Table
-from guest.forms import DeleteMeForm
 from django.core.exceptions import ObjectDoesNotExist
+from reservations.forms import ReservationForm
+from reservations.reservation import make_reservation
+from reservations.models import Reservation, Restaurant
+from guest.models import Guest
+from guest.forms import DeleteMeForm
+from employee.helpers import send_confirmation, deleteGuest
 
 
 def guest_page(request):

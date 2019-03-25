@@ -1,52 +1,6 @@
 from django import forms
-from reservations.models import NewReservation, Reservation, Restaurant, Table
-from guest.models import Guest
-#from bootstrap_datepicker_plus import *
 from django.utils.safestring import mark_safe
-
-#class DynamicReservationForm(forms.ModelForm):
-#
-#    class Meta:
-#        model = NewReservation
-#        fields = ('number_of_people', 'start_date', 'start_time', 'end_time', 'reminder')
-#        AVAILABLE_TIMES = [("", "---------")]
-#        widgets = {
-#            'number_of_people': forms.NumberInput(
-#                attrs={
-#                    'id': 'numberpicker',
-#                    'min': 1,
-#                }
-#            ),
-#            'start_date': forms.DateInput(
-#                attrs={
-#                    'id': 'datepicker',
-#                },
-#                options={
-#                    "format": "DD/MM/YYYY",
-#                    "locale": "nb",
-#                    'calendarWeeks': True,
-#                }
-#            ),
-#            'start_time': forms.Select(
-#                attrs={
-#                    'id': 'timepicker',
-#                },
-#                choices=AVAILABLE_TIMES
-#            ),
-#            'reminder': forms.CheckboxInput(
-#
-#            ),
-#        }
-#        
-#        def __init__(self, *args, **kwargs):
-#            super().__init__(*args, **kwargs)
-#
-
-class GuestReservationForm(forms.ModelForm):
-
-    class Meta:
-        model = Guest
-        fields = ('email', 'first_name', 'last_name')
+from reservations.models import Restaurant, Table
 
 
 class ReservationForm(forms.Form):
