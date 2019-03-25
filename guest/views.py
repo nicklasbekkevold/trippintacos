@@ -114,3 +114,5 @@ def deleteMe(request):
         delete_me_form = DeleteMeForm()
         return render(request, 'deleteMe.html', {'form': delete_me_form})
 
+def terms_and_conditions(request):
+    return render(request, 'termsandconditions.html')
