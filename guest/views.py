@@ -18,6 +18,7 @@ def guest_page(request):
         reservationForm = ReservationForm(request.POST)
 
         if reservationForm.is_valid():
+            print("HEI")
             email = reservationForm.cleaned_data['email'].lower()
             email_liste = []
             for guestobj in Guest.objects.all():
@@ -33,26 +34,26 @@ def guest_page(request):
             else:
                 guest = Guest.objects.all().get(email=email)
 
-            if reservationForm.is_valid():
-                date = reservationForm.cleaned_data['start_date']
-                time = datetime.strptime(str(reservationForm.cleaned_data['start_time']), "%H").time()
-                start_date_time = datetime.combine(date, time)
+            date = reservationForm.cleaned_data['start_date']
+            time = datetime.strptime(str(reservationForm.cleaned_data['start_time']), "%H").time()
+            start_date_time = datetime.combine(date, time)
 
-                success = make_reservation(
-                    Restaurant.objects.first(),
-                    guest,
-                    start_date_time,
-                    reservationForm.cleaned_data['number_of_people'],
-                    False,
-                    reminder=reservationForm.cleaned_data['reminder'],
-                    minutes_slot=120)
+            success = make_reservation(
+                Restaurant.objects.first(),
+                guest,
+                start_date_time,
+                reservationForm.cleaned_data['number_of_people'],
+                False,
+                reminder=reservationForm.cleaned_data['reminder'],
+                minutes_slot=120)
 
-                if success:
-                    send_confirmation(guest.email, Reservation.objects.all().get(id=success['reservation']))
-                    return render(request, 'reservations/success.html') # TODO change this
-                else:
-                    return render(request, 'reservations/not_success.html') # TODO change this
+            if success:
+                send_confirmation(guest.email, Reservation.objects.all().get(id=success['reservation']))
+                return render(request, 'reservations/success.html') # TODO change this
+            else:
+                return render(request, 'reservations/not_success.html') # TODO change this
         else:
+            print("ELSE")
             pass # reservationForm is invalid
     
     else:

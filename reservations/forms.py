@@ -42,6 +42,7 @@ from django.utils.safestring import mark_safe
 #            super().__init__(*args, **kwargs)
 #
 
+
 class GuestReservationForm(forms.ModelForm):
 
     class Meta:
