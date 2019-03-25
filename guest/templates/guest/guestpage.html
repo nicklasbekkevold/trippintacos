@@ -27,6 +27,13 @@
                 <h6>"*" betyr obligatorisk felt</h6>
             </div>
             <div class="card-body">
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
                 <form method="POST" id="reservationForm" data-available-times-url="{% url 'ajax_load_available_times' %}">
                     {% csrf_token %}
                     {{ form|crispy }}

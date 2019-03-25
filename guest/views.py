@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.contrib import messages
 from reservations.forms import ReservationForm
 from guest.models import Guest
 from employee.helpers import send_confirmation, deleteGuest
@@ -50,14 +51,19 @@ def guest_page(request):
 
                 if success:
                     send_confirmation(guest, Reservation.objects.all().get(id=success['reservation']))
-                    return render(request, 'reservations/success.html') # TODO change this
+                    messages.success(request, 'Reservasjonen din er registrert.')
+                    reservation_form = ReservationForm()
+                    return render(request, 'guestpage.html', {'form': reservation_form})
                 else:
-                    return render(request, 'reservations/not_success.html') # TODO change this
+                    messages.error(request, 'Noe gikk galt. Venligst prøv igjen')
+                    reservation_form = ReservationForm()
+                    return render(request, 'guestpage.html', {'form': reservation_form})
         else:
             reservation_form = ReservationForm()
             return render(request, 'guestpage.html', {'form': reservation_form})
     
     else:
+        messages.error(request, 'Det er noe galt med utfyllingen av feltene')
         reservation_form = ReservationForm()
         return render(request, 'guestpage.html', {'form': reservation_form})
 
