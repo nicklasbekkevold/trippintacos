@@ -36,3 +36,9 @@ class statisticInputForm(forms.Form):
     liste = ["Mandag", "Tirsdag", "Onsdag", "Torsdag", "Fredag", "Lørdag", "Søndag"]
     day = forms.ChoiceField(required=True, choices=[(x, x) for x in liste],label= "Velg dag:")
 
+
+class EditTableForm(forms.Form):
+    id = forms.IntegerField(widget=forms.NumberInput(attrs={
+        'readonly': True,
+    }))
+    number_of_people = forms.IntegerField()

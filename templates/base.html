@@ -88,25 +88,17 @@
                             <div class="dropdown">
                               <button class="dropbtn">Ansatt</button>
                               <div class="dropdown-content">
-                                <i><a class="nav-item nav-link" href="{% url 'employee' %}">Reservasjoner</a></i>
-                                 <i><a class="nav-item nav-link" href="{% url 'logout' %}">Logg ut</a></i>
+                                  <a class="nav-item nav-link" href="{% url 'employee' %}">Reservasjoner</a>
+                                  <a class="nav-item nav-link" href="{% url 'edit' %}">Endre reservasjon</a>
+                                  <a class="nav-item nav-link" href="{% url 'editTable' %}">Endre bord</a>
+                                  <a class="nav-item nav-link" href="{% url 'statistikk' %}">Statistikk</a>
+                                 <b><a class="nav-item nav-link" href="{% url 'logout' %}">Logg ut</a></b>
                               </div>
                             </div>
                         {% else %}
                             <i><a class="nav-item nav-link" href="{% url 'login' %}">Ansatt</a></i>
                         {% endif %}
                     </div>
-                </div>
-                <!-- Navbar Right Side -->
-                <div class="navbar-nav">
-                    {% if user.is_authenticated %}
-                        <i><a class="nav-item nav-link" href="{% url 'edit' %}">Endre reservasjon</a></i>
-                        <i><a class="nav-item nav-link" href="{% url 'employee' %}">Reservasjoner</a></i>
-                        <i><a class="nav-item nav-link" href="{% url 'logout' %}">Logg ut</a></i>
-                        <i><a class="nav-item nav-link" href="{% url 'statistikk' %}">Statistikk</a></i>
-                    {% else %}
-                        <i><a class="nav-item nav-link" href="{% url 'login' %}">Ansatt</a></i>
-                    {% endif %}
                 </div>
             </div>
         </div>

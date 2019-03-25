@@ -20,6 +20,7 @@ from django.conf import settings
 
 urlpatterns = [
     url(r'^$', views.Employee.as_view(), name='employee'),
-    url(r'edit', views.editReservation, name='edit'),
-    url(r'statistikk', views.showStatistikk, name='statistikk')
+    url(r'edit/', views.editReservation, name='edit'),
+    url(r'statistikk/', views.showStatistikk, name='statistikk'),
+    url(r'edittable/', views.editTable, name='editTable'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
