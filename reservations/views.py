@@ -1,13 +1,9 @@
 from django.shortcuts import render
+from guest.models import Guest
 from reservations.forms import ReservationForm, CancelForm
-from django.shortcuts import redirect
-from guest.models import *
-from reservations.models import *
+from reservations.models import Reservation, Restaurant
 from reservations.reservation import make_reservation
 from employee.helpers import send_confirmation, send_cancellation
-
-
-# Create your views here.
 
 
 def booking(request):
@@ -22,7 +18,6 @@ def booking(request):
             if email not in email_liste:
                 guest = Guest(email=email, first_name=form.cleaned_data['first_name'],
                               last_name=form.cleaned_data['last_name'])
-                #guest = Guest.objects.create(email=email, reminder=form.cleaned_data['reminder'])
                 guest.save()
             else:
                 guest = Guest.objects.all().get(email=email)

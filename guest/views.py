@@ -71,7 +71,7 @@ def load_available_times(request):
     return render(request, 'guest/available_times_dropdown_list_options.html', {'available_times': available_times})
 
 
-def deleteMe(request):
+def delete_me(request):
     if request.method == 'POST':
         delete_me_form = DeleteMeForm(request.POST)
 
@@ -82,15 +82,15 @@ def deleteMe(request):
                     guest_with_last_name = Guest.objects.all().get(email=guest.email.lower(), last_name=delete_me_form.cleaned_data['last_name'])
 
                     if deleteGuest(guest_with_last_name):
-                        return render(request, 'deleteMe.html', {'sucess': True, 'email': delete_me_form.cleaned_data['email'], 'last_name': delete_me_form.cleaned_data['last_name'], 'form': DeleteMeForm()})
+                        return render(request, 'delete_me.html', {'sucess': True, 'email': delete_me_form.cleaned_data['email'], 'last_name': delete_me_form.cleaned_data['last_name'], 'form': DeleteMeForm()})
 
                 except ObjectDoesNotExist:
-                    return render(request, 'deleteMe.html', {'form': DeleteMeForm(), 'invalid_last_name': True})
+                    return render(request, 'delete_me.html', {'form': DeleteMeForm(), 'invalid_last_name': True})
 
             except ObjectDoesNotExist:
-                return render(request, 'deleteMe.html', {'form': DeleteMeForm(), 'invalid_email': True})
+                return render(request, 'delete_me.html', {'form': DeleteMeForm(), 'invalid_email': True})
 
-            return render(request, 'deleteMe.html', {'unexpected': True})
+            return render(request, 'delete_me.html', {'unexpected': True})
 
     else:
         if request.GET.get('email') is not None and request.GET.get('last_name') is not None:
@@ -108,11 +108,11 @@ def deleteMe(request):
             try:
                 deleteGuest(Guest.objects.all().get(last_name=last_name, email=email))
             except ObjectDoesNotExist:
-                return render(request, 'deleteMe.html', {'error': True, 'form': DeleteMeForm()})
-            return render(request, 'deleteMe.html', {'sucess': True, 'form': DeleteMeForm(), 'email': email})
+                return render(request, 'delete_me.html', {'error': True, 'form': DeleteMeForm()})
+            return render(request, 'delete_me.html', {'sucess': True, 'form': DeleteMeForm(), 'email': email})
 
         delete_me_form = DeleteMeForm()
-        return render(request, 'deleteMe.html', {'form': delete_me_form})
+        return render(request, 'delete_me.html', {'form': delete_me_form})
 
 def terms_and_conditions(request):
     return render(request, 'termsandconditions.html')
