@@ -78,10 +78,12 @@ class ReservationForm(forms.Form):
                 'id': 'timepicker'
             },
         ),
-        choices=[("", "----------")],
+        choices=[tuple(["{}:00".format(x), "{}:00".format(x)]) for x in range(12, 24)],
         label='Starttid for reservasjon'
     )
-    i_have_read_and_agree_checkbox = forms.BooleanField(required=True, label=mark_safe('Jeg har lest og forstått <a href=termsandconditions/ target="_blank"> Brukervilkår og Personvernpolicy</a>'))
+    i_have_read_and_agree_checkbox = forms.BooleanField(
+        required=True,
+        label=mark_safe('Jeg har lest og forstått <a href=termsandconditions/ target="_blank"> Brukervilkår og Personvernpolicy</a>'))
 
 
 class WalkinForm(forms.Form):
@@ -111,8 +113,8 @@ class TableForm(forms.ModelForm):
 
 
 class CancelForm(forms.Form):
-    id = forms.CharField(label= 'Reservasjons-ID (mottatt på e-mail)')
-    email = forms.CharField(label= 'E-mail')
+    id = forms.CharField(label='Reservasjons-ID (mottatt på e-mail)')
+    email = forms.CharField(label='E-mail')
 
     class Meta:
         fields = ('id', 'email')
