@@ -162,6 +162,7 @@ EMAIL_HOST_USER = 'TrippinTacosRestaurant@gmail.com'
 EMAIL_HOST_PASSWORD = 'GruppE29'
 EMAIL_PORT = 587
 
+# SOUTH_TESTS_MIGRATE = False
 
 try:
     from trippinTacos.local_settings import *

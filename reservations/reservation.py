@@ -6,6 +6,8 @@ import mpld3
 import numpy as np
 from guest.models import *
 import cgi
+from django.db import models as djangomodels
+from employee import helpers
 
 from io import *
 
@@ -188,3 +190,50 @@ def autolabel(ax, rects, xpos='center', ):
         height = rect.get_height()
         ax.text(rect.get_x() + rect.get_width() * offset[xpos], 1.01 * height,
                 '{}'.format(int(round(height))), ha=ha[xpos], va='bottom')
+                
+
+def get_available_times(numberOfPersons:int, dateOfReservation:djangomodels.DateField):
+    """
+    :param numberOfPersons: Number of people in pending reservation
+    :param date: date of proposed reservation
+    :return: list of available times for reservation at date and with numberOfPeople on form (datetime,
+    """
+    # convert dateOfReservation to datetime
+    _day = dateOfReservation.day
+    _month = dateOfReservation.month
+    _year = dateOfReservation.year
+
+    d_start = datetime(_year, _month, _day, 12, 0, 0).replace(tzinfo=None)
+    d_end = datetime(_year, _month, _day, 23, 59, 59).replace(tzinfo=None)
+
+
+    # filter by date to get all reservations on date equal to dateOfReservation
+    print("Reservations: ", Reservation.objects.all())
+    '''
+    QS_reservations_at_date = Reservation.objects.filter(start_date_time__year=_year) #, start_date_time__month=_month, start_date_time__year=_year)
+    QS_reservations_at_date = QS_reservations_at_date.filter(start_date_time__month=_month)
+    QS_reservations_at_date = QS_reservations_at_date.filter(start_date_time__day=_day)
+    '''
+    QS_reservations_at_date = Reservation.objects.filter(start_date_time__gte=d_start, end_date_time__lte=d_end)
+    # use for loop to iterate through times and check for collision for it and two hours forward
+    # Check for collisions and too early vs too late
+    # if a time is available the tuple (time, something) will be added to the returned-list
+    available_times_list = []
+    tables = Table.objects.filter(number_of_seats__gte=numberOfPersons)
+    datetime_time = datetime(_year, _month, _day, 11)
+    find = False
+    coll = False
+    while datetime_time.replace(tzinfo=None) <= datetime(_year, _month, _day, 22).replace(tzinfo=None):
+        for _table in tables:
+            QS_reservations_at_date_at_table = QS_reservations_at_date.filter(table=_table.id)
+            for reservation in QS_reservations_at_date_at_table:
+                if helpers.checkForCollision(datetime_time, datetime_time + timedelta(hours=2), reservation):
+                    coll = True
+                    break  # if there is a collision, we break and go on to a new table
+            if not coll:
+                available_times_list.append((datetime_time + timedelta(hours=1), datetime_time.hour + 1 + datetime_time.minute/60))  # else we append the available list with the tuple of its time and ___?___
+                break
+        datetime_time = datetime_time + timedelta(minutes=30)
+    print(available_times_list)
+    return available_times_list
+
