@@ -200,5 +200,6 @@ def get_available_times(numberOfPersons:int, dateOfReservation:djangomodels.Date
                 available_times_list.append((datetime_time + timedelta(hours=1), datetime_time.hour + 1 + datetime_time.minute/60))  # else we append the available list with the tuple of its time and ___?___
                 break
         datetime_time = datetime_time + timedelta(minutes=30)
+    print(available_times_list)
     return available_times_list
 
