@@ -6,14 +6,13 @@ from reservations.models import Reservation, Restaurant
 from guest.models import Guest
 from employee.forms import DateForm, EditReservationFrom, statisticInputForm, EditTableForm
 from reservations.forms import ReservationForm, WalkinForm
-from reservations.reservation import make_reservation
+from reservations.reservation import make_reservation, get_available_times
 from django.contrib.auth.decorators import login_required
 from django.views.generic import TemplateView
 from datetime import datetime
 from django.views.generic import TemplateView
 from employee.helpers import send_confirmation, edit
 from django.utils.decorators import method_decorator
-import pytz
 from reservations.reservation import get_total_on_weekday, get_average_capacity, matplotfuckeroo, count_reservations, count_unique_guests
 
 # Create your views here.
@@ -142,6 +141,13 @@ def booking(request):
     else:
         form = ReservationForm()
         return render(request, 'newwalkin.html', {'form': form})
+
+
+def load_available_times(request):
+    start_date = request.GET.get('start_date')
+    number_of_people = int(request.GET.get('number_of_people'))
+    available_times = get_available_times(number_of_people, start_date)
+    return render(request, 'guest/available_times_dropdown_list_options.html', {'available_times': available_times})
 
 
 def showRes(request, date):

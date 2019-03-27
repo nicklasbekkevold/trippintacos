@@ -56,7 +56,7 @@
         <div class="col-6">
             <div class="collapse multi-collapse" id="multiCollapseExample1">
                 <div class="card card-body">
-                    <form method="post">
+                    <form method="POST" id="walkinForm" data-available-times-url="{% url 'ajax_load_available_times' %}">
                         {% csrf_token %}
                         {{ walkinForm|crispy }}
                         <button type="submit" value="walkin" class="btn btn-info">Send inn</button>
@@ -69,7 +69,7 @@
         <div class="col-6">
             <div class="collapse multi-collapse" id="multiCollapseExample2">
                 <div class="card card-body">
-                    <form method="post">
+                    <form method="POST" id="reservationForm" data-available-times-url="{% url 'ajax_load_available_times' %}">
                         {% csrf_token %}
                         {{ reservationForm|crispy }}
                         <button type="submit" value="booking" class="btn btn-info">Send inn</button>
@@ -115,5 +115,71 @@
       </table>
     </div>
 
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script>
+        $("#walkinnumberpicker").change(function () {
+            var url = $("#walkinForm").attr("data-available-times-url");
+            var starte_date = $("#walkindatepicker").val();
+            var number_of_people = $("#walkinnumberpicker").val();
+            $.ajax({
+                url: url,
+                data: {
+                    'start_date': starte_date,
+                    'number_of_people': number_of_people
+                },
+                success: function (data) {
+                    $("#walkintimepicker").html(data);
+                },
+            });
+        });
 
-{% endblock content %}
+        $('#walkindatepicker').change(function () {
+            var url = $("#reservationForm").attr("data-available-times-url");
+            var starte_date = $("#walkindatepicker").val();
+            var number_of_people = $("#walkinnumberpicker").val();
+            $.ajax({
+                url: url,
+                data: {
+                    'start_date': starte_date,
+                    'number_of_people': number_of_people
+                },
+                success: function (data) {
+                    $("#walkintimepicker").html(data);
+                },
+            });
+
+        });
+        $("#numberpicker").change(function () {
+            var url = $("#reservationForm").attr("data-available-times-url");
+            var starte_date = $("#datepicker").val();
+            var number_of_people = $("#numberpicker").val();
+            $.ajax({
+                url: url,
+                data: {
+                    'start_date': starte_date,
+                    'number_of_people': number_of_people
+                },
+                success: function (data) {
+                    $("#timepicker").html(data);
+                },
+            });
+        });
+
+        $('#datepicker').change(function () {
+            var url = $("#reservationForm").attr("data-available-times-url");
+            var starte_date = $("#datepicker").val();
+            var number_of_people = $("#numberpicker").val();
+            $.ajax({
+                url: url,
+                data: {
+                    'start_date': starte_date,
+                    'number_of_people': number_of_people
+                },
+                success: function (data) {
+                    $("#timepicker").html(data);
+                },
+            });
+
+        });
+    </script>
+{% endblock  %}

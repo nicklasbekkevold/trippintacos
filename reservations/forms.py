@@ -42,15 +42,33 @@ class ReservationForm(forms.Form):
 
 class WalkinForm(forms.Form):
 
-    first_name = forms.CharField(max_length=40, required=True, initial="Walk in")
-    number_of_people = forms.IntegerField()
-    start_date_time = forms.DateTimeField(
+    first_name = forms.CharField(max_length=40, required=True, label='Fornavn', initial="Walk in")
+    number_of_people = forms.IntegerField(
+        widget=forms.NumberInput(
+            attrs={
+                'id': 'walkinnumberpicker',
+                'min': 1
+            }
+        ),
+        label='Antall gjester'
+    )
+    start_date = forms.DateField(
         widget=forms.DateInput(
+            attrs={
+                'id': 'walkindatepicker',
+                'type': 'date'
+            },
+            format=['%d/%m/%Y'],
         )
     )
-    end_date_time = forms.DateTimeField(
-        widget=forms.DateInput(
-        )
+    start_time = forms.ChoiceField(
+        widget=forms.Select(
+            attrs={
+                'id': 'walkintimepicker'
+            },
+        ),
+        choices=[tuple(["{}:{}".format(hours, minuttes), "{}:{}".format(hours, minuttes)]) for hours in range(12, 23) for minuttes in ["00", "30"]][:-1],
+        label='Starttid for reservasjon'
     )
 
 
