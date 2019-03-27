@@ -14,8 +14,8 @@ def guest_page(request):
 
     if request.method == 'POST':
         reservation_form = ReservationForm(request.POST)
-
         print(reservation_form.errors)
+
         if reservation_form.is_valid():
             email = reservation_form.cleaned_data['email'].lower()
             email_liste = []
@@ -36,7 +36,7 @@ def guest_page(request):
                 start_date = reservation_form.cleaned_data['start_date']
                 start_time = datetime.strptime(str(reservation_form.cleaned_data['start_time']), "%H:%M").time()
                 start_date_time = datetime.combine(start_date, start_time)
-                print(start_date_time)
+                
                 success = make_reservation(
                     Restaurant.objects.first(),
                     guest,
@@ -48,19 +48,19 @@ def guest_page(request):
 
                 if success:
                     send_confirmation(guest, Reservation.objects.all().get(id=success['reservation']))
-                    messages.success(request, 'Reservasjonen din er registrert.')
+                    messages.success(request, 'Reservasjonen din er registrert')
                     reservation_form = ReservationForm()
                     return render(request, 'guestpage.html', {'form': reservation_form})
                 else:
-                    messages.error(request, 'Noe gikk galt. Venligst prøv igjen')
+                    messages.warning(request, 'Noe gikk galt. Vennligst prøv igjen')
                     reservation_form = ReservationForm()
                     return render(request, 'guestpage.html', {'form': reservation_form})
         else:
+            messages.error(request, 'Det er noe galt med utfyllingen av feltene')
             reservation_form = ReservationForm()
             return render(request, 'guestpage.html', {'form': reservation_form})
     
     else:
-        messages.error(request, 'Det er noe galt med utfyllingen av feltene')
         reservation_form = ReservationForm()
         return render(request, 'guestpage.html', {'form': reservation_form})
 

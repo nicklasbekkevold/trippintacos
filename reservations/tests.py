@@ -1,4 +1,5 @@
-from django.test import TestCase
+from django.test import TestCase, Client
+from django.urls import reverse
 from django.utils import timezone
 from reservations.models import Reservation, Restaurant, Table
 from guest.models import Guest
@@ -6,6 +7,8 @@ from datetime import *
 from employee.helpers import *
 from django.utils import timezone
 from reservations.reservation import *
+from reservations.forms import ReservationForm
+
 # Create your tests here.
 
 
@@ -257,3 +260,46 @@ class TestGetAverageCapacity(TestCase):
         print(capMat[2])
 
         matplotfuckeroo(capMat, datetime.today().weekday())
+
+
+class TestViews(TestCase):
+
+    @classmethod
+    def setUp(self):
+        self.client = Client()
+        self.guest_url = reverse('termsandconditions')
+
+
+    def test_termsandconditions_GET(self):
+        response = self.client.get(self.guest_url)
+        self.assertEquals(response.status_code, 200)
+        self.assertTemplateUsed(response, 'base.html')
+        self.assertTemplateUsed(response, 'termsandconditions.html')
+
+    def testCheckedTermsAndConditions(self):
+        data = {
+            'first_name': 'Sander',
+            'last_name': 'Lindberg',
+            'email': 'Sander.b.lindberg@gmail.com',
+            'reminder': False,
+            'number_of_people': 4,
+            'start_date_time': datetime.now(),
+            'end_date_time': datetime.now() + timedelta(hours=2),
+            'i_have_read_and_agree_checkbox': False,
+        }
+        form = ReservationForm(data=data)
+        self.assertFalse(form.is_valid())
+
+        data = {
+            'first_name': 'Sander',
+            'last_name': 'Lindberg',
+            'email': 'Sander.b.lindberg@gmail.com',
+            'reminder': False,
+            'number_of_people': 4,
+            'start_date_time': datetime.now(),
+            'end_date_time': datetime.now() + timedelta(hours=2),
+            'i_have_read_and_agree_checkbox': True,
+        }
+        form = ReservationForm(data=data)
+
+        self.assertTrue(form.is_valid())
