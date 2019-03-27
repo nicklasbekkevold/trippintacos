@@ -18,16 +18,16 @@ If you're using any code style like xo, standard etc. That will help others whil
 
 Include logo/demo screenshot etc.
 
+
 # Tech/framework used
 
 **Built with:**
 *  Django
-*  Matplotlib
 *  Bootstrap4
 
 # Features
 
-Stand-out features of our project
+Stand-out features of our project:
 
 # Code Example
 
@@ -35,13 +35,15 @@ Stand-out features of our project
 
 # API Reference
 
+the reference docs
+
 # Tests
 
 # How to use?
 
 # Contribute
 
-vipps @ 47627220
+Doge @ DHkxeBdcg5SVLUEyt4QmXojboic6qnEmHS
 
 # Credits
 
