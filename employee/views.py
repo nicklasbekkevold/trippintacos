@@ -234,6 +234,7 @@ def editReservation(request):
         return render(request, 'editreservation.html', {'form': form})
 
 
+@login_required
 def showStatistikk(request):
     if request.method == 'POST':
         form = statisticInputForm(request.POST)
@@ -297,7 +298,7 @@ def cloud_gen(request):
        return render(request, 'wordcloudgen/cloud_gen.html', {'form':form})
 '''
 
-
+@login_required
 def editTable(request):
     if request.method == 'POST':
         form = EditTableForm(request.POST)
