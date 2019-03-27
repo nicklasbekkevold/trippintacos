@@ -1,6 +1,7 @@
 from django.db import models
 from guest.models import Guest
 from django.utils import timezone
+import pytz
 
 
 class Restaurant(models.Model):

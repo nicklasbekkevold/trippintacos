@@ -32,7 +32,7 @@ class ReservationForm(forms.Form):
                 'id': 'timepicker'
             },
         ),
-        choices=[tuple(["{}:00".format(x), "{}:00".format(x)]) for x in range(15, 24)],
+        choices=[tuple(["{}:{}".format(x, y), "{}:{}".format(x, y)]) for x in range(12, 24) for y in ["00", "30"]],
         label='Starttid for reservasjon'
     )
     i_have_read_and_agree_checkbox = forms.BooleanField(
