@@ -36,15 +36,16 @@ def guest_page(request):
                 start_date = reservation_form.cleaned_data['start_date']
                 start_time = datetime.strptime(str(reservation_form.cleaned_data['start_time']), "%H:%M").time()
                 start_date_time = datetime.combine(start_date, start_time)
-                
+
+                print(start_date_time)
+
                 success = make_reservation(
                     Restaurant.objects.first(),
                     guest,
                     start_date_time,
                     reservation_form.cleaned_data['number_of_people'],
                     False,
-                    reminder=reservation_form.cleaned_data['reminder'],
-                    minutes_slot=120)
+                    reminder=reservation_form.cleaned_data['reminder'])
 
                 if success:
                     send_confirmation(guest, Reservation.objects.all().get(id=success['reservation']))
@@ -63,6 +64,7 @@ def guest_page(request):
     else:
         reservation_form = ReservationForm()
         return render(request, 'guestpage.html', {'form': reservation_form})
+
 
 def load_available_times(request):
     start_date = request.GET.get('start_date')
