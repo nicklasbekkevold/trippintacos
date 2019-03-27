@@ -33,37 +33,32 @@ def get_next_available_table(restaurant, reservation_date_time, number_of_people
     tables_booked_ids = []
     date = datetime(2019, 3, 27, 12, 0, 0, 0)
     reservations = Reservation.objects.filter(start_date_time__lt=reservation_date_time)
-    print("Reservations: ", reservations)
 
     # ekskluder allerede bookede bord som inneholder den initielle booking_date_time
 
-    tables_booked = Reservation.objects.filter(start_date_time__lte=lower_bound_time,
-                                               end_date_time__gte=lower_bound_time).values('table')
+    tables_booked = Reservation.objects.filter(start_date_time__lt=lower_bound_time,
+                                               end_date_time__gt=lower_bound_time).values('table')
     tables_booked_ids_temp = [x['table'] for x in tables_booked]
     tables_booked_ids = tables_booked_ids + tables_booked_ids_temp
 
-    print("Tables:", tables_booked_ids)
     # ekskluder allerede bookede bord som har den etterspurte sluttiden
 
     tables_booked = Reservation.objects.filter(start_date_time__lt=upper_bound_time,
                                                end_date_time__gt=upper_bound_time).values('table')
     tables_booked_ids_temp = [x['table'] for x in tables_booked]
     tables_booked_ids = tables_booked_ids + tables_booked_ids_temp
-    print("Tables:", tables_booked_ids)
     # ekskluderer bookede bord som er inni den aktuelle tidsperioden. er dette jalla?
 
     tables_booked = Reservation.objects.filter(start_date_time__gt=lower_bound_time,
                                                end_date_time__lt=upper_bound_time).values('table')
     tables_booked_ids_temp = [x['table'] for x in tables_booked]
     tables_booked_ids = tables_booked_ids + tables_booked_ids_temp
-    print("Tables:", tables_booked_ids)
     # ekskluderer bord som inkluderer den etterspurte booking-luken
 
     tables_booked = Reservation.objects.filter(start_date_time__lt=lower_bound_time,
                                                end_date_time__gt=upper_bound_time).values('table')
     tables_booked_ids_temp = [x['table'] for x in tables_booked]
     tables_booked_ids = tables_booked_ids + tables_booked_ids_temp
-    print("Tables:", tables_booked_ids)
     # lager liste med alle bord av nødvendig størrelse, tilgjengelige i restauranten
     # ekskluderer den forrige listen av utilgjengelige bord. Listen er rangert fra minst til størst tilgjengelig kapasitet,
     # og det ledige bordet med minst kapasitet returneres.
@@ -320,7 +315,6 @@ def get_available_times(numberOfPeople:int, startDate:str):
 
             for reservation in QS_reservations_at_date_at_table:
                 if helpers.checkForCollision(datetime_counter, datetime_counter + timedelta(hours=2), reservation):
-                    print("Collision on ", datetime_counter, "Table: ", _table)
                     coll = True
                     if str(datetime_counter.minute) == '30':
                         datetimeTemp = str((datetime_counter).hour) + ":30"

@@ -351,6 +351,6 @@ class TestGetAvailableTable(TestCase):
                           ('14:00', '14:00'),
                           ('14:30', '14:30'),
                           ('15:00', '15:00'),
-                          ], (5, '2019-03-27'))
+                          ], get_available_times(5, '2019-03-27'))
 
         self.assertEqual([], get_available_times(6, '2019-03-27'))
