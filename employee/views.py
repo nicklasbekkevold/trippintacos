@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 from reservations.models import Reservation, Restaurant, Table
-from django.contrib.auth.decorators import login_required
 from reservations.models import Reservation, Restaurant
 from guest.models import Guest
 from employee.forms import DateForm, EditReservationFrom, statisticInputForm, EditTableForm
@@ -53,47 +53,29 @@ class Employee(TemplateView):
         }
 
         if request.POST.get('showRes') == 'showRes':
-            '''
-            print(request.GET.get('reservation_date'))
-            date = request.GET.get('reservation_date').split(' ')
-            day = date[1][0:2]
-            month = MONTHS[date[2]]
-            year = date[-1]
-            updated_request = request.GET.copy()
-            updated_request.update({'reservation_date': year + "-" + month + "-" + day})
-            form = DateForm(updated_request)
-            if form.is_valid():
-                # tables = showRes(request, form.cleaned_data['reservation_date'])
-                showRes(request, form.cleaned_data['reservation_date'])
-                # context['reservations'] = tables
-                #print("ADDED")
-                # return render(request, )
-                return
-            else:
-              print("-----------------------From not valid----------------------")
-        print("CONTEXT: ", context)
-        return render(request, self.template_name, context)
-            '''
             date = request.POST.get('reservation_date').split(' ')
             day = date[1][0:2]
             month = MONTHS[date[2]]
             year = date[-1]
             full_date = year + "-" + month + "-" + day
-            # print("FULL DATE: " + full_date)
             context['reservations'] = showRes(request, full_date)
             context['form'] = DateForm(initial={'reservation_date': request.POST.get('reservation_date')})
-            # print(context)
             return render(request, self.template_name, context)
         elif request.POST.get('booking') == 'booking':
             if booking(request):
-                return render(request, 'reservations/success.html')
-            return render(request, 'reservations/not_success.html')
+                messages.success(request, 'Reservasjonen ble registrert')
+                return render(request, self.template_name, context)
+            else:
+                messages.success(request, 'Reservasjonen ble ikke registrert')
+                return render(request, self.template_name, context)
 
         elif request.POST.get('walkin') == 'walkin':
             if walkin(request):
-                return render(request, 'reservations/success.html')
-            return render(request, 'reservations/not_success.html')
+                messages.success(request, 'Walkin ble registrert')
+                return render(request, self.template_name, context)
+            return render(request, self.template_name, context)
         else:
+            messages.warning(request, 'Walkin ble ikke registrert')
             return render(request, self.template_name, context)
 
     def get(self, request):
@@ -235,6 +217,7 @@ def editReservation(request):
         return render(request, 'editreservation.html', {'form': form})
 
 
+@login_required
 def showStatistikk(request):
     if request.method == 'POST':
         form = statisticInputForm(request.POST)
@@ -245,11 +228,11 @@ def showStatistikk(request):
 
             html_code = matplotfuckeroo(get_average_capacity(input), input)
 
-            return render(request, 'statistikk.html', {'code': html_code, 'form': form, 'tall': count_reservations()})
+            return render(request, 'statistikk.html', {'code': html_code, 'form': form, 'tall': count_reservations(),'totguests': count_unique_guests()})
 
     form = statisticInputForm(request.POST)
     html_code = matplotfuckeroo(get_average_capacity(0), 0)
-    return render(request, 'statistikk.html', {'form': form, 'code': html_code, 'tall': count_reservations(),'totguests': count_unique_guests() })
+    return render(request, 'statistikk.html', {'form': form, 'code': html_code, 'tall': count_reservations(),'totguests': count_unique_guests()})
 
 
 
@@ -298,7 +281,7 @@ def cloud_gen(request):
        return render(request, 'wordcloudgen/cloud_gen.html', {'form':form})
 '''
 
-
+@login_required
 def editTable(request):
     if request.method == 'POST':
         form = EditTableForm(request.POST)

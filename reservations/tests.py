@@ -305,7 +305,9 @@ class TestViews(TestCase):
 
         self.assertTrue(form.is_valid())
 
+
 class TestGetAvailableTable(TestCase):
+    
     def setUp(self):
         Guest.objects.create(
             email="test@testcase.no",

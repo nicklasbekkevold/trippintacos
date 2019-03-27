@@ -10,6 +10,7 @@ import cgi
 from django.db import models as djangomodels
 from employee import helpers
 import pytz
+import math
 
 from io import *
 import os
@@ -131,12 +132,22 @@ def get_total_on_weekday(dayofweek: int):
 
 def get_average_capacity(dayofweek: int):  # 0 is monday, 6 is sunday
     cap, res_start = get_total_on_weekday(dayofweek)
-    week_difference = (datetime.today().date() - res_start).days // 7
+    week_difference = ((datetime.today().date() - res_start).days // 7) + 1
     for i in range(12):
-        cap[1][i] = cap[1][i] / week_difference
-        cap[2][i] = cap[2][i] / week_difference
+        cap[1][i] = math.ceil(cap[1][i] / week_difference)
+        cap[2][i] = math.ceil(cap[2][i] / week_difference)
     return cap
 
+
+DAGER = {
+    0:'mandager',
+    1:'tirsdager',
+    2:'onsdager',
+    3:'torsdager',
+    4:'fredager',
+    5:'lørdager',
+    6:'søndager',
+}
 
 def matplotfuckeroo(capacity_matrix, dayofweek):
     res_count = capacity_matrix[1]
@@ -145,12 +156,13 @@ def matplotfuckeroo(capacity_matrix, dayofweek):
     width = 0.15
 
     fig, ax = plt.subplots()
-    rects1 = ax.bar(ind - width / 2, res_count, width, color='SkyBlue', label='Reservations')
-    rects2 = ax.bar(ind + width / 2, guest_count, width, color='IndianRed', label='Guests')
+    rects1 = ax.bar(ind - width / 2, res_count, width, color='SkyBlue', label='Reservasjoner')
+    rects2 = ax.bar(ind + width / 2, guest_count, width, color='IndianRed', label='Gjester')
 
-    ax.set_ylabel('Count')
-    ax.set_xticklabels('timeOfDay')
-    ax.set_title('Count of customers and guests on day' + str(dayofweek))
+    ax.set_ylabel('Antall')
+    #ax.set_xticklabels('timeOfDay')
+    ax.set_xlabel('Klokkeslett')
+    ax.set_title('Antall besøkende på ' + DAGER[dayofweek])
     ax.set_xticks(ind)
     ax.set_xticklabels(('12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23'))
     ax.legend()

@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load crispy_forms_tags %}
 
 {% block head %}
     {% load bootstrap4 %}       {# import bootstrap4/bootstrap3 #}
@@ -19,6 +20,14 @@
                         </div>
                     </div>
                 </form>
+                <br>
+                {% if messages %}
+                  {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}">
+                      {{ message }}
+                    </div>
+                  {% endfor %}
+                {% endif %}
             </div>
             <div class="container" style="margin-top: 100px">
                 <div class="row align-items-center">
@@ -26,7 +35,7 @@
                         <form method="post">
                             {% csrf_token %}
                             {% bootstrap_form form %}
-                            <button id="showRes" name="showRes" value="showRes">Show</button>
+                            <button id="showRes" name="showRes" value="showRes" class="btn btn-info">Vis reservasjoner</button>
                         </form>
                     </div>
                     <div class="col-5">
@@ -44,26 +53,26 @@
         </div>
     </div>
     <div class="row container">
-        <div class="col">
+        <div class="col-6">
             <div class="collapse multi-collapse" id="multiCollapseExample1">
                 <div class="card card-body">
                     <form method="post">
                         {% csrf_token %}
-                        {{ walkinForm.as_p }}
-                        <button type="submit" value="walkin" name="walkin">Save</button>
+                        {{ walkinForm|crispy }}
+                        <button type="submit" value="walkin" class="btn btn-info">Send inn</button>
                     </form>
                 </div>
             </div>
         </div>
     </div>
     <div class="row container">
-        <div class="col">
+        <div class="col-6">
             <div class="collapse multi-collapse" id="multiCollapseExample2">
                 <div class="card card-body">
                     <form method="post">
                         {% csrf_token %}
-                        {{ reservationForm.as_p }}
-                        <button type="submit" value="booking" name="booking">Save</button>
+                        {{ reservationForm|crispy }}
+                        <button type="submit" value="booking" class="btn btn-info">Send inn</button>
                     </form>
                 </div>
             </div>
