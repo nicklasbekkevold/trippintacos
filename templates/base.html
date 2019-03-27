@@ -1,4 +1,5 @@
 {% load static %}
+{% load auth_extras %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -91,7 +92,9 @@
                                   <a class="nav-item nav-link" href="{% url 'employee' %}">Reservasjoner</a>
                                   <a class="nav-item nav-link" href="{% url 'edit' %}">Endre reservasjon</a>
                                   <a class="nav-item nav-link" href="{% url 'editTable' %}">Endre bord</a>
-                                  <a class="nav-item nav-link" href="{% url 'statistikk' %}">Statistikk</a>
+                                  {% if request.user|has_group:"owner" %}
+                                        <a class="nav-item nav-link" href="{% url 'statistikk' %}">Statistikk</a>
+                                  {% endif %}
                                  <b><a class="nav-item nav-link" href="{% url 'logout' %}">Logg ut</a></b>
                               </div>
                             </div>

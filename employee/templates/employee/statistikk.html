@@ -1,7 +1,9 @@
 {% extends 'base.html' %}
+{% load auth_extras %}
 {% block content %}
+{% if request.user|has_group:"owner" %}
+    <div class="container" style="margin-top: 100px">
 
-    <div class="container" style="margin-top: 150px">
         <div class="container-fluid inline-group">
             <div class="row justify-content-center align-items-center">
                 <div class="col-lg-3 bg-warning rounded">
@@ -27,7 +29,16 @@
         </div>
     </div>
 
+
+    {% else %}
+    <div class="container" style="margin-top: 150px">
+         <p>Du har ikke rettigheter til å se dette</p>
+    </div>
+
+
+    {% endif %}
 {% endblock content %}
+
 
 
 
