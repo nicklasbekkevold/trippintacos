@@ -130,6 +130,11 @@ def checkForCollision(start_of_new_res, end_of_new_res, preexisting_res):
     preexisting_end = preexisting_res.end_date_time.replace(tzinfo=None)
     start_of_new_res = start_of_new_res.replace(tzinfo=None)
 
+    # print("Preexisting start", preexisting_start)
+    # print("Preexisting end", preexisting_end)
+    # print("Start_of_new_res", start_of_new_res)
+
+
     if start_of_new_res < preexisting_start and end_of_new_res <= preexisting_start:
         return False
     if start_of_new_res >= preexisting_end and end_of_new_res > preexisting_end:
