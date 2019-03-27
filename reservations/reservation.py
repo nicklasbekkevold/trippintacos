@@ -265,6 +265,7 @@ def get_available_times(numberOfPersons:int, dateOfReservation:str):
                 if helpers.checkForCollision(datetime_time, datetime_time + timedelta(hours=2), reservation):
                     coll = True
                     break  # if there is a collision, we break and go on to a new table
+
             if not coll:
                 if str(datetime_time.minute) == '30':
                     datetimeTemp = str((datetime_time + timedelta(hours=1)).hour) + ":30"
@@ -383,4 +384,4 @@ def get_available_times_v2(numberOfPeople:int, startDate:str):
 print(get_available_times_v2(5, "2019-03-28"))
 """
 
-print(get_available_times(5, "2019-03-28"))
+print(get_available_times(5, "2019-03-27"))
