@@ -20,6 +20,14 @@
                         </div>
                     </div>
                 </form>
+                <br>
+                {% if messages %}
+                  {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}">
+                      {{ message }}
+                    </div>
+                  {% endfor %}
+                {% endif %}
             </div>
             <div class="container" style="margin-top: 100px">
                 <div class="row align-items-center">
@@ -51,7 +59,7 @@
                     <form method="post">
                         {% csrf_token %}
                         {{ walkinForm|crispy }}
-                        <button type="button" value="walkin" class="btn btn-info">Send inn</button>
+                        <button type="submit" value="walkin" class="btn btn-info">Send inn</button>
                     </form>
                 </div>
             </div>
@@ -64,7 +72,7 @@
                     <form method="post">
                         {% csrf_token %}
                         {{ reservationForm|crispy }}
-                        <button type="button" value="booking" class="btn btn-info">Send inn</button>
+                        <button type="submit" value="booking" class="btn btn-info">Send inn</button>
                     </form>
                 </div>
             </div>
