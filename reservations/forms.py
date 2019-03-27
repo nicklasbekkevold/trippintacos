@@ -7,7 +7,7 @@ class ReservationForm(forms.Form):
     first_name = forms.CharField(max_length=40, required=True, label='Fornavn')
     last_name = forms.CharField(max_length=40, required=False, label='Etternavn')
     email = forms.EmailField(required=True, label='E-post')
-    reminder = forms.BooleanField(required=False, label='Påminnelse på e-post')
+    reminder = forms.BooleanField(required=False, label='Jeg ønsker påminnelse på e-post')
     number_of_people = forms.IntegerField(
         widget=forms.NumberInput(
             attrs={
@@ -32,7 +32,7 @@ class ReservationForm(forms.Form):
                 'id': 'timepicker'
             },
         ),
-        choices=[tuple(["{}:00".format(x), "{}:00".format(x)]) for x in range(12, 24)],
+        choices=[tuple(["{}:00".format(x), "{}:00".format(x)]) for x in range(15, 24)],
         label='Starttid for reservasjon'
     )
     i_have_read_and_agree_checkbox = forms.BooleanField(

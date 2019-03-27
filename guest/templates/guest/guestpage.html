@@ -17,30 +17,64 @@
 {% endblock %}
 
 {% block content %}
-    <div class="container" style="margin-top: 30%">
+    <div class="container" style="width: 80%; margin-top: 30%">
         <div class="card">
-            <div class="card-title">
-                <h1>Reserver bord:</h1>
-            </div>
-            <h6>Velkommen til Trippin' Tacos - forbered deg på en kulinarisk reise du sent vil glemme!</h6>
-            <div class="card-subtitle mb-2 text-muted">
-                <h6>"*" betyr obligatorisk felt</h6>
-            </div>
             <div class="card-body">
-                {% if messages %}
-                    {% for message in messages %}
-                        <div class="alert alert-{{ message.tags }}">
-                            {{ message }}
+                <div class="container" style="width: 85%; margin-top: 2.5%">
+                    <h2 class="card-title">Reserver bord</h2>
+                    <h6 class="card-subtitle mb-2 text-muted">Velkommen til Trippin' Tacos - forbered deg på en kulinarisk reise du sent vil glemme!</h6>
+                    <p class="card-text"> <br>
+                        {% if messages %}
+                            {% for message in messages %}
+                                <div class="alert alert-{{ message.tags }}">
+                                    {{ message }}
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                        <form method="POST" id="reservationForm" data-available-times-url="{% url 'ajax_load_available_times' %}">
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                    {{ form.first_name|as_crispy_field }}
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                    {{ form.last_name|as_crispy_field }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                    {{ form.email|as_crispy_field }}
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                    {{ form.number_of_people|as_crispy_field }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                    {{ form.start_date|as_crispy_field}}
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                    {{ form.start_time|as_crispy_field}}
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-6">
+                                    {{ form.reminder|as_crispy_field }}
+                                </div>
+                                <div class="col-10">
+                                    {{ form.i_have_read_and_agree_checkbox|as_crispy_field }}
+                                </div>
+                            </div>
+                            <h7 class="card-title"> <p class="font-weight-bold">"*" angir obligatorisk felt</p></h7>
+                        <br>
+                            <button type="button" class="btn btn-success">Send inn</button>
+                        </form>
+                        <div>
+                            <br> <br>
+                            Ønsker du å kansellere din bestilling? Klikk <a href="{% url 'cancel' %}">her</a>
                         </div>
-                    {% endfor %}
-                {% endif %}
-                <form method="POST" id="reservationForm" data-available-times-url="{% url 'ajax_load_available_times' %}">
-                    {% csrf_token %}
-                    {{ form|crispy }}
-                    <button type="submit" class="btn btn-outline-success">Send inn</button>
-                </form>
-                <br></br>
-                <h6>Ønsker du kansellere din bestilling? Klikk <a href="{% url 'cancel' %}">her</a></h6>
+                </div>
             </div>
         </div>
     </div>
