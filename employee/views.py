@@ -244,11 +244,11 @@ def showStatistikk(request):
 
             html_code = matplotfuckeroo(get_average_capacity(input), input)
 
-            return render(request, 'statistikk.html', {'code': html_code, 'form': form, 'tall': count_reservations()})
+            return render(request, 'statistikk.html', {'code': html_code, 'form': form, 'tall': count_reservations(),'totguests': count_unique_guests()})
 
     form = statisticInputForm(request.POST)
     html_code = matplotfuckeroo(get_average_capacity(0), 0)
-    return render(request, 'statistikk.html', {'form': form, 'code': html_code, 'tall': count_reservations(),'totguests': count_unique_guests() })
+    return render(request, 'statistikk.html', {'form': form, 'code': html_code, 'tall': count_reservations(),'totguests': count_unique_guests()})
 
 
 
