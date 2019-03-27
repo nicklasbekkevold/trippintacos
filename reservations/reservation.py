@@ -122,7 +122,7 @@ def get_total_on_weekday(dayofweek: int):
 
 def get_average_capacity(dayofweek: int):  # 0 is monday, 6 is sunday
     cap, res_start = get_total_on_weekday(dayofweek)
-    week_difference = (datetime.today().date() - res_start).days // 7
+    week_difference = ((datetime.today().date() - res_start).days // 7) + 1
     for i in range(12):
         cap[1][i] = math.ceil(cap[1][i] / week_difference)
         cap[2][i] = math.ceil(cap[2][i] / week_difference)

@@ -34,5 +34,4 @@ class EditReservationFrom(forms.Form):
 
 class statisticInputForm(forms.Form):
     liste = ["Mandag", "Tirsdag", "Onsdag", "Torsdag", "Fredag", "Lørdag", "Søndag"]
-    day = forms.ChoiceField(required=True, choices=[(x, x) for x in liste],label= "Velg dag:")
-
+    day = forms.ChoiceField(required=False, choices=[(x, x) for x in liste], label="Velg dag:")
