@@ -3,11 +3,12 @@ from django.shortcuts import render
 from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
 from reservations.forms import ReservationForm
-from reservations.reservation import make_reservation
+from reservations.reservation import make_reservation # get_available_times_v2
 from reservations.models import Reservation, Restaurant
 from guest.models import Guest
 from guest.forms import DeleteMeForm
 from employee.helpers import send_confirmation, deleteGuest
+import pytz
 
 
 def guest_page(request):
@@ -36,6 +37,7 @@ def guest_page(request):
                 start_date = reservation_form.cleaned_data['start_date']
                 start_time = datetime.strptime(str(reservation_form.cleaned_data['start_time']), "%H:%M").time()
                 start_date_time = datetime.combine(start_date, start_time)
+
                 print(start_date_time)
                 success = make_reservation(
                     Restaurant.objects.first(),
@@ -66,8 +68,8 @@ def guest_page(request):
 
 def load_available_times(request):
     start_date = request.GET.get('start_date')
-    number_of_people = request.GET.get('number_of_people')
-    available_times = [tuple(["{}:00".format(x), "{}:00".format(x)]) for x in range(14, 18)]
+    number_of_people = int(request.GET.get('number_of_people'))
+    available_times = get_available_times_v2(number_of_people, start_date) # [tuple(["{}:00".format(x), "{}:00".format(x)]) for x in range(14, 18)]
     return render(request, 'guest/available_times_dropdown_list_options.html', {'available_times': available_times})
 
 
