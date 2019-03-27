@@ -18,6 +18,8 @@ If you're using any code style like xo, standard etc. That will help others whil
 
 Include logo/demo screenshot etc.
 
+![favicon](http://trippintacos.herokuapp.com/media/favicon.ico)
+
 
 # Tech/framework used
 
