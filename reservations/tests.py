@@ -11,7 +11,7 @@ from reservations.forms import ReservationForm
 
 # Create your tests here.
 
-
+'''
 class GetTablesWithCapacityTestCase(TestCase):
 
     def setUp(self):
@@ -151,7 +151,7 @@ class MakeReservation(TestCase):
             opening_time=datetime.time(12, '%h')
             
         )
-'''
+
 
 
 class TestSendConfirmation(TestCase):
@@ -219,6 +219,7 @@ class TestCountReservations(TestCase):
         self.assertEquals(1, delete(1, "test@testcase.no"))
         self.assertEquals(1, countReservations())
         print(countReservations())
+
 '''
 
 class TestGetAverageCapacity(TestCase):
@@ -303,3 +304,49 @@ class TestViews(TestCase):
         form = ReservationForm(data=data)
 
         self.assertTrue(form.is_valid())
+
+
+
+class TestGetAvailableTable(TestCase):
+    def setUp(self):
+        Guest.objects.create(
+            email="test@testcase.no",
+            first_name="test",
+            last_name="case"
+        )
+
+        Table.objects.create(
+            id=1,
+            restaurant=Restaurant.objects.first(),
+            number_of_seats=5
+        )
+
+        Reservation.objects.create(
+            id=1,
+            guest=Guest.objects.all().get(email="test@testcase.no"),
+            number_of_people=4,
+            start_date_time=datetime(2019, 3, 26, 17),
+            end_date_time=datetime(2019, 3, 26, 19),
+            table=Table.objects.get(id=1),
+            walkin=1,
+        )
+
+        Reservation.objects.create(
+            id=2,
+            guest=Guest.objects.all().get(
+                email="test@testcase.no"
+            ),
+            number_of_people=4,
+            start_date_time=datetime(2019, 3, 26, 20),
+            end_date_time=datetime(2019, 3, 26, 22),
+            table=Table.objects.get(id=1),
+            walkin=0,
+        )
+
+    def test_get_available_times(self):
+        self.assertEqual([(datetime(2019, 3, 26, 12), 12), (datetime(2019, 3, 26, 12, 30), 12.5),
+                          (datetime(2019, 3, 26, 13), 13), (datetime(2019, 3, 26, 13, 30), 13.5),
+                          (datetime(2019, 3, 26, 14), 14), (datetime(2019, 3, 26, 14, 30), 14.5),
+                          (datetime(2019, 3, 26, 15), 15), ], get_available_times(5, datetime.now() + timedelta(hours=4)))
+
+        self.assertEqual([], get_available_times(6, datetime.now() + timedelta(hours=4)))
