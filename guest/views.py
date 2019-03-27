@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
 from reservations.forms import ReservationForm
-from reservations.reservation import make_reservation # get_available_times_v2
+from reservations.reservation import make_reservation, get_available_times_v2
 from reservations.models import Reservation, Restaurant
 from guest.models import Guest
 from guest.forms import DeleteMeForm
