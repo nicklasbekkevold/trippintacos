@@ -307,8 +307,7 @@ def get_available_times_v2(numberOfPeople:int, startDate:str):
             # datetime_counter = datetime(year, month, day, 11)
             QS_reservations_at_date_at_table = reservations_this_date.filter(table=_table.id)
             if len(QS_reservations_at_date_at_table) == 0:
-                for i in times_set:
-                    times_set_v2.add(i)
+                times_set_v2 = times_set_v2.union(times_set)
                 break
 
             for reservation in QS_reservations_at_date_at_table:
