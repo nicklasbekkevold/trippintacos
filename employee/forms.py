@@ -1,6 +1,6 @@
 from django import forms
 from bootstrap_datepicker_plus import DatePickerInput, DateTimePickerInput
-from django.contrib.auth.models import Group
+
 
 
 class DateForm(forms.Form):
@@ -34,8 +34,6 @@ class EditReservationFrom(forms.Form):
 
 
 class statisticInputForm(forms.Form):
-    created = Group.objects.get_or_create(name='new_group')
-
     liste = ["Mandag", "Tirsdag", "Onsdag", "Torsdag", "Fredag", "Lørdag", "Søndag"]
     day = forms.ChoiceField(required=False,choices=[(x, x) for x in liste],label= "Velg dag:")
 
