@@ -42,8 +42,7 @@ class Employee(TemplateView):
         context = {
             'title': 'Ansatt',
             'form': DateForm(initial={'reservation_date': datetime(datetime.now().year, datetime.now().month, datetime.now().day)}),
-            'reservations': showRes(request, datetime.strftime(
-                datetime(datetime.now().year, datetime.now().month, datetime.now().day), '%Y-%m-%d')),
+            'reservations': showRes(request, datetime.strftime(datetime(datetime.now().year, datetime.now().month, datetime.now().day), '%Y-%m-%d')),
             'time_range': range(12, 24),
             'reservationForm': ReservationForm(),
             'walkinForm': WalkinForm(),
@@ -61,6 +60,7 @@ class Employee(TemplateView):
         elif request.POST.get('booking') == 'booking':
             if booking(request):
                 messages.success(request, 'Reservasjonen ble registrert')
+                context['reservations'] = showRes(request, datetime.strftime(datetime(datetime.now().year, datetime.now().month, datetime.now().day), '%Y-%m-%d'))
                 return render(request, self.template_name, context)
             else:
                 messages.error(request, 'Reservasjonen ble ikke registrert')
@@ -69,6 +69,7 @@ class Employee(TemplateView):
         elif request.POST.get('walkin') == 'walkin':
             if walkin(request):
                 messages.success(request, 'Walkin ble registrert')
+                context['reservations'] = showRes(request, datetime.strftime(datetime(datetime.now().year, datetime.now().month, datetime.now().day), '%Y-%m-%d'))
                 return render(request, self.template_name, context)
             else:
                 messages.error(request, 'Walkin ble ikke registrert')
@@ -166,7 +167,7 @@ def showRes(request, date):
             for reservation in res_this_table:
                 start = reservation.start_date_time.time()
                 end = reservation.end_date_time.time()
-                index = 2 * (start.hour % 12) + start.minute // 30
+                index = 2 + 2 * (start.hour % 12) + start.minute // 30
                 duration = ((end.hour - start.hour) * 60 + (end.minute - start.minute)) // 30
                 if index == slot_number:
                     time_slots.append({
