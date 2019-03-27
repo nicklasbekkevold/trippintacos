@@ -43,8 +43,8 @@ def get_next_available_table(restaurant, reservation_date_time, number_of_people
 
     # ekskluder allerede bookede bord som har den etterspurte sluttiden
 
-    tables_booked = Reservation.objects.filter(start_date_time__lt=upper_bound_time,
-                                               end_date_time__gt=upper_bound_time).values('table')
+    tables_booked = Reservation.objects.filter(start_date_time__lte=upper_bound_time,
+                                               end_date_time__gte=upper_bound_time).values('table')
     tables_booked_ids_temp = [x['table'] for x in tables_booked]
     tables_booked_ids = tables_booked_ids + tables_booked_ids_temp
     # ekskluderer bookede bord som er inni den aktuelle tidsperioden. er dette jalla?
@@ -204,135 +204,65 @@ def autolabel(ax, rects, xpos='center', ):
                 '{}'.format(int(round(height))), ha=ha[xpos], va='bottom')
                 
 
-#def get_available_times(numberOfPersons:int, dateOfReservation:str):
-#    """
-#    :param numberOfPersons: Number of people in pending reservation
-#    :param date: date of proposed reservation
-#    :return: list of available times for reservation at date and with numberOfPeople on form (datetime,
-#    """
-#
-#    # convert dateOfReservation to datetime
-#    date_list = dateOfReservation.split("-")
-#    _day = int(date_list[2]) # dateOfReservation.day
-#    _month = int(date_list[1]) # dateOfReservation.month
-#    _year = int(date_list[0]) # dateOfReservation.year
-#
-#    d_start = datetime(_year, _month, _day, 12, 0, 0).replace(tzinfo=None)
-#    d_end = datetime(_year, _month, _day, 23, 59, 59).replace(tzinfo=None)
-#
-#    # filter by date to get all reservations on date equal to dateOfReservation
-#    # print("Reservations: ", Reservation.objects.all())
-#    '''
-#    QS_reservations_at_date = Reservation.objects.filter(start_date_time__year=_year) #, start_date_time__month=_month, start_date_time__year=_year)
-#    QS_reservations_at_date = QS_reservations_at_date.filter(start_date_time__month=_month)
-#    QS_reservations_at_date = QS_reservations_at_date.filter(start_date_time__day=_day)
-#    '''
-#    QS_reservations_at_date = Reservation.objects.filter(start_date_time__gte=d_start, end_date_time__lte=d_end)
-#    print("RESERVATIONS THIS DATE: ", QS_reservations_at_date)
-#    # use for loop to iterate through times and check for collision for it and two hours forward
-#    # Check for collisions and too early vs too late
-#    # if a time is available the tuple (time, something) will be added to the returned-list
-#    available_times_list = []
-#    tables = Table.objects.filter(number_of_seats__gte=numberOfPersons)
-#    print("TABLES: ", tables)
-#    datetime_time = datetime(_year, _month, _day, 11)
-#    find = False
-#    coll = False
-#    while datetime_time.replace(tzinfo=None) <= datetime(_year, _month, _day, 22).replace(tzinfo=None):
-#        print("Hei")
-#        for _table in tables:
-#            QS_reservations_at_date_at_table = QS_reservations_at_date.filter(table=_table.id)
-#            for reservation in QS_reservations_at_date_at_table:
-#                if helpers.checkForCollision(datetime_time, datetime_time + timedelta(hours=2), reservation):
-#                    coll = True
-#                    break  # if there is a collision, we break and go on to a new table
-#
-#            if not coll:
-#                if str(datetime_time.minute) == '30':
-#                    datetimeTemp = str((datetime_time + timedelta(hours=1)).hour) + ":30"
-#                else:
-#                    datetimeTemp = str((datetime_time + timedelta(hours=1)).hour) + ":00"
-#
-#                # available_times_list.append((datetime_time + timedelta(hours=1), datetime_time.hour + 1 + datetime_time.minute/60))  # else we append the available list with the tuple of its time and ___?___
-#                available_times_list.append((datetimeTemp, datetimeTemp))
-#                break
-#        datetime_time = datetime_time + timedelta(minutes=30)
-#    print(available_times_list)
-#    return available_times_list
+def get_available_times(numberOfPersons:int, dateOfReservation:str):
+    """
+    :param numberOfPersons: Number of people in pending reservation
+    :param date: date of proposed reservation
+    :return: list of available times for reservation at date and with numberOfPeople on form (datetime,
+    """
 
+    # convert dateOfReservation to datetime
+    date_list = dateOfReservation.split("-")
+    _day = int(date_list[2]) # dateOfReservation.day
+    _month = int(date_list[1]) # dateOfReservation.month
+    _year = int(date_list[0]) # dateOfReservation.year
 
-def get_available_times(numberOfPeople:int, startDate:str):
-    date_list = startDate.split("-")
+    d_start = datetime(_year, _month, _day, 12, 0, 0).replace(tzinfo=None)
+    d_end = datetime(_year, _month, _day, 23, 59, 59).replace(tzinfo=None)
 
-    times_set_hardcode = {
-        ('12:00', '12:00'),
-        ('12:30', '12:30'),
-        ('13:00', '13:00'),
-        ('13:30', '13:30'),
-        ('14:00', '14:00'),
-        ('14:30', '14:30'),
-        ('15:00', '15:00'),
-        ('15:30', '15:30'),
-        ('16:00', '16:00'),
-        ('16:30', '16:30'),
-        ('17:00', '17:00'),
-        ('17:30', '17:30'),
-        ('18:00', '18:00'),
-        ('18:30', '18:30'),
-        ('19:00', '19:00'),
-        ('20:00', '20:00'),
-        ('20:30', '20:30'),
-        ('21:00', '21:00'),
-        ('21:30', '21:30'),
-        ('22:00', '22:00')
-    }
-
-    times_set = set()
-    year = int(date_list[0])
-    month = int(date_list[1])
-    day = int(date_list[2])
-
-    datetime_start = datetime(year, month, day, 12, 0, 0, 0)
-    datetime_end = datetime(year, month, day, 23, 59, 59, 59)
-            
-    reservations_this_date = Reservation.objects.filter(
-        start_date_time__gte=datetime_start,
-        end_date_time__lte=datetime_end
-    )
-
-    tables = Table.objects.filter(number_of_seats__gte=numberOfPeople)
-
-    datetime_counter = datetime(year, month, day, 12)
-
-    while datetime_counter.replace(tzinfo=None) <= datetime(year, month, day, 22, 0, 0, 0):
+    # filter by date to get all reservations on date equal to dateOfReservation
+    # print("Reservations: ", Reservation.objects.all())
+    '''
+    QS_reservations_at_date = Reservation.objects.filter(start_date_time__year=_year) #, start_date_time__month=_month, start_date_time__year=_year)
+    QS_reservations_at_date = QS_reservations_at_date.filter(start_date_time__month=_month)
+    QS_reservations_at_date = QS_reservations_at_date.filter(start_date_time__day=_day)
+    '''
+    QS_reservations_at_date = Reservation.objects.filter(start_date_time__gte=d_start, end_date_time__lte=d_end)
+    print("RESERVATIONS THIS DATE: ", QS_reservations_at_date)
+    # use for loop to iterate through times and check for collision for it and two hours forward
+    # Check for collisions and too early vs too late
+    # if a time is available the tuple (time, something) will be added to the returned-list
+    available_times_list = set()
+    tables = Table.objects.filter(number_of_seats__gte=numberOfPersons)
+    print("TABLES: ", tables)
+    datetime_time = datetime(_year, _month, _day, 11)
+    find = False
+    coll = False
+    while datetime_time.replace(tzinfo=None) <= datetime(_year, _month, _day, 22).replace(tzinfo=None):
+        print("Hei")
         coll = False
         for _table in tables:
-            # datetime_counter = datetime(year, month, day, 11)
-            QS_reservations_at_date_at_table = reservations_this_date.filter(table=_table.id)
-            if len(QS_reservations_at_date_at_table) == 0:
-                # times_set = times_set.union(times_set_hardcode)
-                break
-
+            print("Table id", _table.id)
+            QS_reservations_at_date_at_table = Reservation.objects.filter(start_date_time__gte=d_start,
+                                                                          end_date_time__lte=d_end,
+                                                                          table_id=_table.id)
+            print("Res at table:", QS_reservations_at_date_at_table)
             for reservation in QS_reservations_at_date_at_table:
-                if helpers.checkForCollision(datetime_counter, datetime_counter + timedelta(hours=2), reservation):
+                if helpers.checkForCollision(datetime_time, datetime_time + timedelta(hours=2), reservation):
+                    print("coll")
                     coll = True
-                    if str(datetime_counter.minute) == '30':
-                        datetimeTemp = str((datetime_counter).hour) + ":30"
-                    else:
-                        datetimeTemp = str((datetime_counter).hour) + ":00"
-
-                    times_set.add((datetimeTemp, datetimeTemp))
                     break  # if there is a collision, we break and go on to a new table
-            '''
+
             if not coll:
-                if str(datetime_counter.minute) == '30':
-                    datetimeTemp = str((datetime_counter).hour) + ":30"
+                print("Not coll")
+                if str(datetime_time.minute) == '30':
+                    datetimeTemp = str((datetime_time + timedelta(hours=1)).hour) + ":30"
                 else:
-                    datetimeTemp = str((datetime_counter).hour) + ":00"
+                    datetimeTemp = str((datetime_time + timedelta(hours=1)).hour) + ":00"
 
-                times_set.add((datetimeTemp, datetimeTemp))
-            '''
-        datetime_counter = datetime_counter + timedelta(minutes=30)
-    return sorted(list(times_set_hardcode-times_set), key=lambda x: x[0])
+                # available_times_list.append((datetime_time + timedelta(hours=1), datetime_time.hour + 1 + datetime_time.minute/60))  # else we append the available list with the tuple of its time and ___?___
+                available_times_list.add((datetimeTemp, datetimeTemp))
 
-print(get_available_times(3, '2019-03-27'))
+        datetime_time = datetime_time + timedelta(minutes=30)
+    print(available_times_list)
+    return sorted(list(available_times_list), key=lambda x: x[0])
