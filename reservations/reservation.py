@@ -16,8 +16,6 @@ from io import *
 import os
 from io import BytesIO
 
-
-timezone.activate('Europe/Oslo')
 os.environ['DJANGO_SETTINGS_MODULE'] = 'trippinTacos.settings'
 
 try:
@@ -33,47 +31,46 @@ def get_next_available_table(restaurant, reservation_date_time, number_of_people
     upper_bound_time = reservation_date_time + delta
 
     tables_booked_ids = []
+    date = datetime(2019, 3, 27, 12, 0, 0, 0)
+    reservations = Reservation.objects.filter(start_date_time__lt=reservation_date_time)
+    print("Reservations: ", reservations)
 
     # ekskluder allerede bookede bord som inneholder den initielle booking_date_time
 
-    tables_booked = Reservation.objects.filter(table__restaurant=restaurant,
-                                               start_date_time__lt=lower_bound_time,
-                                               end_date_time__gt=lower_bound_time).values('table')
+    tables_booked = Reservation.objects.filter(start_date_time__lte=lower_bound_time,
+                                               end_date_time__gte=lower_bound_time).values('table')
     tables_booked_ids_temp = [x['table'] for x in tables_booked]
     tables_booked_ids = tables_booked_ids + tables_booked_ids_temp
 
+    print("Tables:", tables_booked_ids)
     # ekskluder allerede bookede bord som har den etterspurte sluttiden
 
     tables_booked = Reservation.objects.filter(start_date_time__lt=upper_bound_time,
                                                end_date_time__gt=upper_bound_time).values('table')
     tables_booked_ids_temp = [x['table'] for x in tables_booked]
     tables_booked_ids = tables_booked_ids + tables_booked_ids_temp
-
+    print("Tables:", tables_booked_ids)
     # ekskluderer bookede bord som er inni den aktuelle tidsperioden. er dette jalla?
 
     tables_booked = Reservation.objects.filter(start_date_time__gt=lower_bound_time,
                                                end_date_time__lt=upper_bound_time).values('table')
     tables_booked_ids_temp = [x['table'] for x in tables_booked]
     tables_booked_ids = tables_booked_ids + tables_booked_ids_temp
-
+    print("Tables:", tables_booked_ids)
     # ekskluderer bord som inkluderer den etterspurte booking-luken
 
     tables_booked = Reservation.objects.filter(start_date_time__lt=lower_bound_time,
                                                end_date_time__gt=upper_bound_time).values('table')
     tables_booked_ids_temp = [x['table'] for x in tables_booked]
     tables_booked_ids = tables_booked_ids + tables_booked_ids_temp
-
+    print("Tables:", tables_booked_ids)
     # lager liste med alle bord av nødvendig størrelse, tilgjengelige i restauranten
     # ekskluderer den forrige listen av utilgjengelige bord. Listen er rangert fra minst til størst tilgjengelig kapasitet,
     # og det ledige bordet med minst kapasitet returneres.
     temp_time_hardcode = (minutes_slot / float(60))
 
-    tables = Table.objects.filter(
-        restaurant=restaurant,
-        restaurant__opening_time__lte=str(reservation_date_time.hour) + ":" + str(reservation_date_time.minute),
-        restaurant__closing_time__gte=str((reservation_date_time + timedelta(hours=temp_time_hardcode)).hour) + ":" +
-                                      str((reservation_date_time + timedelta(hours=temp_time_hardcode)).minute),
-        number_of_seats__gte=number_of_people).exclude(id__in=tables_booked_ids).order_by('number_of_seats')
+    tables = Table.objects.filter(number_of_seats__gte=number_of_people).exclude(id__in=tables_booked_ids).order_by('number_of_seats')
+
     if tables.count() == 0:
         return None
     else:
@@ -296,7 +293,6 @@ def get_available_times(numberOfPeople:int, startDate:str):
     }
 
     times_set = set()
-
     year = int(date_list[0])
     month = int(date_list[1])
     day = int(date_list[2])
@@ -319,13 +315,21 @@ def get_available_times(numberOfPeople:int, startDate:str):
             # datetime_counter = datetime(year, month, day, 11)
             QS_reservations_at_date_at_table = reservations_this_date.filter(table=_table.id)
             if len(QS_reservations_at_date_at_table) == 0:
-                times_set = times_set.union(times_set_hardcode)
+                # times_set = times_set.union(times_set_hardcode)
                 break
 
             for reservation in QS_reservations_at_date_at_table:
                 if helpers.checkForCollision(datetime_counter, datetime_counter + timedelta(hours=2), reservation):
+                    print("Collision on ", datetime_counter, "Table: ", _table)
                     coll = True
+                    if str(datetime_counter.minute) == '30':
+                        datetimeTemp = str((datetime_counter).hour) + ":30"
+                    else:
+                        datetimeTemp = str((datetime_counter).hour) + ":00"
+
+                    times_set.add((datetimeTemp, datetimeTemp))
                     break  # if there is a collision, we break and go on to a new table
+            '''
             if not coll:
                 if str(datetime_counter.minute) == '30':
                     datetimeTemp = str((datetime_counter).hour) + ":30"
@@ -333,6 +337,8 @@ def get_available_times(numberOfPeople:int, startDate:str):
                     datetimeTemp = str((datetime_counter).hour) + ":00"
 
                 times_set.add((datetimeTemp, datetimeTemp))
-
+            '''
         datetime_counter = datetime_counter + timedelta(minutes=30)
-    return sorted(list(times_set), key=lambda x: x[0])
+    return sorted(list(times_set_hardcode-times_set), key=lambda x: x[0])
+
+print(get_available_times(3, '2019-03-27'))

@@ -8,6 +8,7 @@ from django.template import Context
 from django.template.loader import render_to_string
 from trippinTacos.settings import EMAIL_HOST_USER
 import smtplib
+import pytz
 
 sentinel = object()
 
