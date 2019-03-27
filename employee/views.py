@@ -46,7 +46,7 @@ class Employee(TemplateView):
             'form': DateForm(initial={'reservation_date': datetime(datetime.now().year, datetime.now().month, datetime.now().day)}),
             'reservations': showRes(request, datetime.strftime(
                 datetime(datetime.now().year, datetime.now().month, datetime.now().day), '%Y-%m-%d')),
-            'time_range': range(12, 25),
+            'time_range': range(12, 24),
             'reservationForm': ReservationForm(),
             'walkinForm': WalkinForm(),
         }
@@ -83,7 +83,7 @@ class Employee(TemplateView):
             'form': DateForm(initial={'reservation_date': datetime(datetime.now().year, datetime.now().month, datetime.now().day)}),
             'reservations': showRes(request, datetime.strftime(
                 datetime(datetime.now().year, datetime.now().month, datetime.now().day), '%Y-%m-%d')),
-            'time_range': range(12, 25),
+            'time_range': range(12, 24),
             'reservationForm': ReservationForm(),
             'walkinForm': WalkinForm(),
         }
@@ -154,7 +154,7 @@ def showRes(request, date):
     def compute_time_slots(res_this_table):
         time_slots = list()
         slot_number = 0
-        while slot_number < 26:
+        while slot_number < 24:
             for reservation in res_this_table:
                 start = reservation.start_date_time.time()
                 end = reservation.end_date_time.time()
