@@ -272,7 +272,7 @@ def autolabel(ax, rects, xpos='center', ):
 def get_available_times(numberOfPeople:int, startDate:str):
     date_list = startDate.split("-")
 
-    times_set = {
+    times_set_hardcode = {
         ('12:00', '12:00'),
         ('12:30', '12:30'),
         ('13:00', '13:00'),
@@ -319,7 +319,7 @@ def get_available_times(numberOfPeople:int, startDate:str):
             # datetime_counter = datetime(year, month, day, 11)
             QS_reservations_at_date_at_table = reservations_this_date.filter(table=_table.id)
             if len(QS_reservations_at_date_at_table) == 0:
-                times_set = times_set.union(times_set)
+                times_set = times_set.union(times_set_hardcode)
                 break
 
             for reservation in QS_reservations_at_date_at_table:
