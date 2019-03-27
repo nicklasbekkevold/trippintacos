@@ -74,7 +74,7 @@ class Employee(TemplateView):
                 return render(request, self.template_name, context)
             return render(request, self.template_name, context)
         else:
-            messages.warning(request, 'Walkin ble ikke registrert')
+            messages.warning(request, 'Div')
             return render(request, self.template_name, context)
 
     def get(self, request):
@@ -95,15 +95,17 @@ class Employee(TemplateView):
 def walkin(request):
     form = WalkinForm(request.POST)
     if form.is_valid():
-        guest = Guest(first_name=form.cleaned_data['first_name'],
-                      )
+        guest = Guest(first_name=form.cleaned_data['first_name'],)
         guest.save()
+        start_date = form.cleaned_data['start_date']
+        start_time = datetime.strptime(str(form.cleaned_data['start_time']), "%H:%M").time()
+        start_date_time = datetime.combine(start_date, start_time)
         success = make_reservation(Restaurant.objects.first(), 
-                                   guest, 
-                                   form.cleaned_data['start_date_time'],
-                                   form.cleaned_data['number_of_people'], 
-                                   1, 
-                                   0)
+            guest, 
+            start_date_time,
+            form.cleaned_data['number_of_people'], 
+            1, 
+            0)
 
         if success:
             return True
@@ -120,18 +122,24 @@ def booking(request):
             if each.email is not None:
                 email_liste.append(each.email.lower())
         if email not in email_liste:
-            guest = Guest(email=email,
-                          first_name=form.cleaned_data['first_name'],
-                          last_name=form.cleaned_data['last_name'])
-            # guest = Guest.objects.create(email=email, reminder=form.cleaned_data['reminder'])
+            guest = Guest(
+                email=email,
+                first_name=form.cleaned_data['first_name'],
+                last_name=form.cleaned_data['last_name'])
             guest.save()
         else:
             guest = Guest.objects.all().get(email=email)
-        success = make_reservation(Restaurant.objects.first(), 
-                                   guest, form.cleaned_data['start_date_time'],
-                                   form.cleaned_data['number_of_people'], 
-                                   0, 
-                                   reminder=form.cleaned_data['reminder'])
+        
+        start_date = form.cleaned_data['start_date']
+        start_time = datetime.strptime(str(form.cleaned_data['start_time']), "%H:%M").time()
+        start_date_time = datetime.combine(start_date, start_time)
+        success = make_reservation(
+            Restaurant.objects.first(), 
+            guest, 
+            start_date_time,
+            form.cleaned_data['number_of_people'], 
+            0, 
+            reminder=form.cleaned_data['reminder'])
         if success:
             send_confirmation(guest, Reservation.objects.all().get(id=success['reservation']))
             return True
