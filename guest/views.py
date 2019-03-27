@@ -1,25 +1,23 @@
+from datetime import datetime
 from django.shortcuts import render
-from reservations.forms import ReservationForm
-from guest.models import Guest
-from employee.helpers import send_confirmation, deleteGuest
-from reservations.forms import ReservationForm, GuestReservationForm
-from reservations.models import Guest
-from datetime import datetime, time, date
-from employee.helpers import send_confirmation
-from reservations.reservation import make_reservation
-from reservations.models import Reservation, Restaurant, Table
-from guest.forms import DeleteMeForm
+from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
+from reservations.forms import ReservationForm
+from reservations.reservation import make_reservation
+from reservations.models import Reservation, Restaurant
+from guest.models import Guest
+from guest.forms import DeleteMeForm
+from employee.helpers import send_confirmation, deleteGuest
 
 
 def guest_page(request):
 
     if request.method == 'POST':
-        reservationForm = ReservationForm(request.POST)
+        reservation_form = ReservationForm(request.POST)
+        print(reservation_form.errors)
 
-        if reservationForm.is_valid():
-            print("HEI")
-            email = reservationForm.cleaned_data['email'].lower()
+        if reservation_form.is_valid():
+            email = reservation_form.cleaned_data['email'].lower()
             email_liste = []
             for guestobj in Guest.objects.all():
                 if guestobj.email is not None:
@@ -28,66 +26,71 @@ def guest_page(request):
             if email not in email_liste:
                 guest = Guest(
                     email=email,
-                    first_name=reservationForm.cleaned_data['first_name'],
-                    last_name=reservationForm.cleaned_data['last_name'])
+                    first_name=reservation_form.cleaned_data['first_name'],
+                    last_name=reservation_form.cleaned_data['last_name'])
                 guest.save()
             else:
                 guest = Guest.objects.all().get(email=email)
 
-            date = reservationForm.cleaned_data['start_date']
-            time = datetime.strptime(str(reservationForm.cleaned_data['start_time']), "%H").time()
-            start_date_time = datetime.combine(date, time)
+            if reservation_form.is_valid():
+                start_date = reservation_form.cleaned_data['start_date']
+                start_time = datetime.strptime(str(reservation_form.cleaned_data['start_time']), "%H:%M").time()
+                start_date_time = datetime.combine(start_date, start_time)
+                
+                success = make_reservation(
+                    Restaurant.objects.first(),
+                    guest,
+                    start_date_time,
+                    reservation_form.cleaned_data['number_of_people'],
+                    False,
+                    reminder=reservation_form.cleaned_data['reminder'],
+                    minutes_slot=120)
 
-            success = make_reservation(
-                Restaurant.objects.first(),
-                guest,
-                start_date_time,
-                reservationForm.cleaned_data['number_of_people'],
-                False,
-                reminder=reservationForm.cleaned_data['reminder'],
-                minutes_slot=120)
-
-            if success:
-                send_confirmation(guest.email, Reservation.objects.all().get(id=success['reservation']))
-                return render(request, 'reservations/success.html') # TODO change this
-            else:
-                return render(request, 'reservations/not_success.html') # TODO change this
+                if success:
+                    send_confirmation(guest, Reservation.objects.all().get(id=success['reservation']))
+                    messages.success(request, 'Reservasjonen din er registrert')
+                    reservation_form = ReservationForm()
+                    return render(request, 'guestpage.html', {'form': reservation_form})
+                else:
+                    messages.warning(request, 'Noe gikk galt. Vennligst prøv igjen')
+                    reservation_form = ReservationForm()
+                    return render(request, 'guestpage.html', {'form': reservation_form})
         else:
-            print("ELSE")
-            pass # reservationForm is invalid
+            messages.error(request, 'Det er noe galt med utfyllingen av feltene')
+            reservation_form = ReservationForm()
+            return render(request, 'guestpage.html', {'form': reservation_form})
     
     else:
-        guestForm = GuestReservationForm()
-        reservationForm = ReservationForm()
-        return render(request, 'guestpage.html', {'form': reservationForm})
+        reservation_form = ReservationForm()
+        return render(request, 'guestpage.html', {'form': reservation_form})
 
 def load_available_times(request):
     start_date = request.GET.get('start_date')
     number_of_people = request.GET.get('number_of_people')
-    available_times = [tuple([x,"{}:30".format(x)]) for x in range(12, 18)]
+    available_times = [tuple(["{}:00".format(x), "{}:00".format(x)]) for x in range(14, 18)]
     return render(request, 'guest/available_times_dropdown_list_options.html', {'available_times': available_times})
 
 
-def deleteMe(request):
+def delete_me(request):
     if request.method == 'POST':
-        reservationForm = DeleteMeForm(request.POST)
+        delete_me_form = DeleteMeForm(request.POST)
 
-        if reservationForm.is_valid():
+        if delete_me_form.is_valid():
             try:
-                guest = Guest.objects.all().get(email=form.cleaned_data['email'].lower())
+                guest = Guest.objects.all().get(email=delete_me_form.cleaned_data['email'].lower())
                 try:
-                    guest_with_last_name = Guest.objects.all().get(email=guest.email.lower(), last_name=form.cleaned_data['last_name'])
+                    guest_with_last_name = Guest.objects.all().get(email=guest.email.lower(), last_name=delete_me_form.cleaned_data['last_name'])
 
                     if deleteGuest(guest_with_last_name):
-                        return render(request, 'deleteMe.html', {'sucess': True, 'email': reservationForm.cleaned_data['email'], 'last_name': reservationForm.cleaned_data['last_name'], 'form': DeleteMeForm()})
+                        return render(request, 'delete_me.html', {'sucess': True, 'email': delete_me_form.cleaned_data['email'], 'last_name': delete_me_form.cleaned_data['last_name'], 'form': DeleteMeForm()})
 
                 except ObjectDoesNotExist:
-                    return render(request, 'deleteMe.html', {'form': DeleteMeForm(), 'invalid_last_name': True})
+                    return render(request, 'delete_me.html', {'form': DeleteMeForm(), 'invalid_last_name': True})
 
             except ObjectDoesNotExist:
-                return render(request, 'deleteMe.html', {'form': DeleteMeForm(), 'invalid_email': True})
+                return render(request, 'delete_me.html', {'form': DeleteMeForm(), 'invalid_email': True})
 
-            return render(request, 'deleteMe.html', {'unexpected': True})
+            return render(request, 'delete_me.html', {'unexpected': True})
 
     else:
         if request.GET.get('email') is not None and request.GET.get('last_name') is not None:
@@ -98,16 +101,18 @@ def deleteMe(request):
         last_name = request.GET.get('last_name')
         email = request.GET.get('email')
 
-        print("Email:",email)
-        print("Last_name:",last_name)
+        print("Email:", email)
+        print("Last_name:", last_name)
 
         if last_name is not None and email is not None:
             try:
                 deleteGuest(Guest.objects.all().get(last_name=last_name, email=email))
             except ObjectDoesNotExist:
-                return render(request, 'deleteMe.html', {'error': True, 'form': DeleteMeForm()})
-            return render(request, 'deleteMe.html', {'sucess': True, 'form': DeleteMeForm(), 'email': email})
+                return render(request, 'delete_me.html', {'error': True, 'form': DeleteMeForm()})
+            return render(request, 'delete_me.html', {'sucess': True, 'form': DeleteMeForm(), 'email': email})
 
-        reservationForm = DeleteMeForm()
-        return render(request, 'deleteMe.html', {'form': reservationForm})
+        delete_me_form = DeleteMeForm()
+        return render(request, 'delete_me.html', {'form': delete_me_form})
 
+def terms_and_conditions(request):
+    return render(request, 'termsandconditions.html')
