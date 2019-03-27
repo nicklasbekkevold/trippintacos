@@ -6,6 +6,5 @@ test_on_heroku:
   type: deploy
   script:
     - git push --force https://heroku:$HEROKU_API_KEY@git.heroku.com/trippintacos.git HEAD:master
-    - heroku python manage.py migrate --run-syncdb
   only:
     - master
