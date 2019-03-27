@@ -1,21 +1,19 @@
+from datetime import datetime
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from reservations.models import Reservation, Restaurant, Table
-from reservations.models import Reservation, Restaurant
-from guest.models import Guest
-from employee.forms import DateForm, EditReservationFrom, statisticInputForm, EditTableForm
-from reservations.forms import ReservationForm, WalkinForm
-from reservations.reservation import make_reservation, get_available_times
 from django.contrib.auth.decorators import login_required
 from django.views.generic import TemplateView
-from datetime import datetime
 from django.views.generic import TemplateView
-from employee.helpers import send_confirmation, edit
 from django.utils.decorators import method_decorator
-from reservations.reservation import get_total_on_weekday, get_average_capacity, matplotfuckeroo, count_reservations, count_unique_guests
+from guest.models import Guest
+from employee.forms import DateForm, EditReservationFrom, statisticInputForm, EditTableForm
+from employee.helpers import send_confirmation, edit
+from reservations.models import Reservation, Restaurant, Table
+from reservations.forms import ReservationForm, WalkinForm
+from reservations.reservation import make_reservation, get_available_times, get_average_capacity
+from reservations.reservation import matplotfuckeroo, count_reservations, count_unique_guests
 
-# Create your views here.
 
 MONTHS = {
     'January': '01',
@@ -65,16 +63,18 @@ class Employee(TemplateView):
                 messages.success(request, 'Reservasjonen ble registrert')
                 return render(request, self.template_name, context)
             else:
-                messages.success(request, 'Reservasjonen ble ikke registrert')
+                messages.error(request, 'Reservasjonen ble ikke registrert')
                 return render(request, self.template_name, context)
 
         elif request.POST.get('walkin') == 'walkin':
             if walkin(request):
                 messages.success(request, 'Walkin ble registrert')
                 return render(request, self.template_name, context)
-            return render(request, self.template_name, context)
+            else:
+                messages.error(request, 'Walkin ble ikke registrert')
+                return render(request, self.template_name, context)
         else:
-            messages.warning(request, 'Div')
+            messages.warning(request, 'Det er noe galt med utfyllingen av feltene')
             return render(request, self.template_name, context)
 
     def get(self, request):
