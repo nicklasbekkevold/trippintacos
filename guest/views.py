@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
 from reservations.forms import ReservationForm
-from reservations.reservation import make_reservation, get_available_times_v2
+from reservations.reservation import make_reservation, get_available_times
 from reservations.models import Reservation, Restaurant
 from guest.models import Guest
 from guest.forms import DeleteMeForm
@@ -68,7 +68,7 @@ def guest_page(request):
 def load_available_times(request):
     start_date = request.GET.get('start_date')
     number_of_people = int(request.GET.get('number_of_people'))
-    available_times = get_available_times_v2(number_of_people, start_date) # [tuple(["{}:00".format(x), "{}:00".format(x)]) for x in range(14, 18)]
+    available_times = get_available_times(number_of_people, start_date)
     return render(request, 'guest/available_times_dropdown_list_options.html', {'available_times': available_times})
 
 
