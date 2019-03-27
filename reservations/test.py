@@ -2,7 +2,7 @@ import unittest
 from django.test import TestCase
 from .models import *
 
-
+#uviktig fil, kun for å teste tester
 def fun(x):
     return x+1
 

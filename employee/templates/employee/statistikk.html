@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load auth_extras %}
+{% block content %}
+{% if request.user|has_group:"owner" %}
+    <div class="container" style="margin-top: 100px">
+
+        <div class="container-fluid inline-group">
+            <div class="row justify-content-center align-items-center">
+                <div class="col-lg-3 bg-warning rounded">
+                    <p> Totalt antall reservasjoner: {{ tall }} </p>
+                </div>
+                <div class="col-lg-3 bg-warning rounded" style="margin-left: 5px">
+                    <p>Totalt antall unike gjester: {{ totguests }} </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="card inline-group" style="margin-top: 5px">
+            <div class="form-group" style="margin-top: 5px">
+                <form class="form-inline" style="margin-left: 5px" method="post">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button class="btn btn-default btn-primary" style="margin-left: 5px" type="submit" >Send inn</button>
+                </form>
+                <div class="row justify-content-center align-items-center">
+                    {{ code|safe }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    {% else %}
+    <div class="container" style="margin-top: 150px">
+         <p>Du har ikke rettigheter til å se dette</p>
+    </div>
+
+
+    {% endif %}
+{% endblock content %}
+
+
+
+

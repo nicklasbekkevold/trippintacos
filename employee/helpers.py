@@ -8,6 +8,7 @@ from django.template import Context
 from django.template.loader import render_to_string
 from trippinTacos.settings import EMAIL_HOST_USER
 import smtplib
+import pytz
 
 sentinel = object()
 
@@ -125,8 +126,10 @@ def checkForCollision(start_of_new_res, end_of_new_res, preexisting_res):
     :param preexisting_res: The reservation object of the preexisting reservation
     :return: A bool value indicating whether a collision will happen.
     """
-    preexisting_start = preexisting_res.start_date_time
-    preexisting_end = preexisting_res.end_date_time
+    preexisting_start = preexisting_res.start_date_time.replace(tzinfo=None)
+    preexisting_end = preexisting_res.end_date_time.replace(tzinfo=None)
+    start_of_new_res = start_of_new_res.replace(tzinfo=None)
+
     if start_of_new_res < preexisting_start and end_of_new_res <= preexisting_start:
         return False
     if start_of_new_res >= preexisting_end and end_of_new_res > preexisting_end:
@@ -199,20 +202,20 @@ def change_number_of_people(res, num):
     return False
 
 
-def send_confirmation(email, res):
+def send_confirmation(guest, res):
     '''
     Sends confirmation mail.
     :param email:
     :param res:
     :return: True
     '''
-    msg_plain = render_to_string('employee/email.txt', {'res_num': res.id})
+    msg_plain = render_to_string('employee/email.txt', {'res_num': res.id, 'email': guest.email, 'last_name': guest.last_name})
 
     send_mail(
         'TrippinTacos reservation ' + str(res.id),
         msg_plain,
         EMAIL_HOST_USER,
-        [str(email)],
+        [str(guest.email)],
     )
 
     return True
@@ -254,3 +257,16 @@ def get_booked_times_by_date(date, number_of_people):
     )
 
     print(reservations)
+
+
+get_booked_times_by_date(datetime(2019, 2, 25, 12, 0, 0), 5)
+
+
+def deleteGuest(guest):
+
+    guest.email = None
+    guest.first_name = None
+    guest.last_name = None
+    guest.save()
+
+    return True

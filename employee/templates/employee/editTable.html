@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+     <div class="container" style="margin-top: 10%">
+        <div class="card">
+            <div class="card-body">
+                    <h3 class="card-subtitle mb-2 text-muted">Bord</h3>
+              <p class="card-text"> <br>
+                <ul>
+                    {% for id in table_ids %}
+                        <a href="/employee/edittable?id={{ id }}"><li id="{{ id }}">Bord {{ id }}</li></a>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+     {% if requested_id is not None %}
+     <div class="card">
+         <div class="card-body">
+             <form method="post" id="editTableForm">
+                 {% csrf_token %}
+                 {{ form|crispy }}
+                 <input type="submit">
+             </form>
+             {% if success %}
+                 <div style="color: green">Oppdaterte bordet!</div>
+             {% elif not_success %}
+                 <div style="color: red">Det skjedde en feil, prøv igjen!</div>
+             {% endif %}
+         </div>
+     </div>
+     {% endif %}
+    </div>
+
+    <script>
+        $('#editTableFrom').submit(function(){
+            $("#editTableForm :disabled").removeAttr('disabled');
+        });
+    </script>
+
+{% endblock %}

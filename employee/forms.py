@@ -2,8 +2,10 @@ from django import forms
 from bootstrap_datepicker_plus import DatePickerInput, DateTimePickerInput
 
 
+
 class DateForm(forms.Form):
-    _ = forms.DateField(
+    reservation_date = forms.DateField(
+        label="",
         widget=DatePickerInput(options={
             "format": "dddd DD. MMMM YYYY",  # moment date-time format
             "calendarWeeks": True,
@@ -29,3 +31,16 @@ class EditReservationFrom(forms.Form):
     class Meta:
         fields = ('reservation_id', 'email', 'new_start')
     '''
+
+
+class statisticInputForm(forms.Form):
+    liste = ["Mandag", "Tirsdag", "Onsdag", "Torsdag", "Fredag", "Lørdag", "Søndag"]
+    day = forms.ChoiceField(required=False,choices=[(x, x) for x in liste],label= "Velg dag:")
+
+
+class EditTableForm(forms.Form):
+    id = forms.IntegerField(widget=forms.NumberInput(attrs={
+        'readonly': True,
+    }))
+    number_of_people = forms.IntegerField()
+

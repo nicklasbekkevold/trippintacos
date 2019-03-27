@@ -1,4 +1,5 @@
-from django.test import TestCase
+from django.test import TestCase, Client
+from django.urls import reverse
 from django.utils import timezone
 from reservations.models import Reservation, Restaurant, Table
 from guest.models import Guest
@@ -6,9 +7,11 @@ from datetime import *
 from employee.helpers import *
 from django.utils import timezone
 from reservations.reservation import *
+from reservations.forms import ReservationForm
+
 # Create your tests here.
 
-
+'''
 class GetTablesWithCapacityTestCase(TestCase):
 
     def setUp(self):
@@ -69,7 +72,6 @@ class DeleteReservationTestCase(TestCase):
             id=1,
             guest=Guest.objects.create(
                 email="test@testcase.no",
-                reminder=False
             ),
             number_of_people=4,
             start_date_time=timezone.now(),
@@ -83,7 +85,6 @@ class DeleteReservationTestCase(TestCase):
             id=2,
             guest=Guest.objects.create(
                 email="test@testcase.no",
-                reminder=False
             ),
             number_of_people=4,
             start_date_time=timezone.now(),
@@ -140,7 +141,7 @@ class EditReservationTestCase(TestCase):
         self.assertTrue(edit(res.id, res.start_date_time + timedelta(hours=1)))
         # Test edit slot taken by other reservation
         self.assertFalse(edit(res.id, self.now + timedelta(days=1)))
-        pass
+
 '''
 class MakeReservation(TestCase):
     def setUp(self):
@@ -150,7 +151,7 @@ class MakeReservation(TestCase):
             opening_time=datetime.time(12, '%h')
             
         )
-'''
+
 
 
 class TestSendConfirmation(TestCase):
@@ -160,7 +161,6 @@ class TestSendConfirmation(TestCase):
             id=1,
             guest=Guest.objects.create(
                 email="sander.b.lindberg@gmail.com",
-                reminder=False,
             ),
             number_of_people=4,
             start_date_time=(self.now + timedelta(days=1)),
@@ -219,6 +219,7 @@ class TestCountReservations(TestCase):
         self.assertEquals(1, delete(1, "test@testcase.no"))
         self.assertEquals(1, countReservations())
         print(countReservations())
+
 '''
 
 class TestGetAverageCapacity(TestCase):
@@ -227,7 +228,7 @@ class TestGetAverageCapacity(TestCase):
             id=1,
             guest=Guest.objects.create(
                 email="test@testcase.no",
-                reminder=False
+
             ),
             number_of_people=4,
             start_date_time=datetime.today() + timedelta(hours=4) - timedelta(days=14),
@@ -244,7 +245,7 @@ class TestGetAverageCapacity(TestCase):
             id=2,
             guest=Guest.objects.create(
                 email="test@testcase.no",
-                reminder=False
+
             ),
             number_of_people=7,
             start_date_time=datetime.today() + timedelta(hours=5) - timedelta(days=7),
@@ -260,3 +261,96 @@ class TestGetAverageCapacity(TestCase):
         print(capMat[2])
 
         matplotfuckeroo(capMat, datetime.today().weekday())
+
+
+class TestViews(TestCase):
+
+    @classmethod
+    def setUp(self):
+        self.client = Client()
+        self.guest_url = reverse('termsandconditions')
+
+
+    def test_termsandconditions_GET(self):
+        response = self.client.get(self.guest_url)
+        self.assertEquals(response.status_code, 200)
+        self.assertTemplateUsed(response, 'base.html')
+        self.assertTemplateUsed(response, 'termsandconditions.html')
+
+    def testCheckedTermsAndConditions(self):
+        data = {
+            'first_name': 'Sander',
+            'last_name': 'Lindberg',
+            'email': 'Sander.b.lindberg@gmail.com',
+            'reminder': False,
+            'number_of_people': 4,
+            'start_date_time': datetime.now(),
+            'end_date_time': datetime.now() + timedelta(hours=2),
+            'i_have_read_and_agree_checkbox': False,
+        }
+        form = ReservationForm(data=data)
+        self.assertFalse(form.is_valid())
+
+        data = {
+            'first_name': 'Sander',
+            'last_name': 'Lindberg',
+            'email': 'Sander.b.lindberg@gmail.com',
+            'reminder': False,
+            'number_of_people': 4,
+            'start_date_time': datetime.now(),
+            'end_date_time': datetime.now() + timedelta(hours=2),
+            'i_have_read_and_agree_checkbox': True,
+        }
+        form = ReservationForm(data=data)
+
+        self.assertTrue(form.is_valid())
+
+
+class TestGetAvailableTable(TestCase):
+    
+    def setUp(self):
+        Guest.objects.create(
+            email="test@testcase.no",
+            first_name="test",
+            last_name="case"
+        )
+
+        Table.objects.create(
+            id=1,
+            restaurant=Restaurant.objects.first(),
+            number_of_seats=5
+        )
+
+        Reservation.objects.create(
+            id=1,
+            guest=Guest.objects.all().get(email="test@testcase.no"),
+            number_of_people=4,
+            start_date_time=datetime(2019, 3, 27, 17),
+            end_date_time=datetime(2019, 3, 27, 19),
+            table=Table.objects.get(id=1),
+            walkin=1,
+        )
+
+        Reservation.objects.create(
+            id=2,
+            guest=Guest.objects.all().get(
+                email="test@testcase.no"
+            ),
+            number_of_people=4,
+            start_date_time=datetime(2019, 3, 27, 20),
+            end_date_time=datetime(2019, 3, 27, 22),
+            table=Table.objects.get(id=1),
+            walkin=0,
+        )
+
+    def test_get_available_times(self):
+        self.assertEqual([('12:00', '12:00'),
+                          ('12:30', '12:30'),
+                          ('13:00', '13:00'),
+                          ('13:30', '13:30'),
+                          ('14:00', '14:00'),
+                          ('14:30', '14:30'),
+                          ('15:00', '15:00'),
+                          ], get_available_times(5, '2019-03-27'))
+
+        self.assertEqual([], get_available_times(6, '2019-03-27'))

@@ -27,7 +27,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'lry^$zfx8ca0y^x%deyi=6t7$yhhly8cct9h^*3t38%$zovxry'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -41,12 +41,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'crispy_forms',
     'guest',
     'manager',
     'employee',
     'reservations',
     'bootstrap4',
     'bootstrap_datepicker_plus',
+
 ]
 
 BOOTSTRAP4 = {
@@ -129,13 +131,14 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'Europe/Oslo'
 
 USE_I18N = True
 
-USE_L10N = True
+USE_L10N = False
 
 USE_TZ = True
+
+TIME_ZONE = 'Europe/Oslo'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
@@ -160,8 +163,11 @@ EMAIL_HOST_USER = 'TrippinTacosRestaurant@gmail.com'
 EMAIL_HOST_PASSWORD = 'GruppE29'
 EMAIL_PORT = 587
 
+# SOUTH_TESTS_MIGRATE = False
 
 try:
     from trippinTacos.local_settings import *
 except Exception as e:
    pass
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
