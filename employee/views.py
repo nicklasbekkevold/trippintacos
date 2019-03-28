@@ -324,8 +324,10 @@ def editTable(request):
         print(request.GET)
         if request.GET.get('id') is not None:
             requested_id = request.GET.get('id')
+            initial_capacity = Table.objects.filter(id=request.GET.get('id'))[0].number_of_seats
         else:
             requested_id = None
+            initial_capacity = 1
 
         QS_tables = Table.objects.all()
         tables = list()
@@ -333,5 +335,5 @@ def editTable(request):
         for table in QS_tables:
             tables.append(table.id)
 
-        form = EditTableForm(initial={'id': requested_id})
+        form = EditTableForm(initial={'id': requested_id, 'number_of_people': initial_capacity})
         return render(request, 'editTable.html', {'table_ids': tables, 'requested_id': requested_id, 'form': form})
