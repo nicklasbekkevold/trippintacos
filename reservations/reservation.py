@@ -315,9 +315,9 @@ def get_available_times(numberOfPeople:int, date:str):
             else:
                 times[res.start_date_time] = 1
 
-    booked_times = set()
+    booked_times = {}
     for time in times:
-        if times[time] >= len(tables):
+        for i in range(times[time]):
             datetime_time = datetime(time.year, time.month, time.day, time.hour) - timedelta(hours=1, minutes=30)
 
             while datetime_time <= (time + timedelta(hours=1, minutes=30)).replace(tzinfo=None):
@@ -330,7 +330,15 @@ def get_available_times(numberOfPeople:int, date:str):
                     datetimeTemp = str((datetime_time + timedelta(hours=1)).hour) + ":00"
 
                 print("Added: ", datetimeTemp)
-                booked_times.add((datetimeTemp, datetimeTemp))
+                if (datetimeTemp, datetimeTemp) in booked_times:
+                    booked_times[(datetimeTemp, datetimeTemp)] += 1
+                else:
+                    booked_times[(datetimeTemp, datetimeTemp)] = 1
                 datetime_time += timedelta(minutes=30)
 
-    return sorted(list(times_set_hardcode-booked_times), key=lambda x: x[0])
+    booked_times_set = set()
+    for time in booked_times:
+        if booked_times[time] >= len(tables):
+            booked_times_set.add(time)
+
+    return sorted(list(times_set_hardcode-booked_times_set), key=lambda x: x[0])
