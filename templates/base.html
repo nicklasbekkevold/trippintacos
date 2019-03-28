@@ -93,7 +93,7 @@
                                   <a class="nav-item nav-link" href="{% url 'edit' %}">Endre reservasjon</a>
                                   <a class="nav-item nav-link" href="{% url 'editTable' %}">Endre bord</a>
                                   {% if request.user|has_group:"owner" %}
-                                        <a class="nav-item nav-link" href="{% url 'statistikk' %}">Statistikk</a>
+                                        <a class="nav-item nav-link" href="{% url 'statistics' %}">Statistikk</a>
                                   {% endif %}
                                  <b><a class="nav-item nav-link" href="{% url 'logout' %}">Logg ut</a></b>
                               </div>

@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 {% load auth_extras %}
 {% block content %}
 {% if request.user|has_group:"owner" %}

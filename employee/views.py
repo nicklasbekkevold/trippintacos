@@ -233,7 +233,7 @@ def editReservation(request):
 
 
 @login_required
-def showStatistikk(request):
+def showStatistics(request):
     if request.method == 'POST':
         form = statisticInputForm(request.POST)
         if form.is_valid():
@@ -243,11 +243,11 @@ def showStatistikk(request):
 
             html_code = matplotfuckeroo(get_average_capacity(input), input)
 
-            return render(request, 'statistikk.html', {'code': html_code, 'form': form, 'tall': count_reservations(),'totguests': count_unique_guests()})
+            return render(request, 'statistics.html', {'code': html_code, 'form': form, 'tall': count_reservations(),'totguests': count_unique_guests()})
 
     form = statisticInputForm(request.POST)
     html_code = matplotfuckeroo(get_average_capacity(0), 0)
-    return render(request, 'statistikk.html', {'form': form, 'code': html_code, 'tall': count_reservations(),'totguests': count_unique_guests()})
+    return render(request, 'statistics.html', {'form': form, 'code': html_code, 'tall': count_reservations(),'totguests': count_unique_guests()})
 
 
 
