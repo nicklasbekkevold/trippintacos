@@ -31,8 +31,11 @@ def get_next_available_table(restaurant, reservation_date_time, number_of_people
     upper_bound_time = reservation_date_time + delta
 
     tables_booked_ids = []
-    date = datetime(2019, 3, 27, 12, 0, 0, 0)
-    reservations = Reservation.objects.filter(start_date_time__lt=reservation_date_time)
+
+    tables_booked = Reservation.objects.filter(start_date_time=lower_bound_time,
+                                               end_date_time=upper_bound_time).values('table')
+    tables_booked_ids_temp = [x['table'] for x in tables_booked]
+    tables_booked_ids = tables_booked_ids + tables_booked_ids_temp
 
     # ekskluder allerede bookede bord som inneholder den initielle booking_date_time
 
@@ -300,6 +303,9 @@ def get_available_times(numberOfPeople:int, date:str):
     QS_reservations_at_date = Reservation.objects.filter(start_date_time__gte=d_start, end_date_time__lte=d_end)
     tables = Table.objects.filter(number_of_seats__gte=numberOfPeople)
 
+    if len(tables) == 0:
+        return list()
+
     times = {}
     for table in tables:
         reservations = QS_reservations_at_date.filter(table__id=table.id)
@@ -312,7 +318,7 @@ def get_available_times(numberOfPeople:int, date:str):
     booked_times = set()
     for time in times:
         if times[time] >= len(tables):
-            datetime_time = datetime(time.year, time.month, time.day, time.hour)
+            datetime_time = datetime(time.year, time.month, time.day, time.hour) - timedelta(hours=1, minutes=30)
 
             while datetime_time <= (time + timedelta(hours=1, minutes=30)).replace(tzinfo=None):
                 if datetime_time >= datetime_time + timedelta(hours=2):

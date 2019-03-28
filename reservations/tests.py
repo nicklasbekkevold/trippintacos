@@ -351,6 +351,57 @@ class TestGetAvailableTable(TestCase):
                           ('14:00', '14:00'),
                           ('14:30', '14:30'),
                           ('15:00', '15:00'),
+                          ('22:00', '22:00')
                           ], get_available_times(4, '2019-03-27'))
 
         self.assertEqual([], get_available_times(6, '2019-03-27'))
+
+
+class TestGetNextAvailableTable(TestCase):
+
+    def setUp(self):
+        Guest.objects.create(
+            email="test@testcase.no",
+            first_name="test",
+            last_name="case"
+        )
+
+        Table.objects.create(
+            id=1,
+            number_of_seats=6
+        )
+
+        Table.objects.create(
+            id=2,
+            number_of_seats=5
+        )
+
+        Reservation.objects.create(
+            id=1,
+            guest=Guest.objects.all().get(email="test@testcase.no"),
+            number_of_people=4,
+            start_date_time=datetime(2019, 3, 27, 17),
+            end_date_time=datetime(2019, 3, 27, 19),
+            table=Table.objects.get(id=1),
+            walkin=1,
+        )
+
+
+    def test_get_next_available_table(self):
+        self.assertEqual(Table.objects.get(id=2), get_next_available_table(None,
+                                                                             datetime(2019, 3, 27, 12), 4))
+        self.assertEqual(Table.objects.get(id=2), get_next_available_table(None,
+                                                                             datetime(2019, 3, 27, 17), 5))
+
+        Reservation.objects.create(
+            id=2,
+            guest=Guest.objects.all().get(email="test@testcase.no"),
+            number_of_people=4,
+            start_date_time=datetime(2019, 3, 27, 17),
+            end_date_time=datetime(2019, 3, 27, 19),
+            table=Table.objects.get(id=2),
+            walkin=1,
+        )
+
+        self.assertEqual(None, get_next_available_table(None,
+                                                            datetime(2019, 3, 27, 17), 5))
