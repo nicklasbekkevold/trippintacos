@@ -96,7 +96,7 @@ class Employee(TemplateView):
 def walkin(request):
     form = WalkinForm(request.POST)
     if form.is_valid():
-        guest = Guest(first_name=form.cleaned_data['first_name'],)
+        guest = Guest(email='walkin@trippintacos.com', first_name=form.cleaned_data['first_name'],)
         guest.save()
         start_date = form.cleaned_data['start_date']
         start_time = datetime.strptime(str(form.cleaned_data['start_time']), "%H:%M").time()
