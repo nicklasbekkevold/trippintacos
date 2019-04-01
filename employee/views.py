@@ -63,7 +63,7 @@ class Employee(TemplateView):
                 context['reservations'] = showRes(request, datetime.strftime(datetime(datetime.now().year, datetime.now().month, datetime.now().day), '%Y-%m-%d'))
                 return render(request, self.template_name, context)
             else:
-                messages.error(request, 'Reservasjonen ble ikke registrert')
+                messages.warning(request, 'Reservasjonen ble ikke registrert')
                 return render(request, self.template_name, context)
 
         elif request.POST.get('walkin') == 'walkin':
@@ -72,7 +72,7 @@ class Employee(TemplateView):
                 context['reservations'] = showRes(request, datetime.strftime(datetime(datetime.now().year, datetime.now().month, datetime.now().day), '%Y-%m-%d'))
                 return render(request, self.template_name, context)
             else:
-                messages.error(request, 'Walkin ble ikke registrert')
+                messages.warning(request, 'Walkin ble ikke registrert')
                 return render(request, self.template_name, context)
         else:
             messages.warning(request, 'Det er noe galt med utfyllingen av feltene')
