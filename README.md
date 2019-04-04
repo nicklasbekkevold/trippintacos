@@ -1,14 +1,21 @@
 # TrippinTacos
 
 A little info about your project and/ or overview that explains what the project is about.
+Dette prosjektet er en reservasjonsside for restauranten TrippinTacos. Prosjektet gjør det mulig for gjester å reservere bord ved restauranten, ansatte å reservere
+walk-ins og innringere og restauranteier å se statistikk over restauranten.
 
 # Motivation
 
 A short description of the motivation behind the creation and maintenance of the project. This should explain why the project exists.
 
+Restauranten TrippinTacos opplevde stor pågang av innringere som ville reservere bord og ønsket en
+reservasjonsside for gjester, samt mulighet for ansatte å reservere for de. De ønsket også oversikt over statistikk over restauranten.
+
+
 # Build Status
 
 Build status of continus integration
+[![pipeline status](https://gitlab.stud.idi.ntnu.no/programvareutvikling-v19/gruppe-29/badges/master/pipeline.svg)](https://gitlab.stud.idi.ntnu.no/programvareutvikling-v19/gruppe-29/commits/master)
 
 # Code style
 
