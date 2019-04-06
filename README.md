@@ -45,9 +45,9 @@ Logo and demo screenshots, Må ellers vente til alt er ferdig etter demo2.
 *  Bootstrap4
 *  MySQL
 
-# Funksjoner
+# Kjernefunksjonalitet
 
-Utsående funksjoner i prosjektet vårt:  
+Kjernefunksjonalitet i prosjektet vårt:  
 
  *  Bordreservasjon for gjester
  *  Bordreservasjon for ansatte
@@ -268,17 +268,35 @@ Hvis en ser i base.html ser en disse blokkene. Koden en da skriver i andre templ
 # Installation
 
 Guide gjennom installasjonen av prosjektet. Dette inkluderer nok alt av det vi trenger for å kjøre. AKA må vi også inkludere det at man skal installere alt i requirements.txt fila.  
-
+For å innstallere prosjektet, klon det fra GitLab og installer requirements.txt. 
 
 # API Reference
 
-the reference docs
+  * [Django Dokumentasjon](https://docs.djangoproject.com/en/2.1/ "Django dokumentasjon")
+  * [Bootstrap Dokumentasjon](https://getbootstrap.com/docs/4.3/getting-started/introduction/ "Bootstrap dokumentasjon")
 
 # Tests
 
+For å kjøre testene våre, åpne terminal/cmd og naviger inn i mappen gruppe-29. Skriv deretter inn disse tre kommandoene:
+```shell
+python3 manage.py test reservations
+```
+```shell
+python3 manage.py test employee/tests
+```
+```shell
+python3 manage.py test guest/tests
+```
+
 # How to use?
 
-Beskrivelse av hvordan en kan sette opp og bruke prosjektet.
+Beskrivelse av hvordan en kan sette opp og bruke prosjektet.  
+
+For å sette opp prosjektet følg innstallasjon over. Åpne terminal/cmd og naviger inn i gruppe-29. Kjør kommandoen:  
+```shell
+python3 manage.py runserver
+```
+Åpne deretter nettleseren din og gå til "localhost:8000". 
 
 # Contribute
 Hvordan kan man hjelpe til? Kan vurdere her å legge inn en egen fil som er Contributing guidelines, men absolutt ikke nødvendig.
