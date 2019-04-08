@@ -2,6 +2,16 @@ before_script:
   - git config user.email "nicklasbekkevold@gmail.com"
   - git config user.name "Nicklas Bekkevold"
 
+run_tests:
+  type: test
+  script:
+    - apt-get update -qy
+    - apt-get install -y python-dev python-pip
+    - pip install Django
+    - python manage.py test
+  only:
+    - master
+
 test_on_heroku:
   type: deploy
   script:
