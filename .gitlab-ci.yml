@@ -2,11 +2,10 @@ before_script:
   - git config user.email "nicklasbekkevold@gmail.com"
   - git config user.name "Nicklas Bekkevold"
 
+image: python:latest
 run_tests:
   type: test
-  script:
-    - apt-get update -qy
-    - apt-get install -y python-dev python-pip
+  script:  
     - pip install Django
     - python manage.py test
   only:
