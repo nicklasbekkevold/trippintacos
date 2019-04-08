@@ -2,10 +2,13 @@ before_script:
   - git config user.email "nicklasbekkevold@gmail.com"
   - git config user.name "Nicklas Bekkevold"
 
+services:
+    - postgres:latest
 image: python:latest
 run_tests:
   type: test
   script:  
+    - export DATABASE_URL=postgres://postgres:@postgres:5432/
     - pip install -r requirements.txt
     - python manage.py test
   only:
