@@ -229,15 +229,13 @@ For å innstallere prosjektet, åpne terminal/cmd og skriv følgende (gitt at gi
 
 # Tester
 
-For å kjøre testene våre, åpne terminal/cmd og naviger inn i mappen gruppe-29. Skriv deretter inn disse tre kommandoene:
+For å kjøre testene våre, åpne terminal/cmd og naviger inn i mappen gruppe-29. Skriv deretter kommandoen:
 ```shell
-python3 manage.py test reservations
+python manage.py test
 ```
+eller for å bare teste én app:
 ```shell
-python3 manage.py test employee/tests
-```
-```shell
-python3 manage.py test guest/tests
+python manage.py test employee
 ```
 
 # Hvordan bruke?
@@ -253,7 +251,7 @@ Måten en kan bidra til prosjektet er ved å sende forslag til endringer og forb
 
 # Credits
 
-### Hjelp til Heroku og CI/CD
+### Takk til hjelp med Heroku
 
   * Vemund Santi
   * Kristian Flatheim Jensen
