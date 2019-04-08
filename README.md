@@ -253,8 +253,6 @@ Måten en kan bidra til prosjektet er ved å sende forslag til endringer og forb
 
 # Credits
 
-Hvis dere har noen dere har fulgt spesielt for å gjøre noe spesifikt imot dette prosjektet kan dere legge inn navnet deres her, og en liten beskrivelse?
-
 ### Hjelp til Heroku og CI/CD
 
   * Vemund Santi
