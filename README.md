@@ -218,9 +218,9 @@ Hvis en ser i base.html ser en disse blokkene. Koden en da skriver i andre templ
 # Innstallasjon
 
 For å innstallere prosjektet, åpne terminal/cmd og skriv følgende (gitt at git og python er installert):
-  1. ```shell git clone https://gitlab.stud.idi.ntnu.no/programvareutvikling-v19/gruppe-29.git ```
-  2. ```shell cd gruppe-29 ```
-  3. ```shell pip3 install -r requirements.txt ```
+  1. ``` git clone https://gitlab.stud.idi.ntnu.no/programvareutvikling-v19/gruppe-29.git ```
+  2. ```cd gruppe-29 ```
+  3. ```pip3 install -r requirements.txt ```
 
 # API Referanser
 
