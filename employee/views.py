@@ -301,7 +301,6 @@ def editTable(request):
     if request.method == 'POST':
         form = EditTableForm(request.POST)
 
-        print(request.POST)
         if form.is_valid():
             table = Table.objects.all().get(id=int(form.cleaned_data['id']))
             table.number_of_seats = int(form.cleaned_data['number_of_people'])
@@ -321,7 +320,6 @@ def editTable(request):
         return render(request, 'editTable.html', {'not_success': True})
 
     else:
-        print(request.GET)
         if request.GET.get('id') is not None:
             requested_id = request.GET.get('id')
             initial_capacity = Table.objects.filter(id=request.GET.get('id'))[0].number_of_seats

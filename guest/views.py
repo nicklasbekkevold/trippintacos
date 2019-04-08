@@ -14,7 +14,6 @@ def guest_page(request):
 
     if request.method == 'POST':
         reservation_form = ReservationForm(request.POST)
-        print(reservation_form.errors)
 
         if reservation_form.is_valid():
             email = reservation_form.cleaned_data['email'].lower()
@@ -37,7 +36,6 @@ def guest_page(request):
                 start_time = datetime.strptime(str(reservation_form.cleaned_data['start_time']), "%H:%M").time()
                 start_date_time = datetime.combine(start_date, start_time)
 
-                print(start_date_time)
 
                 success = make_reservation(
                     Restaurant.objects.first(),
@@ -103,8 +101,6 @@ def delete_me(request):
         last_name = request.GET.get('last_name')
         email = request.GET.get('email')
 
-        print("Email:", email)
-        print("Last_name:", last_name)
 
         if last_name is not None and email is not None:
             try:
