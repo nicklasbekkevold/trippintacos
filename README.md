@@ -1,12 +1,9 @@
 # TrippinTacos
 
-A little info about your project and/ or overview that explains what the project is about.
 Dette prosjektet er en reservasjonsside for restauranten TrippinTacos. Prosjektet gjør det mulig for gjester å reservere bord ved restauranten, ansatte å reservere
 walk-ins og innringere og restauranteier å se statistikk over restauranten.
 
 # Motivasjon
-
-A short description of the motivation behind the creation and maintenance of the project. This should explain why the project exists.
 
 Restauranten TrippinTacos opplevde stor pågang av innringere som ville reservere bord og ønsket en
 reservasjonsside for gjester, samt mulighet for ansatte å reservere for de. De ønsket også oversikt over statistikk over restauranten.
@@ -16,15 +13,16 @@ reservasjonsside for gjester, samt mulighet for ansatte å reservere for de. De 
 
 [![pipeline status](https://gitlab.stud.idi.ntnu.no/programvareutvikling-v19/gruppe-29/badges/master/pipeline.svg)](https://gitlab.stud.idi.ntnu.no/programvareutvikling-v19/gruppe-29/commits/master)
 
+Her ses statusen på vår "pipeline". Denne sier om det siste som ble pushet til master-brancen var suksessfullt eller ikke. Hvis alt er i orden, er det automatisk
+lagt ut på [TrippinTacos hjemmeside](https://trippintacos.herokuapp.com/ "TrippinTacos hjemmeside").
+
 # Kodestil
 
-If you're using any code style like xo, standard etc. That will help others while contributing to your project.
 Variabelnavn skal være beskrivende og skrives på engelsk. Disse skal også skrives med små bokstaver og ord som er sammensatt skal skilles med understrek ("_").
 Funksjonsnavn derimot skal skrives i camelCase. 
 
 # Screenshots
 
-Logo and demo screenshots, Må ellers vente til alt er ferdig etter demo2.
 ### Logo
 ![Logo](https://i.imgur.com/bdMGRYJ.png)
 
@@ -37,7 +35,7 @@ Logo and demo screenshots, Må ellers vente til alt er ferdig etter demo2.
 ### Statistikk for restauranteier
 ![Statistikk for restauranteier](https://i.imgur.com/n8MxIya.png)
 
-# Tech/framework used
+# Teknologi/rammeverk brukt
 
 **Built with:**
 *  Python 3.7
@@ -160,54 +158,6 @@ er på grunn av {% extends 'base.html' %}. Base.html er en template som termsand
         <title>Trippin' Tacos</title>
 {% endif %}
 
-<style>
-/* Style The Dropdown Button */
-.dropbtn {
-  background-color: #ffc107;
-  padding: 16px;
-  font-size: 16px;
-  border: none;
-  cursor: pointer;
-}
-
-/* The container <div> - needed to position the dropdown content */
-.dropdown {
-  position: relative;
-  display: inline-block;
-}
-
-/* Dropdown Content (Hidden by Default) */
-.dropdown-content {
-  display: none;
-  position: absolute;
-  background-color:	#ffc107;
-  min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-  z-index: 1;
-}
-
-/* Links inside the dropdown */
-.dropdown-content a {
-  color: black;
-  padding: 12px 16px;
-  text-decoration: none;
-  display: block;
-}
-
-/* Change color of dropdown links on hover */
-.dropdown-content a:hover {background-color: #f1f1f1}
-
-/* Show the dropdown menu on hover */
-.dropdown:hover .dropdown-content {
-  display: block;
-}
-
-/* Change the background color of the dropdown button when the dropdown content is shown */
-.dropdown:hover .dropbtn {
-  background-color: #ffc107;
-}
-</style>
-
 {% block head %}
 {% endblock %}
 </head>
@@ -265,17 +215,17 @@ er på grunn av {% extends 'base.html' %}. Base.html er en template som termsand
 Alle templates som arver fra base.html vil ha all denne koden. For å lage egen kode i andre templates, skrives det inne i {% block content %} {% endblock %} blokker.
 Hvis en ser i base.html ser en disse blokkene. Koden en da skriver i andre templates vil havne inne i denne. 
 
-# Installation
+# Innstallasjon
 
 Guide gjennom installasjonen av prosjektet. Dette inkluderer nok alt av det vi trenger for å kjøre. AKA må vi også inkludere det at man skal installere alt i requirements.txt fila.  
 For å innstallere prosjektet, klon det fra GitLab og installer requirements.txt. 
 
-# API Reference
+# API Referanser
 
   * [Django Dokumentasjon](https://docs.djangoproject.com/en/2.1/ "Django dokumentasjon")
   * [Bootstrap Dokumentasjon](https://getbootstrap.com/docs/4.3/getting-started/introduction/ "Bootstrap dokumentasjon")
 
-# Tests
+# Tester
 
 For å kjøre testene våre, åpne terminal/cmd og naviger inn i mappen gruppe-29. Skriv deretter inn disse tre kommandoene:
 ```shell
@@ -288,9 +238,7 @@ python3 manage.py test employee/tests
 python3 manage.py test guest/tests
 ```
 
-# How to use?
-
-Beskrivelse av hvordan en kan sette opp og bruke prosjektet.  
+# Hvordan bruke?
 
 For å sette opp prosjektet følg innstallasjon over. Åpne terminal/cmd og naviger inn i gruppe-29. Kjør kommandoen:  
 ```shell
@@ -298,16 +246,14 @@ python3 manage.py runserver
 ```
 Åpne deretter nettleseren din og gå til "localhost:8000". 
 
-# Contribute
-Hvordan kan man hjelpe til? Kan vurdere her å legge inn en egen fil som er Contributing guidelines, men absolutt ikke nødvendig.
-
-Doge @ DHkxeBdcg5SVLUEyt4QmXojboic6qnEmHS
+# Bidra
+Måten en kan bidra til prosjektet er ved å sende forslag til endringer og forbedringer til *trippintacosrestaurant@gmail.com*
 
 # Credits
 
 Hvis dere har noen dere har fulgt spesielt for å gjøre noe spesifikt imot dette prosjektet kan dere legge inn navnet deres her, og en liten beskrivelse?
 
-# Licence
+### Hjelp til Heroku og CI/CD
 
-Har vi noe lisens igjennom NTNU?
-
+  * Vemund Santi
+  * Kristian Flatheim Jensen
