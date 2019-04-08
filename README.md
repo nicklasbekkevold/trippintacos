@@ -217,8 +217,10 @@ Hvis en ser i base.html ser en disse blokkene. Koden en da skriver i andre templ
 
 # Innstallasjon
 
-Guide gjennom installasjonen av prosjektet. Dette inkluderer nok alt av det vi trenger for å kjøre. AKA må vi også inkludere det at man skal installere alt i requirements.txt fila.  
-For å innstallere prosjektet, klon det fra GitLab og installer requirements.txt. 
+For å innstallere prosjektet, åpne terminal/cmd og skriv følgende (gitt at git og python er installert):
+  1. ``` git clone https://gitlab.stud.idi.ntnu.no/programvareutvikling-v19/gruppe-29.git ```
+  2. ```cd gruppe-29 ```
+  3. ```pip3 install -r requirements.txt ```
 
 # API Referanser
 
@@ -250,8 +252,6 @@ python3 manage.py runserver
 Måten en kan bidra til prosjektet er ved å sende forslag til endringer og forbedringer til *trippintacosrestaurant@gmail.com*
 
 # Credits
-
-Hvis dere har noen dere har fulgt spesielt for å gjøre noe spesifikt imot dette prosjektet kan dere legge inn navnet deres her, og en liten beskrivelse?
 
 ### Hjelp til Heroku og CI/CD
 
