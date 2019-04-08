@@ -217,8 +217,10 @@ Hvis en ser i base.html ser en disse blokkene. Koden en da skriver i andre templ
 
 # Innstallasjon
 
-Guide gjennom installasjonen av prosjektet. Dette inkluderer nok alt av det vi trenger for å kjøre. AKA må vi også inkludere det at man skal installere alt i requirements.txt fila.  
-For å innstallere prosjektet, klon det fra GitLab og installer requirements.txt. 
+For å innstallere prosjektet, åpne terminal/cmd og skriv følgende (gitt at git og python er installert):
+  1. ```shell git clone https://gitlab.stud.idi.ntnu.no/programvareutvikling-v19/gruppe-29.git ```
+  2. ```shell cd gruppe-29 ```
+  3. ```shell pip3 install -r requirements.txt ```
 
 # API Referanser
 
