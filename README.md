@@ -242,7 +242,7 @@ DATABASES = {
 
 DEBUG = True
 ```
-Denne må legges i gruppe-29/trippinTacos, dette vil overskrive databaseinstillingene i settings.py lokalt, men ikke på Herouk-siden.
+Denne må legges i gruppe-29/trippinTacos, og vil overskrive databaseinstillingene i settings.py lokalt, men ikke på Herouk-siden.
 I tillegg kreves det tilkobling til NTNU-sitt nettverk: enten ved å være tilkoblet på campus eller ved å følge [denne linken](https://innsida.ntnu.no/wiki/-/wiki/Norsk/Installere+VPN) for instruskjoner på hvordan å sette opp VPN.
 
 # API Referanser
