@@ -15,7 +15,7 @@ reservasjonsside for gjester, samt mulighet for ansatte å reservere for de. De 
 [![pipeline status](https://gitlab.stud.idi.ntnu.no/programvareutvikling-v19/gruppe-29/badges/master/pipeline.svg)](https://gitlab.stud.idi.ntnu.no/programvareutvikling-v19/gruppe-29/commits/master)
 
 Her er statusen på vår siste "pipeline". Denne sier om det siste som ble pushet til master-brancen var suksessfullt eller ikke. Hvis alt er i orden, og alle testene bestås, blir siste versjon automatisk
-lagt ut på [TrippinTacos hjemmeside](https://trippintacos.herokuapp.com/ "Trippin Tacos hjemmeside").
+lagt ut på [Trippin Tacos sin hjemmeside](https://trippintacos.herokuapp.com/ "Trippin Tacos sin hjemmeside").
 
 # Kodestil
 
