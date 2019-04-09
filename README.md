@@ -237,18 +237,19 @@ For å kjøre testene våre, åpne terminal/cmd og naviger inn i mappen gruppe-2
 ```shell
 python manage.py test
 ```
-eller for å bare teste én app:
+For å bare kjøre testene til én app:
 ```shell
 python manage.py test employee
 ```
+*Dette vil kjøre alle testene som ligger i tests-mappen eller tests.py filen til den valgte app-en.*
 
 # Hvordan bruke?
 
 For å sette opp prosjektet følg innstallasjon over. Åpne terminal/cmd og naviger inn i gruppe-29. Kjør kommandoen:  
 ```shell
-python3 manage.py runserver
+python manage.py runserver
 ```
-Åpne deretter nettleseren din og gå til "localhost:8000". 
+Åpne deretter nettleseren din og gå til [localhost:8000](http://localhost:8000/ "localhost:8000"). 
 
 # Bidra
 Måten en kan bidra til prosjektet er ved å sende forslag til endringer og forbedringer til *trippintacosrestaurant@gmail.com*
@@ -260,4 +261,4 @@ Stor takk til
   * Vemund Santi
   * Kristian Flatheim Jensen
 
-for å bruke både tid og energi på dette
+for å bruke både tid og energi på oppsett av Heroku-siden 
