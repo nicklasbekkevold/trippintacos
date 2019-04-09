@@ -221,13 +221,36 @@ Hvis en ser i base.html ser en disse blokkene. Koden en da skriver i andre templ
 For å innstallere prosjektet, åpne terminal/cmd og skriv følgende (gitt at git og python er installert):
   1. ``` git clone https://gitlab.stud.idi.ntnu.no/programvareutvikling-v19/gruppe-29.git ```
   2. ```cd gruppe-29 ```
-  3. ```pip3 install -r requirements.txt ```
+  3. ```pip install -r requirements.txt ```
+
+Vi bruker NTNU sine MySQL-servere som lokal database. For å bruke denne må du lage en fil ved navn *local_settings.py*, med følgene innhold:
+```
+import os
+from .settings import *
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql', 
+        'NAME': 'stud_pu-29_trippinTacos',
+        'USER': 'stud_pu-29',
+        'PASSWORD': 'GruppE29',
+        'HOST': 'mysql.stud.ntnu.no',
+        'PORT': '3306',
+    },
+}
+
+DEBUG = True
+```
+Denne må legges i gruppe-29/trippinTacos, dette vil overskrive databaseinstillingene i settings.py lokalt, men ikke på Herouk-siden.
+I tillegg kreves det tilkobling til NTNU-sitt nettverk: enten ved å være tilkoblet på campus eller ved å følge [denne linken](https://innsida.ntnu.no/wiki/-/wiki/Norsk/Installere+VPN) for instruskjoner på hvordan å sette opp VPN.
 
 # API Referanser
 
 Vi buker Heroku sitt API for automatisk opplasting av kode fra GitLab til Trippin Tacos sin hjemmeside. 
 Denne er lagret som en variabel ved navn HEROKU_API_KEY og er lagret i CI/CD instillingene til GitLab. Denne brukes bare i .gitlab-ci.yml-filen og bør holdes hemmelig. 
 
+Nyttige lenker til Django og Bootstrap sin dokumentasjon:
   * [Django Dokumentasjon](https://docs.djangoproject.com/en/2.1/ "Django dokumentasjon")
   * [Bootstrap Dokumentasjon](https://getbootstrap.com/docs/4.3/getting-started/introduction/ "Bootstrap dokumentasjon")
 
