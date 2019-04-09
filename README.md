@@ -219,12 +219,12 @@ Hvis en ser i base.html ser en disse blokkene. Koden en da skriver i andre templ
 # Innstallasjon
 
 For å innstallere prosjektet, åpne terminal/cmd og skriv følgende (gitt at git og python er installert):
-  1. ``` git clone https://gitlab.stud.idi.ntnu.no/programvareutvikling-v19/gruppe-29.git ```
+  1. ```git clone https://gitlab.stud.idi.ntnu.no/programvareutvikling-v19/gruppe-29.git ```
   2. ```cd gruppe-29 ```
   3. ```pip install -r requirements.txt ```
 
 Vi bruker NTNU sine MySQL-servere som lokal database. For å bruke denne må du lage en fil ved navn *local_settings.py*, med følgene innhold:
-```
+```python
 import os
 from .settings import *
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
