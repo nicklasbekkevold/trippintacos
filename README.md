@@ -225,6 +225,9 @@ For å innstallere prosjektet, åpne terminal/cmd og skriv følgende (gitt at gi
 
 # API Referanser
 
+Vi buker Heroku sitt API for automatisk opplasting av kode fra GitLab til Trippin Tacos sin hjemmeside. 
+Denne er lagret som en variabel ved navn HEROKU_API_KEY og er lagret i CI/CD instillingene til GitLab. Denne brukes bare i .gitlab-ci.yml-filen og bør holdes hemmelig. 
+
   * [Django Dokumentasjon](https://docs.djangoproject.com/en/2.1/ "Django dokumentasjon")
   * [Bootstrap Dokumentasjon](https://getbootstrap.com/docs/4.3/getting-started/introduction/ "Bootstrap dokumentasjon")
 
