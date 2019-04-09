@@ -1,24 +1,25 @@
 # TrippinTacos
 
-Dette prosjektet er en reservasjonsside for restauranten TrippinTacos. Prosjektet gjør det mulig for gjester å reservere bord ved restauranten, ansatte å reservere
-walk-ins og innringere og restauranteier å se statistikk over restauranten.
+Dette prosjektet er en reservasjonsside for restauranten Trippin Tacos. Prosjektet gjør det mulig for gjester å reservere bord på egenhånd. 
+Ansatte kan legge inn både walk-in (gjester som dukker opp uanmeldt) og gjester som ringer for å bestille bord. 
+Restauranteier kan se statistikk over restauranten.
 
 # Motivasjon
 
-Restauranten TrippinTacos opplevde stor pågang av innringere som ville reservere bord og ønsket en
-reservasjonsside for gjester, samt mulighet for ansatte å reservere for de. De ønsket også oversikt over statistikk over restauranten.
+Restauranten Trippin Tacos opplevde stor pågang av innringere som ville reservere bord og ønsket en
+reservasjonsside for gjester, samt mulighet for ansatte å reservere for de. De ønsket også oversikt over statistikk for restauranten.
 
 
 # Build Status
 
 [![pipeline status](https://gitlab.stud.idi.ntnu.no/programvareutvikling-v19/gruppe-29/badges/master/pipeline.svg)](https://gitlab.stud.idi.ntnu.no/programvareutvikling-v19/gruppe-29/commits/master)
 
-Her ses statusen på vår "pipeline". Denne sier om det siste som ble pushet til master-brancen var suksessfullt eller ikke. Hvis alt er i orden, er det automatisk
-lagt ut på [TrippinTacos hjemmeside](https://trippintacos.herokuapp.com/ "TrippinTacos hjemmeside").
+Her er statusen på vår siste "pipeline". Denne sier om det siste som ble pushet til master-brancen var suksessfullt eller ikke. Hvis alt er i orden, og alle testene bestås, blir siste versjon automatisk
+lagt ut på [TrippinTacos hjemmeside](https://trippintacos.herokuapp.com/ "Trippin Tacos hjemmeside").
 
 # Kodestil
 
-Variabelnavn skal være beskrivende og skrives på engelsk. Disse skal også skrives med små bokstaver og ord som er sammensatt skal skilles med understrek ("_").
+All kode skal være beskrivende og skrives på engelsk. Variabelnavn skal skrives med små bokstaver og ord som er sammensatt skal skilles med understrek ("_").
 Funksjonsnavn derimot skal skrives i camelCase. 
 
 # Screenshots
@@ -251,7 +252,9 @@ Måten en kan bidra til prosjektet er ved å sende forslag til endringer og forb
 
 # Credits
 
-### Takk til hjelp med Heroku
-
+### Hjelp med Heroku
+Stor takk til
   * Vemund Santi
   * Kristian Flatheim Jensen
+
+for å bruke både tid og energi på dette
