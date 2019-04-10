@@ -7,7 +7,7 @@ Restauranteier kan se statistikk over restauranten.
 # Motivasjon
 
 Restauranten Trippin Tacos opplevde stor pågang av innringere som ville reservere bord og ønsket en
-reservasjonsside for gjester, samt mulighet for ansatte å reservere for de. De ønsket også oversikt over statistikk for restauranten.
+reservasjonsside for gjester, samt mulighet for ansatte å reservere for de. De ønsket også oversikt over statistikk for restauranten for å kunne vite når det er mest pågang.
 
 
 # Build Status
