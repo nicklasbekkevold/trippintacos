@@ -24,7 +24,8 @@ class ReservationForm(forms.Form):
                 'type': 'date'
             },
             format=['%d/%m/%Y'],
-        )
+        ),
+        label='Dato for reservasjonen'
     )
     start_time = forms.ChoiceField(
         widget=forms.Select(
@@ -33,7 +34,7 @@ class ReservationForm(forms.Form):
             },
         ),
         choices=[tuple(["{}:{}".format(hours, minuttes), "{}:{}".format(hours, minuttes)]) for hours in range(12, 23) for minuttes in ["00", "30"]][:-1],
-        label='Starttid for reservasjon'
+        label='Starttid for reservasjonen'
     )
     i_have_read_and_agree_checkbox = forms.BooleanField(
         required=True,
