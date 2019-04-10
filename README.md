@@ -216,9 +216,9 @@ er på grunn av {% extends 'base.html' %}. Base.html er en template som termsand
 Alle templates som arver fra base.html vil ha all denne koden. For å lage egen kode i andre templates, skrives det inne i {% block content %} {% endblock %} blokker.
 Hvis en ser i base.html ser en disse blokkene. Koden en da skriver i andre templates vil havne inne i denne. 
 
-# Innstallasjon
+# Installasjon
 
-For å innstallere prosjektet, åpne terminal/cmd og skriv følgende (gitt at git og python er installert):
+For å installere prosjektet, åpne terminal/cmd og skriv følgende (gitt at git og python er installert):
   1. ```git clone https://gitlab.stud.idi.ntnu.no/programvareutvikling-v19/gruppe-29.git ```
   2. ```cd gruppe-29 ```
   3. ```pip install -r requirements.txt ```
@@ -268,7 +268,7 @@ python manage.py test employee
 
 # Hvordan bruke?
 
-For å sette opp prosjektet følg innstallasjon over. Åpne terminal/cmd og naviger inn i gruppe-29. Kjør kommandoen:  
+For å sette opp prosjektet følg installasjon over. Åpne terminal/cmd og naviger inn i gruppe-29. Kjør kommandoen:  
 ```shell
 python manage.py runserver
 ```
